@@ -1,12 +1,22 @@
 <?php
 class AppController extends Controller {
-	var $components = array('Session',/*'Acl',*/ 'Auth','Cookie');
+	var $components = array('Session','Acl', 'Auth','Cookie');
+	var $uses = array('UsersSecurity');
 	
 	function beforeFilter() {
     	//have to manually start session for things to work properly
     	session_start();
 		
-    	$this->layout = 'basic' . DS . 'basic';
+    	//override the Auth component
+    	$this->Auth->fields = array(
+    		'username'=>'email',
+    		'password'=>'password'
+    	);
+    	
+    	//just temp for site setup
+    	if($this->params['controller'] == 'pages') {
+    		$this->layout = 'basic' . DS . 'basic';
+    	}
     	
     	if (Configure::read('config.testing')) {
     		$this->Auth->allow('*');	
@@ -53,5 +63,51 @@ class AppController extends Controller {
 	    	}
 	    	*/
     	}
+    	
+    	//Configure AuthComponent
+        $this->Auth->authorize = 'actions';
+        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
+        $this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'index');
+        
+        $this->secureUserSession();
 	}
+	
+function secureUserSession(){
+    	$userid = $this->Session->read('Auth.User.id');
+    	$security = $this->UsersSecurity->find(array('user_id'=>$userid));
+    	$ssid = $security['UsersSecurity']['ssid'];
+    	
+    	//If the session ids do not match...logout
+    	if($ssid != $this->Session->id() && $this->Session->read('Auth.User.id')){
+    		            
+            $this->Session->setFlash('Another user logged in with your identity.  You have been logged out!');
+            $this->Auth->logout();
+            
+    	}
+          
+    }
+    
+    //tweaked Auth component to have a callback
+    function after_login_hook($valid){
+    	
+    	$userid = $this->Session->read('Auth.User.id');
+
+    	$this->UsersSecurity->set('user_id',$userid);
+    	$this->UsersSecurity->set('ssid',$this->Session->id());
+    	$this->UsersSecurity->save(
+					array(	
+							'id'=>$userid,
+							'user_id'=>$userid,
+							'ssid'=>$this->Session->id()
+					));
+					
+    }
+    
+    /**
+     * Custom hook added into Auth component
+     */
+    function before_login_hook(){
+    	
+    }
 }
