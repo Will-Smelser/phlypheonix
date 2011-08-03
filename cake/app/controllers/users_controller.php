@@ -187,8 +187,7 @@ class UsersController extends AppController {
     }
     
     function sign_up() {
-    	
-    
+
     }
     
     

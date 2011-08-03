@@ -93,7 +93,14 @@ function secureUserSession(){
     	
     	$userid = $this->Session->read('Auth.User.id');
 
-    	$this->UsersSecurity->set('user_id',$userid);
+    	//first delete this users info
+    	$this->UsersSecurity->delete($userid);
+		
+		//delete the users ssid
+		$infoBySession = $this->UsersSecurity->findBySsid($this->Session->id());
+		$this->UsersSecurity->delete($infoBySession['UsersSecurity']['id']);
+					
+		$this->UsersSecurity->set('user_id',$userid);
     	$this->UsersSecurity->set('ssid',$this->Session->id());
     	$this->UsersSecurity->save(
 					array(	
