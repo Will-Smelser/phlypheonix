@@ -6,6 +6,8 @@ class SizesController extends AppController {
 	function index() {
 		$this->Size->recursive = 0;
 		$this->set('sizes', $this->paginate());
+		
+		debug($this);
 	}
 
 	function view($id = null) {

@@ -1,12 +1,14 @@
 <?php
 class AppController extends Controller {
-	var $components = array('Session','Acl', 'Auth','Cookie');
+	var $components = array('Acl', 'Auth','Cookie','Cart');
 	var $uses = array('UsersSecurity');
 	
 	function beforeFilter() {
     	//have to manually start session for things to work properly
     	session_start();
 		
+    	
+    	
     	//override the Auth component
     	$this->Auth->fields = array(
     		'username'=>'email',
@@ -74,6 +76,7 @@ class AppController extends Controller {
 	}
 	
 function secureUserSession(){
+		/*
     	$userid = $this->Session->read('Auth.User.id');
     	$security = $this->UsersSecurity->find(array('user_id'=>$userid));
     	$ssid = $security['UsersSecurity']['ssid'];
@@ -84,7 +87,7 @@ function secureUserSession(){
             $this->Session->setFlash('Another user logged in with your identity.  You have been logged out!');
             $this->Auth->logout();
             
-    	}
+    	}*/
           
     }
     

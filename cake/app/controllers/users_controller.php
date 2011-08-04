@@ -40,6 +40,16 @@ class UsersController extends AppController {
 		}
 	}
 	
+	function test($id=0){
+		//$this->Cart->emptyCart();
+		
+		$this->Cart->add(1,5);
+		//$this->Cart->remove(1,2);
+		$temp = $this->Cart->getProductUnitPrice(1);
+		debug(CartUtils::formatMoneyUS($temp));
+		debug($this->Cart->getContents());
+	}
+	
 	function logout(){
 		$this->Session->setFlash('Good-Bye');
 		$this->redirect($this->Auth->logout());
