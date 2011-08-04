@@ -1,13 +1,12 @@
 <?php
-class Actor extends AppModel {
-	var $name = 'Actor';
-	var $displayField = 'name';
+class Addressbill extends AppModel {
+	var $name = 'Addressbill';
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $hasMany = array(
-		'Pimage' => array(
-			'className' => 'Pimage',
-			'foreignKey' => 'actor_id',
+		'Uinfo' => array(
+			'className' => 'Uinfo',
+			'foreignKey' => 'addressbill_id',
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',
