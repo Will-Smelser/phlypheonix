@@ -54,7 +54,7 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Schoice', true), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('New Size choice', true), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
 	</ul>

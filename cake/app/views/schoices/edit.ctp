@@ -19,7 +19,7 @@
 	<ul>
 
 		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Schoice.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Schoice.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Schoices', true), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(__('List Size choices', true), array('action' => 'index'));?></li>
 		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
 	</ul>

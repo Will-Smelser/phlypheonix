@@ -26,8 +26,9 @@ class ProductsController extends AppController {
 				$this->Session->setFlash(__('The product could not be saved. Please, try again.', true));
 			}
 		}
+		$manufacturers = $this->Product->Manufacturer->find('list');
 		$pattributes = $this->Product->Pattribute->find('list');
-		$this->set(compact('pattributes'));
+		$this->set(compact('manufacturers', 'pattributes'));
 	}
 
 	function edit($id = null) {
@@ -46,8 +47,9 @@ class ProductsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Product->read(null, $id);
 		}
+		$manufacturers = $this->Product->Manufacturer->find('list');
 		$pattributes = $this->Product->Pattribute->find('list');
-		$this->set(compact('pattributes'));
+		$this->set(compact('manufacturers', 'pattributes'));
 	}
 
 	function delete($id = null) {

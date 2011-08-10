@@ -1,24 +1,24 @@
-<div class="pattributes view">
-<h2><?php  __('Pattribute');?></h2>
+<div class="manufacturers view">
+<h2><?php  __('Manufacturer');?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $pattribute['Pattribute']['id']; ?>
+			<?php echo $manufacturer['Manufacturer']['id']; ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Name'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $pattribute['Pattribute']['name']; ?>
+			<?php echo $manufacturer['Manufacturer']['name']; ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Image'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $pattribute['Pattribute']['image']; ?>
+			<?php echo $manufacturer['Manufacturer']['image']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Description'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $pattribute['Pattribute']['description']; ?>
+			<?php echo $manufacturer['Manufacturer']['created']; ?>
 			&nbsp;
 		</dd>
 	</dl>
@@ -26,20 +26,21 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Edit Product Attribute', true), array('action' => 'edit', $pattribute['Pattribute']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Delete Product Attribute', true), array('action' => 'delete', $pattribute['Pattribute']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $pattribute['Pattribute']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Product Attributes', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Product Attribute', true), array('action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Edit Manufacturer', true), array('action' => 'edit', $manufacturer['Manufacturer']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Delete Manufacturer', true), array('action' => 'delete', $manufacturer['Manufacturer']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $manufacturer['Manufacturer']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('List Manufacturers', true), array('action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Manufacturer', true), array('action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Products', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
 <div class="related">
 	<h3><?php __('Related Products');?></h3>
-	<?php if (!empty($pattribute['Product'])):?>
+	<?php if (!empty($manufacturer['Product'])):?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php __('Id'); ?></th>
+		<th><?php __('Manufacturer Id'); ?></th>
 		<th><?php __('Name'); ?></th>
 		<th><?php __('Desc'); ?></th>
 		<th><?php __('Sex'); ?></th>
@@ -54,7 +55,7 @@
 	</tr>
 	<?php
 		$i = 0;
-		foreach ($pattribute['Product'] as $product):
+		foreach ($manufacturer['Product'] as $product):
 			$class = null;
 			if ($i++ % 2 == 0) {
 				$class = ' class="altrow"';
@@ -62,6 +63,7 @@
 		?>
 		<tr<?php echo $class;?>>
 			<td><?php echo $product['id'];?></td>
+			<td><?php echo $product['manufacturer_id'];?></td>
 			<td><?php echo $product['name'];?></td>
 			<td><?php echo $product['desc'];?></td>
 			<td><?php echo $product['sex'];?></td>

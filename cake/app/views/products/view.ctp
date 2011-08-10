@@ -6,6 +6,11 @@
 			<?php echo $product['Product']['id']; ?>
 			&nbsp;
 		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Manufacturer'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $this->Html->link($product['Manufacturer']['name'], array('controller' => 'manufacturers', 'action' => 'view', $product['Manufacturer']['id'])); ?>
+			&nbsp;
+		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Name'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $product['Product']['name']; ?>
@@ -65,14 +70,14 @@
 		<li><?php echo $this->Html->link(__('Delete Product', true), array('action' => 'delete', $product['Product']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $product['Product']['id'])); ?> </li>
 		<li><?php echo $this->Html->link(__('List Products', true), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Product', true), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Oinfos', true), array('controller' => 'oinfos', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Oinfo', true), array('controller' => 'oinfos', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pdetails', true), array('controller' => 'pdetails', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pdetail', true), array('controller' => 'pdetails', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pimages', true), array('controller' => 'pimages', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pimage', true), array('controller' => 'pimages', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pattributes', true), array('controller' => 'pattributes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pattribute', true), array('controller' => 'pattributes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Manufacturers', true), array('controller' => 'manufacturers', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Manufacturer', true), array('controller' => 'manufacturers', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Product details', true), array('controller' => 'pdetails', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Product detail', true), array('controller' => 'pdetails', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Product images', true), array('controller' => 'pimages', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Product image', true), array('controller' => 'pimages', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Product attributes', true), array('controller' => 'pattributes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Product attribute', true), array('controller' => 'pattributes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
 <div class="related">
@@ -205,6 +210,7 @@
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php __('Id'); ?></th>
+		<th><?php __('Name'); ?></th>
 		<th><?php __('Image'); ?></th>
 		<th><?php __('Description'); ?></th>
 		<th class="actions"><?php __('Actions');?></th>
@@ -219,6 +225,7 @@
 		?>
 		<tr<?php echo $class;?>>
 			<td><?php echo $pattribute['id'];?></td>
+			<td><?php echo $pattribute['name'];?></td>
 			<td><?php echo $pattribute['image'];?></td>
 			<td><?php echo $pattribute['description'];?></td>
 			<td class="actions">

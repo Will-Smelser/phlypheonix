@@ -6,7 +6,15 @@
 		echo $this->Form->input('id');
 		echo $this->Form->input('product_id');
 		echo $this->Form->input('actor_id');
-		echo $this->Form->input('image');
+		//echo $this->Form->input('image');
+		echo $this->element('admin/choose_image',
+			array(
+				'title'=>'Choose Image',
+				'dir'=>WWW_ROOT . Configure::read('config.image.product'),//'img' . DS . 'products' . DS,
+				'model'=>'Pimage',
+				'field'=>'image'
+			)
+		);
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>

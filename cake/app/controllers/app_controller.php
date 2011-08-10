@@ -1,11 +1,11 @@
 <?php
 class AppController extends Controller {
-	var $components = array('Acl', 'Auth','Cookie','Cart');
+	var $components = array('Session','Acl', 'Auth','Cookie','Cart');
 	var $uses = array('UsersSecurity');
 	
 	function beforeFilter() {
     	//have to manually start session for things to work properly
-    	session_start();
+    	//session_start();
 		
     	
     	

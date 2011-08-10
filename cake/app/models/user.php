@@ -2,6 +2,7 @@
 class User extends AppModel {
 	
 	var $name = 'User';
+	var $displayField = 'email';
 	var $belongsTo = array('Group');
 	var $hasOne = array(
 		'UsersSecurity'=>array(
@@ -10,6 +11,8 @@ class User extends AppModel {
 			'dependent'=>true
 		)
 	);
+	
+	var $hasMany = array('Saleuser');
 	
 	var $actsAs = array('Acl' => array('type' => 'requester'));
 	

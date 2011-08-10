@@ -18,7 +18,7 @@
 	<ul>
 
 		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Pdetail.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Pdetail.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Pdetails', true), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(__('List Product Details', true), array('action' => 'index'));?></li>
 		<li><?php echo $this->Html->link(__('List Products', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>

@@ -45,8 +45,8 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('New Size', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Pdetails', true), array('controller' => 'pdetails', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Schoices', true), array('controller' => 'schoices', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pdetail', true), array('controller' => 'pdetails', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Product Details', true), array('controller' => 'pdetails', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Size Choices', true), array('controller' => 'schoices', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Product Detail', true), array('controller' => 'pdetails', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

@@ -3,6 +3,7 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
+			<th><?php echo $this->Paginator->sort('manufacturer_id');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
 			<th><?php echo $this->Paginator->sort('desc');?></th>
 			<th><?php echo $this->Paginator->sort('sex');?></th>
@@ -11,6 +12,7 @@
 			<th><?php echo $this->Paginator->sort('price_retail');?></th>
 			<th><?php echo $this->Paginator->sort('price_member');?></th>
 			<th><?php echo $this->Paginator->sort('price_buynow');?></th>
+			<th><?php echo $this->Paginator->sort('pricetag');?></th>
 			<th><?php echo $this->Paginator->sort('cost');?></th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
 			<th class="actions"><?php __('Actions');?></th>
@@ -25,6 +27,9 @@
 	?>
 	<tr<?php echo $class;?>>
 		<td><?php echo $product['Product']['id']; ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($product['Manufacturer']['name'], array('controller' => 'manufacturers', 'action' => 'view', $product['Manufacturer']['id'])); ?>
+		</td>
 		<td><?php echo $product['Product']['name']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['desc']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['sex']; ?>&nbsp;</td>
@@ -33,6 +38,7 @@
 		<td><?php echo $product['Product']['price_retail']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['price_member']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['price_buynow']; ?>&nbsp;</td>
+		<td><?php echo $product['Product']['pricetag']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['cost']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['created']; ?>&nbsp;</td>
 		<td class="actions">
@@ -61,13 +67,13 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('New Product', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Oinfos', true), array('controller' => 'oinfos', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Oinfo', true), array('controller' => 'oinfos', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pdetails', true), array('controller' => 'pdetails', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pdetail', true), array('controller' => 'pdetails', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pimages', true), array('controller' => 'pimages', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pimage', true), array('controller' => 'pimages', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pattributes', true), array('controller' => 'pattributes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pattribute', true), array('controller' => 'pattributes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Manufacturers', true), array('controller' => 'manufacturers', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Manufacturer', true), array('controller' => 'manufacturers', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Product details', true), array('controller' => 'pdetails', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Prodcut detail', true), array('controller' => 'pdetails', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Product images', true), array('controller' => 'pimages', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Product image', true), array('controller' => 'pimages', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Product attributes', true), array('controller' => 'pattributes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Product attribute', true), array('controller' => 'pattributes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

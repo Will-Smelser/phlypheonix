@@ -32,7 +32,7 @@
 	define('ROOT', realpath(dirname(__FILE__).DS.'..' . DS . 'cake' . DS));
 	
 	define('WEBROOT_DIR', 'webroot');
-	define('WWW_ROOT', ROOT . DS . APP_DIR . DS . WEBROOT_DIR . DS);
+	define('WWW_ROOT', ROOT . DS .'..' . DS . 'public_html' . DS);
 	
 /**
  * This only needs to be changed if the "cake" directory is located

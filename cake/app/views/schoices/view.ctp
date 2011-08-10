@@ -41,10 +41,10 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Edit Schoice', true), array('action' => 'edit', $schoice['Schoice']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Delete Schoice', true), array('action' => 'delete', $schoice['Schoice']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $schoice['Schoice']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Schoices', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Schoice', true), array('action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Edit Size Choice', true), array('action' => 'edit', $schoice['Schoice']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Delete Size Choice', true), array('action' => 'delete', $schoice['Schoice']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $schoice['Schoice']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('List Size Choices', true), array('action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Size Choice', true), array('action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
 	</ul>
