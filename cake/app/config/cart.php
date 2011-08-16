@@ -7,4 +7,6 @@ $config['cart']['product']['key'] = 'id';
 $config['cart']['namespace'] = 'Cart';
 $config['cart']['product']['priceRoute'] = 'Product.price_retail';
 
+$config['cart']['referrer'] = true; //do we allow referrers?
+
 ?>

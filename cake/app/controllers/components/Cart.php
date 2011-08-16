@@ -4,6 +4,9 @@ class CartComponent extends Object {
 	var $modelName;
 	var $modelKey;
 	
+	var $referrerAllowed=false;
+	var $referrerId;
+	
 	var $amtRoute;
 	
 	var $controller;
@@ -18,6 +21,8 @@ class CartComponent extends Object {
 		$this->modelName = Configure::read('cart.product.model');
 		$this->modelKey  = Configure::read('cart.product.key');
 		$this->namespace = Configure::read('cart.namespace');
+		
+		$this->referrerAllowed = Configure::read('cart.referrer');
 		
 		//save reference to model
 		if(empty($this->controller->{$this->modelName})){
@@ -103,6 +108,12 @@ class CartComponent extends Object {
 	
 	function getContents() {
 		return $this->content;
+	}
+	
+	function setReferrer($id) {
+		if($this->referrerAllowed ){
+			$this->referrerId = $id;
+		}
 	}
 	
 	/**
