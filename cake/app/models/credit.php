@@ -42,15 +42,16 @@ class Credit extends AppModel {
 				'user_id'=>$user_id,
 				'user_id_purchases'=>$purchases_id,
 				'sale_id'=>$sale_id,
-				'order_id_optional'=>$order_id
+				'order_id_optional'=>$order_id,
+				'amount'=>$amount
 			)
 		);
 		
-		return $this->Credit->save($data);
+		return $this->save($data);
 	}
 	
 	public function getCredits($userId){
-		return $this->Credit->find('all',array('conditions'=>'Credit.user_id = '.$userId,'order'=>'Credit.amount ASC'));
+		return $this->find('all',array('conditions'=>'Credit.user_id = '.$userId,'order'=>'Credit.amount DESC'));
 	}
 	
 	/**
@@ -59,6 +60,7 @@ class Credit extends AppModel {
 	 * @param unknown_type $userId
 	 * @param unknown_type $amount
 	 * @param unknown_type $currentCredits This should be the result of calling getCredits()
+	 * @return Returns the query result on error (false) or the amount that failed to be reducted
 	 * @see getCredits()
 	 */
 	public function reduceCreditsByAmount($userId, $amount, &$currentCredits = null) {
@@ -69,28 +71,31 @@ class Credit extends AppModel {
 		//iterate the credits...should be ASC order
 		$update = null;
 		$delete = array();
-		foreach($currentCredits['Credit'] as $entry){
-			$creditAmount = $entry['amount'];
+		foreach($currentCredits as $entry){
+			$creditAmount = $entry['Credit']['amount'];
 			
 			$reduceTo = 0;
+			
+			//credits is greater than amount to reduce by
 			if(($creditAmount - $amount) > 0) {
-				$update = $entry['id'];
+				$update = $entry['Credit']['id'];
 				$reduceTo = $creditAmount - $amount;
+				$amount = 0;
 			} else {
-				array_push($delete,$entry['id'])
+				array_push($delete,$entry['Credit']['id']);
 				$amount -= $creditAmount;
 			}
 			
 			//possible to try and reduce credit by more than
 			//what the user has, this kicks us out before
 			//a user can owe
-			if($amount < 0) break;
+			if($amount <= 0) break;
 			
 		}
 		//update a credit to the new amount
 		if($update !== null){
-			$this->Credit->id = $entry['id'];
-			$result = $this->Credit->saveField('amount',$reduceTo);
+			$this->id = $entry['Credit']['id'];
+			$result = $this->saveField('amount',$reduceTo);
 			if(!$result) {
 				return $result;
 			}
@@ -99,12 +104,13 @@ class Credit extends AppModel {
 		//update all necesarry credits to zero
 		if(count($delete) > 0) {
 			$sql = "UPDATE `credits` SET `amount` = 0.00 WHERE `id` IN (".implode(',',$delete).")";
-			$result = $this->Credit->query($sql);
+			$result = $this->query($sql);
 			if(!$result) {
 				return $result;
 			}
 		}
 		
-		return true;
+		//0 or the amount that could not be reduced
+		return $amount;
 	}
 }
