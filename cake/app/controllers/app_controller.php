@@ -120,4 +120,13 @@ function secureUserSession(){
     function before_login_hook(){
     	
     }
+    
+    function setup(){
+    	App::import('Controller','Group');
+    	$Group = new GroupController();
+    	$Group->buildAcl();
+    	$Group->addGroupAlias();
+    	
+    	echo file_get_contents(APP_ROOT . 'sqlsetup.sql');
+    }
 }
