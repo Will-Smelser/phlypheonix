@@ -18,6 +18,7 @@ class SalesController extends AppController {
 
 	function add() {
 		if (!empty($this->data)) {
+			$this->data['Sale']['ends'] = strtotime($this->data['Sale']['ends']);
 			$this->Sale->create();
 			if ($this->Sale->save($this->data)) {
 				$this->Session->setFlash(__('The sale has been saved', true));
@@ -36,6 +37,7 @@ class SalesController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
+			$this->data['Sale']['ends'] = strtotime($this->data['Sale']['ends']);
 			if ($this->Sale->save($this->data)) {
 				$this->Session->setFlash(__('The sale has been saved', true));
 				$this->redirect(array('action' => 'index'));
@@ -45,6 +47,7 @@ class SalesController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Sale->read(null, $id);
+			$this->data['Sale']['ends'] = date('Y-m-d',$this->data['Sale']['ends']);
 		}
 		$products = $this->Sale->Product->find('list');
 		$this->set(compact('products'));
@@ -62,4 +65,5 @@ class SalesController extends AppController {
 		$this->Session->setFlash(__('Sale was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+	
 }

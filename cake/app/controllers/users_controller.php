@@ -3,7 +3,7 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $components = array('Captcha','Email','AuthorizeNet');
-	var $uses = array('User');
+	var $uses = array('User','School');
 	//var $helpers = array('Sizer');
 	
 	function beforeFilter() {
@@ -84,7 +84,8 @@ class UsersController extends AppController {
 			}
 		}
 		$groups = $this->User->Group->find('list');
-		$this->set(compact('groups'));
+		$schools = $this->School->find('list');
+		$this->set(compact('groups','schools'));
 	}
 
 	function edit($id = null) {
@@ -113,8 +114,9 @@ class UsersController extends AppController {
 			$this->data['User']['password'] = null;
 			$this->data['User']['birthdate'] = date('m/d/Y',$this->data['User']['birthdate']);
 		}
+		$schools = $this->School->find('list');
 		$groups = $this->User->Group->find('list');
-		$this->set(compact('groups'));
+		$this->set(compact('groups','schools'));
 	}
 
 	function delete($id = null) {

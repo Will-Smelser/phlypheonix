@@ -14,6 +14,24 @@ class User extends AppModel {
 	
 	var $hasMany = array('Saleuser');
 	
+	var $hasAndBelongsToMany = array(
+		'School' => array(
+			'className' => 'School',
+			'joinTable' => 'users_schools',
+			'foreignKey' => 'user_id',
+			'associationForeignKey' => 'school_id',
+			'unique' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+			'deleteQuery' => '',
+			'insertQuery' => ''
+		),
+	);
+	
 	var $actsAs = array('Acl' => array('type' => 'requester'));
 	
 	var $defaultGroupId = 2;
