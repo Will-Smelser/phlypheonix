@@ -1,0 +1,312 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+input, select{
+	background-color:#CCC;
+	border-color:#CCC;
+	color:#333;
+	border-radius: 5px;
+}
+
+.one{
+	color: #FBB040;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+	text-align:left;
+}
+
+.two{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 12px;
+}
+
+.three{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 16px;
+}
+
+.four{
+	color:#000;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align:left;
+}
+
+.five{
+	color:#000;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align:left;
+	font-weight:bold
+}
+
+.six{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 14px;
+}
+
+.seven{
+	color: #333;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 14px;
+}
+
+a.nav{
+	padding-right: 10px;
+	padding-left: 10px;
+	text-decoration:none;
+	color:#000;
+}
+
+a.nav:hover{
+	padding-right: 10px;
+	padding-left: 10px;
+	text-decoration:none;
+	color:#FFFFFF;
+}
+
+a.whitelink{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 12px;
+	text-decoration:underline;
+}
+
+input.two{
+	color: #333;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	background-color: #FBB040;
+	border-color:#999;
+	border-radius: 5px;
+}
+
+img.one{
+	padding-top: 7px;
+}
+
+body{
+	width: 100%;
+	max-width: 1366px;
+	background-color:#333;
+	background-repeat:no-repeat;
+	margin: 0px;
+	padding: 0px;
+	overflow:hidden;
+}
+
+#background{
+	width:100%;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#wrapper{
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index: 1;
+}
+
+#mainHeader{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index:1;
+	
+	background-image:url('/img/flyfoenix_header.png');
+	background-repeat:repeat-x;
+	
+	height:41px;
+}
+
+#logoHeader{
+	position: absolute;
+	top: 0px;
+	left:0px;
+	width: 1367px;
+	height: 41px;
+	z-index: 2;
+}
+
+#caption{
+	position: relative;
+	top: 22px;
+	left: 330px;
+	z-index: 3;
+}
+
+#logoFlyFoenix{
+	position: absolute;
+	margin-top: 2px;
+	margin-left: 10px;
+	z-index: 3;
+}
+
+#bodyHeader{
+	margin-left: auto;
+    margin-right: auto;
+    margin-top: 70px;
+    position: relative;
+    width: 532px;
+    z-index: 5;
+}
+
+#join{
+	margin-left: 74px;
+    margin-top: -28px;
+    position: absolute;
+    z-index: 5;
+}
+
+#overlayTopCenter{
+	z-index: 1;
+}
+
+
+/*Body Container Elements*/
+#bodyContainerDark{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: -20px;
+	width: 532px;
+}
+
+#register{
+	
+    position: absolute;
+    top: 15px;
+    z-index: 6;
+	width: 249px;
+	left: 15px;
+}
+
+#registerimg{
+	left: 21px;
+    position: absolute;
+    top: 5px;
+}
+
+#login{
+	
+    position: absolute;
+    top: 15px;
+	left:260px;
+    z-index: 6;
+	width:249px;
+	
+}
+
+#loginimg{
+	left:19px;
+    position: absolute;
+    top: 10px;
+}
+
+#fb1{
+	left: 38px;
+    position: absolute;
+    top: 60px;
+}
+
+#ors{
+	left: 100px;
+    position: absolute;
+    top: 90px;
+}
+
+#email{
+	left: 30px;
+    position: absolute;
+    top: 115px;
+}
+
+#birthdate{
+	position:absolute;
+	left:30px;
+	top:155px;
+}
+
+#gender{
+	position:absolute;
+	left:30px;
+	top:195px;
+}
+
+#tradio{
+	position:relative;
+}
+
+#female{
+	margin-left:20px;
+}
+
+#school{
+	position:absolute;
+	left:30px;
+	top:215px;
+}
+
+#fb2{
+	left: 48px;
+    position: absolute;
+    top: 60px;
+}
+
+#email2{
+	left: 30px;
+    position: absolute;
+    top: 115px;
+}
+
+#birthdate2{
+	left: 30px;
+    position: absolute;
+    top: 155px;
+}
+
+#btnregister{
+	left: 32px;
+    position: absolute;
+    top: 285px;
+}
+
+#btnlogin{
+	left: 32px;
+    position: absolute;
+    top: 205px;
+}
+
+#sliderwrapper{
+	
+}
+
+#slider{
+	
+}
+
+#grayline{
+	padding-top:9px;
+	padding-bottom: 9px;
+	padding-left: 5px;
+}
+
+	
+/*End Body Container Elements*/
+
+	

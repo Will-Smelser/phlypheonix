@@ -57,3 +57,4 @@
  Configure::load('authorizenetconfig');
  Configure::load('error');
  Configure::load('cart');
+ Configure::load('facebook');

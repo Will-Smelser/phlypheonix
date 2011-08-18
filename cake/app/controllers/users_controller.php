@@ -2,9 +2,10 @@
 class UsersController extends AppController {
 
 	var $name = 'Users';
-	var $components = array('Captcha','Email','AuthorizeNet');
+	var $components = array('Captcha','Email','AuthorizeNet','Session','Cfacebook');
 	var $uses = array('User','School');
-	//var $helpers = array('Sizer');
+	var $helpers = array('Session','Form', 'Html','Javascript','Hfacebook');
+	
 	
 	function beforeFilter() {
 	    parent::beforeFilter(); 
@@ -33,7 +34,7 @@ class UsersController extends AppController {
 	}
 
 	function login(){
-		
+		$this->layout = 'landing';
 		if ($this->Session->read('Auth.User')) {
 			$this->Session->setFlash('You are logged in!');
 			

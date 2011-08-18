@@ -7,7 +7,9 @@ class AppController extends Controller {
     	//have to manually start session for things to work properly
     	//session_start();
 		
-    	
+    	//protocal
+		$protocal = (isset($_SERVER['HTTPS'])) ? 'https' : 'http';
+		$this->set('protocal',$protocal);
     	
     	//override the Auth component
     	$this->Auth->fields = array(
@@ -121,12 +123,5 @@ function secureUserSession(){
     	
     }
     
-    function setup(){
-    	App::import('Controller','Group');
-    	$Group = new GroupController();
-    	$Group->buildAcl();
-    	$Group->addGroupAlias();
-    	
-    	echo file_get_contents(APP_ROOT . 'sqlsetup.sql');
-    }
+    
 }
