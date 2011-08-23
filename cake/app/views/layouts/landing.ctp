@@ -25,25 +25,18 @@
 	
 	<img id="background" src="/img/ohiostate/ohiostate_brutusrun.jpg" alt="ohiostatebackground" />
 
-	<div id="wrapper"> 
-		<div id="mainHeader">
-			<img id="logoFlyFoenix" src="/img/logos/logo_flyfoenix.png" alt="flyfoenixlogo" />
-			<span id="caption" class="four">
-				Unique Collegiate Fashion.&nbsp;&nbsp;Quick Shopping.&nbsp;&nbsp;
-				Great Fit & Feel.&nbsp;&nbsp;High Style.&nbsp;&nbsp;Lower Prices.
-			</span>
-			
-		</div>
-		<!--End Main Header -->
+<div id="wrapper"> 
+  <div id="mainHeader">
+    <img id="logoFlyFoenix" src="/img/logos/logo_flyfoenix.png" alt="flyfoenixlogo" />
+    <span id="caption" class="four">Unique Collegiate Fashion.&nbsp;&nbsp;Quick Shopping.&nbsp;&nbsp;Great Fit & Feel.&nbsp;&nbsp;High Style.&nbsp;&nbsp;Lower Prices.</span>
+    
+  </div><!--End Main Header -->
   
-  		<div id="bodyHeader">
-  			<img id="join" src="/img/landing/flyfoenix_landingpage_joinshopsave.png" width="384" height="159" alt="joinshopsave" />
-  			<img id="overlayTopCenter" src="/img/landing/flyfoenix_landingpage_lightgraybig.png" alt="bodyheader" />
-  		</div>
-  		<!-- End Body Header -->
+  <div id="bodyHeader">
+  <img id="join" src="/img/landing/flyfoenix_landingpage_joinshopsave.png" width="384" height="159" alt="joinshopsave" />
+  </div><!-- End Body Header -->
 
-		<div id="bodyContainerDark">
-    		<img src="/img/landing/flyfoenix_landingpage_darkgray.png" width="532" height="381" alt="darkgray" />
+	<div id="bodyContainerDark">
 
 			<?php echo $this->Session->flash(); ?>
 
@@ -51,21 +44,37 @@
 
 		</div>
 	</div>
-	
+	<div style="position:fixed;bottom:25px;z-index:1000;background-color:#FFF;"><h1><?php var_dump($loggedin); ?></h1></div>
 	<?php //echo $this->element('sql_dump'); ?>
 </body>
 
 <script src="http://connect.facebook.net/en_US/all.js"></script>
 
 <script> 
-<?php
-	echo $this->Hfacebook->initLogin($FACEBOOK_APP_ID,$FACEBOOK_APP_SESSION,false,array('auth.login'=>'fblogedin'));
-?>
+	<?php 
+	
+	echo $this->Hfacebook->initLogin(
+			$FACEBOOK_APP_ID,
+			$FACEBOOK_APP_SESSION,
+			false,
+			array('auth.login'=>'fbloggedin')
+	); 
+	
+	?>
       
+	//bind to the button
+	$('#fb-auth').click(function(){
+		<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+	});
+
+	$('#fb-reg').click(function(){
+		<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+	})
+
 	//logged in function
-	function fblogedin(){
-		setTimeout(function(){window.location.reload()},1000);
-	}      
+	function fbloggedin(){
+		window.location.href = '/shop';
+	}
 
 	//logout function
 	var fblogout = function(){
@@ -74,10 +83,6 @@
 		});
 	}
 	
-	$('#logout').click(fblogout);
-	
-
-		
 </script>
 
 </html>

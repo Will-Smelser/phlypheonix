@@ -15,18 +15,27 @@ class ShopController extends AppController {
 
 	var $name = 'Shop';
 	var $uses = array('Product', 'Pdetail', 'Sale', 'School', 'User', 'Order');
+	var $components = array('AuthorizeNet');
 	
 	function beforeFilter() {
-	    parent::beforeFilter(); 
+	    parent::beforeFilter();
+
 	}
 	
 	function index() {
-		$this->redirect(array('controller' => 'shop', 'action' => 'f'));
+		$this->redirect(array('controller' => 'shop', 'action' => 'shop'));
 	}
-	
-	function f ($school=null, $sex=null, $sale = null, $product = null) {
+			
+	//main page for shopping
+	function main ($school=null, $sex=null, $sale = null, $product = null) {
+		$this->layout = 'shop';
 		
 		$userData = $this->User->find(null,$this->Auth->user('User.id'));
+		
+		//check that the user has a school selected
+		if(count($userData['School']) == 0) {
+			//$this->redirect(array('action'=>'init'));
+		}
 		
 		if($sale == null) {
 			$saleData = $this->Sale->find('all',array('condition'=>array('Sale.ends >= ' . time()) ));

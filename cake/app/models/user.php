@@ -4,15 +4,16 @@ class User extends AppModel {
 	var $name = 'User';
 	var $displayField = 'email';
 	var $belongsTo = array('Group');
+	/*
 	var $hasOne = array(
 		'UsersSecurity'=>array(
 			'className'=>'UsersSecurity',
 			'foreignKey'=>'user_id',
 			'dependent'=>true
 		)
-	);
+	);*/
 	
-	var $hasMany = array('Saleuser','Credit');
+	var $hasMany = array('Saleuser','Credit','mfacebook');
 	
 	var $hasAndBelongsToMany = array(
 		'School' => array(

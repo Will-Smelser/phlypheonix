@@ -11,4 +11,6 @@ $config['userconfig']['username']['maxlen'] = 15;
 $config['userconfig']['password']['minlen'] = 7;
 $config['userconfig']['password']['maxlen'] = 15;
 
+$config['userconfig']['default']['group'] = 2;
+
 ?>

@@ -88,14 +88,16 @@ STR;
 		
 		$str .= ($async) ? "\twindow.fbAsyncInit = function() {\n" : '';
 		
-		$str .= <<<STR
-	{$tab}FB.init({
-	  {$tab}appId   : '$appId',
-	  {$tab}session : $session, // don't refetch the session when PHP already has it
-	  {$tab}status  : true, // check login status
-	  {$tab}cookie  : true, // enable cookies to allow the server to access the session
-	  {$tab}xfbml   : true // parse XFBML
-	{$tab}});
+		$str .= 
+<<<STR
+	FB.init({
+	appId   : '$appId',
+	session : $session, // don't refetch the session when PHP already has it
+	status  : true, // check login status
+	cookie  : true, // enable cookies to allow the server to access the session
+	xfbml   : true, // parse XFBML
+	oauth   : true  //use Oauth 2.0
+	});
 
 STR;
 		$str .= ($async) ? "{$tab}}\n\n" : '';
@@ -108,6 +110,27 @@ STR;
 	
 STR;
 		}
+		return $str;
+	}
+	
+	function loginJs($success=null, $failure=null, $scopeString=null){
+		if($success != null) $success .= '();';
+		if($failure != null) $failure .= '();';
+		
+		$str = 
+<<<STR
+		FB.login(
+			function(response) {
+				if (response.authResponse) {
+		        	{$success}
+				} else {
+		            //user cancelled login or did not grant authorization
+		            {$failure}
+		    	}
+			}, 
+			{scope:'$scopeString'}
+		);	
+STR;
 		return $str;
 	}
 	

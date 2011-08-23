@@ -2,24 +2,21 @@
 class UsersController extends AppController {
 
 	var $name = 'Users';
-	var $components = array('Captcha','Email','AuthorizeNet','Session','Cfacebook');
-	var $uses = array('User','School');
+	var $components = array('Captcha','Email','Cfacebook');
+	var $uses = array('User','School','Mfacebook');
 	var $helpers = array('Session','Form', 'Html','Javascript','Hfacebook');
 	
 	
 	function beforeFilter() {
 	    parent::beforeFilter(); 
-	    
-	    $this->Auth->allow(array(/*'register','register_complete',*/'recover','recover_complete','captcha_image','login','logout','sign_up','error_create'));
-	    
+
+	    $this->Auth->allow(array('recover','recover_complete','captcha_image','login','logout'));
+
 	    //user data
 		$user = $this->Auth->user();
 		$user = $this->User->read(null, $user['User']['id']);
 		$this->myuser = $user;
 		$this->set('myuser',$this->myuser);
-		
-		$loggedin = ($this->Auth->user('id') != false);
-		$this->set('loggedin',$loggedin);
 		
 	}
 	
@@ -34,13 +31,39 @@ class UsersController extends AppController {
 	}
 
 	function login(){
+		$this->layout = 'landing'; 
+  
+		
+		//AuthComponent does not encrypt password by default if the you are not
+		//using "username" as the identifier.
+		if(!empty($this->data)) {
+			$this->data['User']['password'] = AuthComponent::password($this->data['User']['birthdate']);
+			$this->Auth->login($this->data);
+		}
+		
+		//handle the remember me  
+        if (empty($this->data['User']['remember_me']))  
+        {  
+            $this->RememberMe->delete();  
+        }  
+        else if($this->Auth->user() != false)  
+        {  
+            $this->RememberMe->remember
+                (  
+                    $this->data['User']['email'],  
+                    $this->data['User']['password']  
+                );  
+        }
+        
+        //$this->redirect($this->Auth->redirect());
+	}
+	function login_orig(){
 		$this->layout = 'landing';
 		if ($this->Session->read('Auth.User')) {
 			$this->Session->setFlash('You are logged in!');
 			
 		}
 	}
-	
 	function test($id=0){
 		//$this->Cart->emptyCart();
 		
@@ -52,8 +75,14 @@ class UsersController extends AppController {
 	}
 	
 	function logout(){
+		
 		$this->Session->setFlash('Good-Bye');
-		$this->redirect($this->Auth->logout());
+		$this->RememberMe->delete();
+		
+		$this->Auth->logout();
+        
+		$this->redirect(array('action'=>'login'));
+        
 	}
 	
 	function view($id = null) {
@@ -134,15 +163,14 @@ class UsersController extends AppController {
 	}
 	
 	function register() {
-		
-		
 		$this->Auth->logout();
 		if (!empty($this->data)) {
 			
 			//set the password
-			if(empty($this->data['User']['password'])) {
-				$this->data['user']['password'] == md5($this->data['User']['birthdate']);
-			}
+			$this->data['user']['password'] = AuthComponent::hash($this->data['User']['birthdate']);
+			
+			//set birthdate to unix timestamp
+			$this->data['User']['birthdate'] = strtotime($this->data['User']['birthdate']);
 			
 			$this->User->create();
 			if ($this->User->save($this->data)) {

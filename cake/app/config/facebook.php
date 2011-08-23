@@ -17,7 +17,7 @@ $config['facebook.saveFBdata'] = true;
  * put there facebook_id to the matched user
  * @var boolean
  */
-$config['facebook.useFBemailToLogin'] = false;
+$config['facebook.useFBemailToLogin'] = true;
 
 /**
  * Send errors to AuthFlash
@@ -56,8 +56,8 @@ $config['facebook.emailMsgBody'] = <<<STR
 Thank you for joining our community.  Your username and password
 were automatically generated.  Below are the details:
 	
-username:%username
-password:%generatedPassword
+email: &email
+password: &birthdate
 
 Sincerely,
    Admin
@@ -117,6 +117,6 @@ $config['facebook.FacebookModel'] = 'Mfacebook';
 /**
  * Auth component mapping
  */
-$config['facebook.AuthMapping'] = array('username' => 'username', 'password' => 'password');
+$config['facebook.AuthMapping'] = array('username' => 'email', 'password' => 'password');
 
 ?>

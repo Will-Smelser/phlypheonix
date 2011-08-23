@@ -6,38 +6,43 @@ input, select{
 	background-color:#CCC;
 	border-color:#CCC;
 	color:#333;
-	border-radius: 5px;
+	border-radius: 3px;
+	
+	border-style:solid;
+	padding:3px;
+	margin-top:2px;
+	font-size:14px;
 }
 
-.one{
+span.one{
 	color: #FBB040;
     font-family: Arial,Helvetica,sans-serif;
     font-weight: bold;
 	text-align:left;
 }
 
-.two{
+span.two{
 	color: #FFFFFF;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align: left;
 	font-size: 12px;
 }
 
-.three{
+span.three{
 	color: #FFFFFF;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align: left;
 	font-size: 16px;
 }
 
-.four{
+span.four{
 	color:#000;
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	text-align:left;
 }
 
-.five{
+span.five{
 	color:#000;
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 12px;
@@ -45,14 +50,14 @@ input, select{
 	font-weight:bold
 }
 
-.six{
+span.six{
 	color: #FFFFFF;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align: left;
 	font-size: 14px;
 }
 
-.seven{
+span.seven{
 	color: #333;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align: left;
@@ -86,7 +91,8 @@ input.two{
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	background-color: #FBB040;
-	border-color:#999;
+	border: none;
+	padding: 5px;
 	border-radius: 5px;
 }
 
@@ -127,15 +133,13 @@ body{
 	left: 0px;
 	width: 100%;
 	z-index:1;
-	
-	background-image:url('/img/flyfoenix_header.png');
-	background-repeat:repeat-x;
-	
 	height:41px;
+	background-image:url(/img/flyfoenix_header.png);
+	background-repeat:repeat-x;
 }
 
 #logoHeader{
-	position: absolute;
+	position: relative;
 	top: 0px;
 	left:0px;
 	width: 1367px;
@@ -164,17 +168,16 @@ body{
     position: relative;
     width: 532px;
     z-index: 5;
+	height:97px;
+	background-image:url(/img/landing/flyfoenix_landingpage_lightgraybig.png);
+	background-repeat:no-repeat;
 }
 
 #join{
 	margin-left: 74px;
     margin-top: -28px;
-    position: absolute;
+    position: relative;
     z-index: 5;
-}
-
-#overlayTopCenter{
-	z-index: 1;
 }
 
 
@@ -185,20 +188,26 @@ body{
 	margin-right: auto;
 	margin-top: -20px;
 	width: 532px;
+	background-image:url(/img/landing/flyfoenix_landingpage_darkgray.png);
+	background-repeat:no-repeat;
+	height: 381px;
 }
 
 #register{
 	
-    position: absolute;
+    position:absolute;
     top: 15px;
     z-index: 6;
 	width: 249px;
 	left: 15px;
+	height:340px;
+	background-image:url(/img/landing/flyfoenix_landingpage_lightgraysmall.png);
+	background-repeat:no-repeat;
 }
 
 #registerimg{
 	left: 21px;
-    position: absolute;
+    position: relative;
     top: 5px;
 }
 
@@ -209,87 +218,109 @@ body{
 	left:260px;
     z-index: 6;
 	width:249px;
+	height:340px;
+	background-image:url(/img/landing/flyfoenix_landingpage_lightgraysmall.png);
+	background-repeat:no-repeat;
 	
 }
 
 #loginimg{
 	left:19px;
-    position: absolute;
-    top: 10px;
+    position: relative;
+    top: 11px;
 }
 
 #fb1{
 	left: 38px;
-    position: absolute;
-    top: 60px;
+    position: relative;
+    top: 4px;
 }
 
-#ors{
+#or1{
 	left: 100px;
-    position: absolute;
-    top: 90px;
+    position: relative;
+    top: 15px;
+}
+
+#or2{
+	left: 100px;
+    position: relative;
+    top: 20px;
 }
 
 #email{
 	left: 30px;
-    position: absolute;
-    top: 115px;
+    position: relative;
+    top: 25px;
 }
 
 #birthdate{
-	position:absolute;
+	position:relative;
 	left:30px;
-	top:155px;
+	top:35px;
 }
 
 #gender{
-	position:absolute;
+	position:relative;
 	left:30px;
-	top:195px;
+	top:45px;
 }
 
 #tradio{
-	position:relative;
+	left: 87px;
+    margin-top: 28px;
+    position: relative;
 }
 
+
+
 #female{
-	margin-left:20px;
+	margin-left:11px;
 }
 
 #school{
-	position:absolute;
-	left:30px;
-	top:215px;
+	margin-left: 30px;
+    margin-top: -14px;
+}
+
+.fieldwidth{
+	width:180px;
 }
 
 #fb2{
 	left: 48px;
-    position: absolute;
-    top: 60px;
+    position: relative;
+    top: 10px;
 }
 
 #email2{
 	left: 30px;
-    position: absolute;
-    top: 115px;
+    position: relative;
+    top: 31px;
 }
 
 #birthdate2{
 	left: 30px;
-    position: absolute;
-    top: 155px;
+    position: relative;
+    top: 45px;
 }
 
 #btnregister{
-	left: 32px;
-    position: absolute;
-    top: 285px;
+	float: right;
+    margin-right: 38px;
+    margin-top: 12px;
 }
 
 #btnlogin{
-	left: 32px;
-    position: absolute;
-    top: 205px;
+	float: right;
+    margin-right: 35px;
+    margin-top: 60px;
+}
+
+#rememberme{
+	position:relative;
+	top:100px;
+	left:102px;
 }
 
 #sliderwrapper{
@@ -308,5 +339,3 @@ body{
 
 	
 /*End Body Container Elements*/
-
-	

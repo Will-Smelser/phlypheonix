@@ -683,7 +683,7 @@ class AuthComponent extends Object {
 	function login($data = null) {
 		$this->__setDefaults();
 		$this->_loggedIn = false;
-
+		
 		if (empty($data)) {
 			$data = $this->data;
 		}
@@ -693,6 +693,7 @@ class AuthComponent extends Object {
         }
 
         if ($user = $this->identify($data)) {
+        	
 			$this->Session->write($this->sessionKey, $user);
 			$this->_loggedIn = true;
 			
@@ -702,6 +703,7 @@ class AuthComponent extends Object {
             	call_user_func_array(array($this->controller, $method), array($this->_loggedIn)); 
         	} 
 		}
+		
 		return $this->_loggedIn;
 	}
 
@@ -715,9 +717,12 @@ class AuthComponent extends Object {
  * @link http://book.cakephp.org/view/1262/logout
  */
 	function logout() {
+		
 		$this->__setDefaults();
+		
 		$this->Session->delete($this->sessionKey);
 		$this->Session->delete('Auth.redirect');
+		
 		$this->_loggedIn = false;
 		return Router::normalize($this->logoutRedirect);
 	}
@@ -852,6 +857,7 @@ class AuthComponent extends Object {
  * @access public
  */
 	function identify($user = null, $conditions = null) {
+		
 		if ($conditions === false) {
 			$conditions = null;
 		} elseif (is_array($conditions)) {
@@ -860,12 +866,16 @@ class AuthComponent extends Object {
 			$conditions = $this->userScope;
 		}
 		$model =& $this->getModel();
+		
+		
+		
 		if (empty($user)) {
 			$user = $this->user();
 			if (empty($user)) {
 				return null;
 			}
 		} elseif (is_object($user) && is_a($user, 'Model')) {
+			
 			if (!$user->exists()) {
 				return null;
 			}
@@ -876,6 +886,7 @@ class AuthComponent extends Object {
 		}
 
 		if (is_array($user) && (isset($user[$this->fields['username']]) || isset($user[$model->alias . '.' . $this->fields['username']]))) {
+			
 			if (isset($user[$this->fields['username']]) && !empty($user[$this->fields['username']])  && !empty($user[$this->fields['password']])) {
 				if (trim($user[$this->fields['username']]) == '=' || trim($user[$this->fields['password']]) == '=') {
 					return false;
@@ -899,6 +910,8 @@ class AuthComponent extends Object {
 				'conditions' => array_merge($find, $conditions),
 				'recursive' => 0
 			));
+			$this->controller->set('test',$data);
+			
 			if (empty($data) || empty($data[$model->alias])) {
 				return null;
 			}

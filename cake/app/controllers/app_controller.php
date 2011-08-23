@@ -1,13 +1,12 @@
 <?php
 class AppController extends Controller {
-	var $components = array('Session','Acl', 'Auth','Cookie','Cart');
-	var $uses = array('UsersSecurity');
+	var $components = array('Session','Acl', 'Auth','Cookie','Cart','RememberMe');
 	
 	function beforeFilter() {
     	//have to manually start session for things to work properly
     	//session_start();
-		
-    	//protocal
+    	
+		//protocal
 		$protocal = (isset($_SERVER['HTTPS'])) ? 'https' : 'http';
 		$this->set('protocal',$protocal);
     	
@@ -17,6 +16,29 @@ class AppController extends Controller {
     		'password'=>'password'
     	);
     	
+    	//Configure AuthComponent
+    	$this->Auth->autoRedirect = false;
+        $this->Auth->authorize = 'actions';
+        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
+        $this->Auth->loginRedirect = array('controller' => 'shop', 'action' => 'main');
+		
+		//login by cookie
+		$this->RememberMe->check();
+    	
+    	$loggedin = ($this->Auth->user('id') != false);
+		$this->set('loggedin',$loggedin);
+    	
+		if(!$loggedin && 
+				!(
+					strtolower($this->params['action']) == 'login' &&
+					strtolower($this->params['controller']) == 'users'
+				)
+		){
+			$this->redirect(array('controller'=>'users','action'=>'login'));
+			return;
+		}
+		
     	//just temp for site setup
     	if($this->params['controller'] == 'pages') {
     		$this->layout = 'basic' . DS . 'basic';
@@ -68,13 +90,7 @@ class AppController extends Controller {
 	    	*/
     	}
     	
-    	//Configure AuthComponent
-        $this->Auth->authorize = 'actions';
-        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'index');
-        
-        $this->secureUserSession();
+        //$this->secureUserSession();
 	}
 	
 function secureUserSession(){
@@ -95,7 +111,9 @@ function secureUserSession(){
     
     //tweaked Auth component to have a callback
     function after_login_hook($valid){
+    	return true;
     	
+    	/*
     	$userid = $this->Session->read('Auth.User.id');
 
     	//first delete this users info
@@ -113,6 +131,7 @@ function secureUserSession(){
 							'user_id'=>$userid,
 							'ssid'=>$this->Session->id()
 					));
+		*/
 					
     }
     
@@ -120,7 +139,7 @@ function secureUserSession(){
      * Custom hook added into Auth component
      */
     function before_login_hook(){
-    	
+    	return true;
     }
     
     
