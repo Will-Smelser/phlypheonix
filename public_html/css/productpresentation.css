@@ -1,0 +1,399 @@
+@charset "utf-8";
+/* CSS Document */
+
+span.one{
+	color: #FBB040;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+	text-align:left;
+}
+
+span.two{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 12px;
+}
+
+span.three{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 16px;
+}
+
+span.four{
+	color:#000;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align:left;
+}
+
+span.five{
+	color:#000;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align:left;
+	font-weight:bold
+}
+
+a.nav{
+	padding-right: 10px;
+	padding-left: 10px;
+	text-decoration:none;
+	color:#000;
+}
+
+a.nav:hover{
+	padding-right: 10px;
+	padding-left: 10px;
+	text-decoration:none;
+	color:#FFFFFF;
+}
+
+a.whitelink{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 12px;
+	text-decoration:underline;
+}
+
+input, select{
+	background-color:#CCC;
+	border-color:#CCC;
+	color:#333;
+}
+
+input.one{
+	color: #333333;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	background-color: #FBB040;
+	border: none;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+img.one{
+	padding-top: 7px;
+}
+
+body{
+	width: 100%;
+	background-color:#333;
+	background-repeat:no-repeat;
+	margin: 0px;
+	padding: 0px;
+	overflow:hidden;
+}
+
+#background{
+	width:100%;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#wrapper{
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index: 1;
+}
+
+#mainHeader{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index:1;
+	height:41px;
+	background-image:url(/img//flyfoenix_header.png);
+	background-repeat:repeat-x;
+}
+
+#logoHeader{
+	position: absolute;
+	top: 0px;
+	left:0px;
+	width: 1367px;
+	height: 41px;
+	z-index: 2;
+}
+
+#caption{
+	position: relative;
+	top: 22px;
+	left: 330px;
+	z-index: 3;
+}
+
+#navigate{
+	left: 940px;
+    position: fixed;
+    top: 19px;
+    width: 500px;
+    z-index: 3;
+}
+
+#logoFlyFoenix{
+	position: absolute;
+	margin-top: 2px;
+	margin-left: 10px;
+	z-index: 3;
+}
+
+#bodyHeader{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 70px;
+	width: 972px;
+	z-index: 5;
+}
+
+#selector{
+	width: 150px;
+	max-width: 150px;
+	margin-left: 793px;
+    position: absolute;
+    width: 150px;
+}
+
+#gender{
+	float: right;
+    margin-top: -25px;
+    position: relative;
+}
+
+#logoschool{
+	float: right;
+    margin-top: 20px;
+    position: relative;
+}
+
+#cart{
+	float: right;
+	margin-top: 22px;
+}
+
+#favorite{
+	float: right;
+	margin-top: 7px;
+}
+
+#search{
+	float: right;
+	margin-top: 7px;
+}
+
+#campuscouturelogo{
+	margin-left: 20px;
+    margin-top: 20px;
+    position: absolute;
+    z-index: 5;
+}
+
+#buynowtag{
+	margin-left: 360px;
+    margin-top: -20px;
+    position: absolute;
+    z-index: 5;
+}
+
+#counter{
+	font-size: 22px;
+	margin-left: 403px;
+    margin-top: 55px;
+    position: absolute;
+    text-align: left;
+    z-index: 5;
+}
+
+#overlayTopCenter{
+	z-index: 1;
+}
+
+/*Body Container Elements*/
+#bodyContainerDark{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: -20px;
+	width: 972px;
+}
+
+#overlayDark{
+	position: absolute;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 972px;
+	z-index: 4;
+}
+
+#comments{
+	position: relative;
+	float: left;
+	margin-left: 7px;
+	margin-top: 7px;
+	z-index: 5;
+}
+
+#buytwo{
+	position: relative;
+	float: right;
+	margin-right: 23.5px;
+	margin-top: 9.5px;
+	z-index: 5;
+}
+
+#arrows{
+	margin-top: 240px;
+    position: absolute;
+    width: 972px;
+}
+
+#leftarrow{
+	position: relative;
+	float: left;
+	margin-left: 8px;
+	z-index:5;
+}
+
+#rightarrow{
+	position: relative;
+	float: right;
+	margin-right: 21px;
+	z-index: 5;
+}
+
+#bodyContainerLight{
+	position: absolute;
+	margin-left: 60px;
+	margin-top: 54px;
+	width: 575px;
+	z-index: 6;
+}
+
+#overlayLight{
+	position: relative;
+	
+}
+
+#sliderwrapper{
+	
+}
+
+#slider{
+	
+}
+
+#viewer{
+	left: 77px;
+    position: absolute;
+    top: 70px;
+    width: 550px;
+    z-index: 6;
+}
+
+#productname{
+	position:relative;
+	display: block;
+	margin-left:auto;
+	margin-right:auto;
+	width: 320px;
+	bottom:0px;
+	padding-top: 3px;
+	text-align:center;
+	font-weight:bold;
+}
+
+#uniquefeatures{
+	left: 0;
+    position: relative;
+    top: 0;
+    width: 95px;
+}
+
+#uftext{
+	position:relative;
+	left: -7px;
+}
+
+#mainphoto{
+	left: 95px;
+    position: absolute;
+    top: 0;
+    width: 352px;
+}
+
+#thumbnails{
+	left: 465px;
+    position: absolute;
+    top: 0;
+    width: 95px;
+}
+
+#thumbtext{
+	position:relative;
+	left: 4px;
+}	
+
+#content{
+	position: absolute;
+	margin-top: 50px;
+	margin-left: 640px;
+	width: 260px;
+	z-index: 6;	
+}
+
+#earn5{
+	position:relative;
+	margin-left: -8px;
+}
+
+#sharethis{
+	position: relative;
+	
+}
+
+#inventory{
+	font-size: 16px;
+	margin-left: 5px;
+}
+
+#description{
+	position:relative;
+	left: 6px;
+}
+
+#grayline{
+	padding-top:9px;
+	padding-bottom: 9px;
+	padding-left: 5px;
+}
+
+#size{
+	position: relative;
+	left: 6px;
+}
+
+#quantity{
+	position:relative;
+	left: 20px;
+}
+
+#addtocart{
+	position:relative;
+	left: 6px;
+	top:16px;
+}
+	
+/*End Body Container Elements*/
+
+	

@@ -19,6 +19,8 @@ class ShopController extends AppController {
 	
 	function beforeFilter() {
 	    parent::beforeFilter();
+	    
+	    //$this->layout = 'shop';
 
 	}
 	
@@ -33,9 +35,7 @@ class ShopController extends AppController {
 		$userData = $this->User->find(null,$this->Auth->user('User.id'));
 		
 		//check that the user has a school selected
-		if(count($userData['School']) == 0) {
-			//$this->redirect(array('action'=>'init'));
-		}
+		$this->set('noSchools',(count($userData['School']) == 0));
 		
 		if($sale == null) {
 			$saleData = $this->Sale->find('all',array('condition'=>array('Sale.ends >= ' . time()) ));
@@ -62,7 +62,7 @@ class ShopController extends AppController {
 		//logged in user
 		if($this->Auth->user('id')) {
 			//check if we already have the sale information
-			debug('');
+			
 		}
 	}
 

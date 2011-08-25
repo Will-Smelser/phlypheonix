@@ -33,6 +33,10 @@ class UsersController extends AppController {
 	function login(){
 		$this->layout = 'landing'; 
   
+		//force logged-in users to shop
+		if($this->Auth->user()){
+			$this->redirect(array('controller'=>'shop','action'=>'main'));
+		}
 		
 		//AuthComponent does not encrypt password by default if the you are not
 		//using "username" as the identifier.
@@ -167,7 +171,7 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			
 			//set the password
-			$this->data['user']['password'] = AuthComponent::hash($this->data['User']['birthdate']);
+			$this->data['User']['password'] = AuthComponent::hash($this->data['User']['birthdate']);
 			
 			//set birthdate to unix timestamp
 			$this->data['User']['birthdate'] = strtotime($this->data['User']['birthdate']);
