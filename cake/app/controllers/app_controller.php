@@ -34,6 +34,18 @@ class AppController extends Controller {
 					strtolower($this->params['action']) == 'login' &&
 					strtolower($this->params['controller']) == 'users'
 				)
+				&&
+				!(
+					strtolower($this->params['action']) == 'register' &&
+					strtolower($this->params['controller']) == 'users'
+				)
+				&&
+				!(
+					strtolower($this->params['action']) == 'register_ajax' &&
+					strtolower($this->params['controller']) == 'users'
+				)&&
+				!(Configure::read('config.testing')
+				)
 		){
 			$this->redirect(array('controller'=>'users','action'=>'login'));
 			return;

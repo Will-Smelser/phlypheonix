@@ -16,10 +16,14 @@ $config['error']['msg']['password_badchar'] = 'Invalid characters (Only !@#$_- o
 
 $config['error']['msg']['passconfirm'] = 'Passwords did not match';
 
+$config['error']['msg']['bad_birthdate'] = 'Invalid birthdate';
+
+$config['error']['msg']['bad_sex'] = 'Please select M or F';
+
 
 //AUTH
 $config['error']['msg']['bad_product'] = 'Unknown Error.  Try refreshing the page.';
-$config['error']['msg']['user_failed'] = 'Your card has been processed.  However, there was an error in creating the account. Technical support has been contacted to resolve the issue.';
+$config['error']['msg']['user_failed'] = 'An unknown error occurred while attempting to create your acount.  Please try again.';
 $config['error']['msg']['bad_card'] = 'Invalid card number.';
 $config['error']['msg']['bad_ccv'] = 'Invalid CCV.  Should be the 3 digit code on back of card.';
 $config['error']['msg']['bad_exp'] = 'Ivalid expiration date.  Must be a date in the future.';

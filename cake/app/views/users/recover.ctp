@@ -4,7 +4,7 @@
 <h2 class="f-red f-accented2 f-bigger">Recover Password</h2>
 <?php
     echo $form->create('User', array('action' => 'recover'));
-    echo $form->input('username',array('label'=>'Username or Email'));
+    echo $form->input('email',array('label'=>'Email'));
     echo $form->input('captcha',array('label'=>'Enter Leters Below','value'=>''));
 ?>
 <div style="padding-left:10px">

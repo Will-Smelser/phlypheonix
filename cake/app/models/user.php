@@ -128,6 +128,14 @@ class User extends AppModel {
 		if(!empty($this->data)){
 			$data = $this->data; 
 		}
+		
+		//check regex is matched
+		$temp = preg_replace(Configure::read('userconfig.regex.birthdate'),'',$data['User']['birthdate']);
+		
+		if(strlen($temp) != 0 && strlen($data['User']['birthdate']) != 0){
+			return false;
+		}
+		
 		$date = explode('/',$data['User']['birthdate']);
 		list($mm,$dd,$yy) = $date;
 		return (checkdate($mm,$dd,$yy));
@@ -136,8 +144,12 @@ class User extends AppModel {
 		if(!empty($this->data)){
 			$data = $this->data; 
 		}
-		$sex = strtolower($data['User']['sex']);
-		return ($sex == 'm' || $sex == 'f');
+		if(isset($data['User']['sex'])){
+			$sex = strtolower($data['User']['sex']);
+			return ($sex == 'm' || $sex == 'f');
+		} else {
+			return false;
+		}
 	}
 	function checkEmailExists($data) {
 		if(!empty($this->data)){

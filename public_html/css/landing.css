@@ -6,12 +6,7 @@ input, select{
 	background-color:#CCC;
 	border-color:#CCC;
 	color:#333;
-	border-radius: 3px;
-	
-	border-style:solid;
-	padding:3px;
-	margin-top:2px;
-	font-size:14px;
+	border-radius: 5px;
 }
 
 span.one{
@@ -168,16 +163,16 @@ body{
     position: relative;
     width: 532px;
     z-index: 5;
-	height:97px;
+	height:100px;
 	background-image:url(/img/landing/flyfoenix_landingpage_lightgraybig.png);
 	background-repeat:no-repeat;
 }
 
 #join{
-	margin-left: 74px;
-    margin-top: -28px;
+    
     position: relative;
-    z-index: 5;
+    top:-25px;
+    left:40px;
 }
 
 
@@ -187,140 +182,139 @@ body{
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: -20px;
-	width: 532px;
+	
 	background-image:url(/img/landing/flyfoenix_landingpage_darkgray.png);
 	background-repeat:no-repeat;
-	height: 381px;
+
+	height: 401px;
+	width: 532px;
 }
 
 #register{
 	
-    position:absolute;
-    top: 15px;
-    z-index: 6;
-	width: 249px;
-	left: 15px;
-	height:340px;
+	position:absolute;
+	z-index: 6;
+	
+	width: 215px;
+	height: 350px;
+	
+	margin-left:15px;
+	margin-top:15px;
+	
+	padding-left:15px;
+	padding-right:20px;
+	padding-top:10px;
+	
 	background-image:url(/img/landing/flyfoenix_landingpage_lightgraysmall.png);
 	background-repeat:no-repeat;
 }
 
 #registerimg{
-	left: 21px;
-    position: relative;
-    top: 5px;
+
 }
 
 #login{
 	
-    position: absolute;
-    top: 15px;
-	left:260px;
-    z-index: 6;
-	width:249px;
-	height:340px;
+    	position: absolute;
+    	top: 0px;
+    	right:25px;
+    	z-index: 6;
+	
+	width:215px;
+	height: 350px;
+	
+	margin-top:15px;
+	
+	padding-left:15px;
+	padding-right:18px;
+	padding-top:10px;
+	
 	background-image:url(/img/landing/flyfoenix_landingpage_lightgraysmall.png);
 	background-repeat:no-repeat;
 	
 }
 
 #loginimg{
-	left:19px;
-    position: relative;
-    top: 11px;
+	padding-top:5px;
 }
 
 #fb1{
-	left: 38px;
-    position: relative;
-    top: 4px;
+	text-align:center;
 }
 
-#or1{
-	left: 100px;
-    position: relative;
-    top: 15px;
+.img-wrapper{
+	text-align:center;
 }
-
+.img-wrapper img{
+	padding:10px 0px;
+}
+form{
+	padding:0px;
+	margin:0px;
+	display:block;
+}
 #or2{
-	left: 100px;
-    position: relative;
-    top: 20px;
+	
 }
-
+.f-spacer{
+	height:10px;
+}
+#registerForm, #loginForm{
+	padding-left:10px;
+}
+#registerForm .fieldwidth, #loginForm .fieldwidth{
+	padding:5px;
+	width:170px;
+	border:none;
+}
 #email{
-	left: 30px;
-    position: relative;
-    top: 25px;
+
 }
 
 #birthdate{
-	position:relative;
-	left:30px;
-	top:35px;
+
 }
 
 #gender{
-	position:relative;
-	left:30px;
-	top:45px;
+	
 }
 
 #tradio{
-	left: 87px;
-    margin-top: 28px;
-    position: relative;
+	
 }
 
 
-
+#male{
+	padding-left:10px;
+}
 #female{
-	margin-left:11px;
+	padding-left:10px;
 }
 
 #school{
-	margin-left: 30px;
-    margin-top: -14px;
 }
 
-.fieldwidth{
-	width:180px;
-}
 
 #fb2{
-	left: 48px;
-    position: relative;
-    top: 10px;
+	text-align:center;
 }
 
 #email2{
-	left: 30px;
-    position: relative;
-    top: 31px;
 }
 
 #birthdate2{
-	left: 30px;
-    position: relative;
-    top: 45px;
 }
 
-#btnregister{
+#btnregister, #btnlogin{
 	float: right;
-    margin-right: 38px;
-    margin-top: 12px;
-}
-
-#btnlogin{
-	float: right;
-    margin-right: 35px;
-    margin-top: 60px;
+	margin-right:25px;
+	cursor:pointer;
 }
 
 #rememberme{
-	position:relative;
-	top:100px;
-	left:102px;
+	text-align:right;
+	margin-top:40px;
+	margin-right:25px;
 }
 
 #sliderwrapper{
@@ -337,5 +331,45 @@ body{
 	padding-left: 5px;
 }
 
+#bottomContainer{
+	background-image: url("/img/landing/flyfoenix_landingpage_darkgraybottom.png");
+    	background-repeat: no-repeat;
+
+    	margin-left: auto;
+    	margin-right: auto;
+    	margin-top: -30px;
+
+    	width: 532px;
+    	height:155px;
+    	
+	font-weight:bold;
+	position:relative;
+	z-index:7;
+}
+
+#tellfriends{
+	margin-left: 20px;
+	margin-top:15px;
+}
+
+#offer{
+	margin-left: 30px;
+	margin-top: -10px;
+}
+
+#sharethis{
+	margin-left: 25px;
+	margin-top: 7px;
+	height:40px;
+}
+
+#sharetag{
+	float: right;
+    margin-right: -10px;
+    margin-top: -160px;
+}
+
 	
 /*End Body Container Elements*/
+
+	
