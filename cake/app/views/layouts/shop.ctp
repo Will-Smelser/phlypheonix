@@ -34,8 +34,8 @@
     <img id="logoFlyFoenix" src="/img/logos/logo_flyfoenix.png" alt="flyfoenixlogo" />
     <span id="caption" class="four">Unique Collegiate Fashion.&nbsp;&nbsp;Quick Shopping.&nbsp;&nbsp;Great Fit & Feel.&nbsp;&nbsp;High Style.&nbsp;&nbsp;Lower Prices.</span>
     <div id="navigate">
-	    <span class="five">Welcome &nbsp; ivan7two@yahoo.com</span>
-	    <span class="five"><a class="nav" href="#">Log Out</a></span>
+	    <span class="five">Welcome &nbsp; <?php echo $myuser['User']['email']; ?></span>
+	    <span class="five"><a class="nav" href="/users/logout">Log Out</a></span>
 	    <span class="five"><a class="nav" href="#">Contact</a></span>
 	    <span class="five"><a class="nav" href="#">Account Info</a></span>
     </div>    

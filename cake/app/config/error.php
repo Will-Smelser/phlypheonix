@@ -10,6 +10,8 @@ $config['error']['msg']['username_length'] = 'Invalid Username.  Must be between
 
 $config['error']['msg']['email_bad'] = 'Invalid email address.';
 $config['error']['msg']['email_exist'] = 'Email already exists.';
+$config['error']['msg']['no_user'] = 'Email does not exist.';
+$config['error']['msg']['bad_password'] = 'Invalid birthdate or no match.';
 
 $config['error']['msg']['password_length'] = 'Invalid password length.  Must be between 7-15 characters.';
 $config['error']['msg']['password_badchar'] = 'Invalid characters (Only !@#$_- or Alphanumeric Characters).';

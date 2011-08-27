@@ -20,7 +20,14 @@ class ShopController extends AppController {
 	function beforeFilter() {
 	    parent::beforeFilter();
 	    
-	    //$this->layout = 'shop';
+	    $this->layout = 'shop';
+	    
+	    //user data
+		$user = $this->Auth->user();
+		$user = $this->User->read(null, $user['User']['id']);
+
+		$this->myuser = $user;
+		$this->set('myuser',$this->myuser);
 
 	}
 	
@@ -30,12 +37,9 @@ class ShopController extends AppController {
 			
 	//main page for shopping
 	function main ($school=null, $sex=null, $sale = null, $product = null) {
-		$this->layout = 'shop';
-		
-		$userData = $this->User->find(null,$this->Auth->user('User.id'));
 		
 		//check that the user has a school selected
-		$this->set('noSchools',(count($userData['School']) == 0));
+		$this->set('noSchools',(count($this->myuser['School']) == 0));
 		
 		if($sale == null) {
 			$saleData = $this->Sale->find('all',array('condition'=>array('Sale.ends >= ' . time()) ));

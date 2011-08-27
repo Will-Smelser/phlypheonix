@@ -64,49 +64,49 @@
 	<?php //echo $this->element('sql_dump'); ?>
 </body>
 
-<script src="http://connect.facebook.net/en_US/all.js"></script>
-
 <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.min.js"></script>
-
-<script type="text/javascript">var switchTo5x=true;</script>
-<script type="text/javascript" src="<?php echo $protocal; ?>://w.sharethis.com/button/buttons.js"></script>
-<script type="text/javascript">stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7'});</script>
 
 <script> 
 $(document).ready(function(){
 	<!-- FACEBOOK //-->
-	<?php 
+	$.getScript("<?php echo $protocal; ?>://connect.facebook.net/en_US/all.js",function(){
+		<?php 
+		
+		echo $this->Hfacebook->initLogin(
+				$FACEBOOK_APP_ID,
+				$FACEBOOK_APP_SESSION,
+				false,
+				array('auth.login'=>'fbloggedin')
+		); 
+		
+		?>
+	    
+		//bind to the button
+		$('#fb-auth').click(function(){
+			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+		});
 	
-	echo $this->Hfacebook->initLogin(
-			$FACEBOOK_APP_ID,
-			$FACEBOOK_APP_SESSION,
-			false,
-			array('auth.login'=>'fbloggedin')
-	); 
+		$('#fb-reg').click(function(){
+			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+		})
 	
-	?>
-      
-	//bind to the button
-	$('#fb-auth').click(function(){
-		<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+		//logged in function
+		function fbloggedin(){
+			window.location.href = '<?php echo $protocal; ?>://flyfoenix.com/shop/main';
+		}
+	
+		//logout function
+		var fblogout = function(){
+			FB.logout(function(response) {
+				document.location.href = '/users/logout';	
+			});
+		}
 	});
 
-	$('#fb-reg').click(function(){
-		<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
-	})
-
-	//logged in function
-	function fbloggedin(){
-		window.location.href = '/shop';
-	}
-
-	//logout function
-	var fblogout = function(){
-		FB.logout(function(response) {
-			document.location.href = '/users/logout';	
-		});
-	}
-
+	$.getScript('<?php echo $protocal; ?>://w.sharethis.com/button/buttons.js',function(){
+		stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7'});
+	});
+	
 	<!-- QTIP POPUP for errors //-->
 	var loginError = <?php echo $error; ?>;
 	

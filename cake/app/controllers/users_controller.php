@@ -63,19 +63,31 @@ class UsersController extends AppController {
 			$this->redirect(array('controller'=>'shop','action'=>'main'));
 		}
 		
+		$error = null;
+		
 		//if there was a login error from register or login
 		if($error !== null) {
-			$einfo = new MyError($error);
-		}else {
-			$einfo = new MyError('no_error');
+			$error = new MyError($error);
+			$this->set('error',$error->getJson());
 		}
-		$this->set('error',$einfo->getJson());
 		
 		//AuthComponent does not encrypt password by default if the you are not
 		//using "username" as the identifier.
 		if(!empty($this->data)) {
+			//look for user
+			if(!$this->User->checkEmailExists($this->data)){
+				$error = new MyError('no_user');
+				$this->set('error',$error->getJson());
+				return;
+			}
+			
 			$this->data['User']['password'] = AuthComponent::password($this->data['User']['birthdate']);
-			$this->Auth->login($this->data);
+			if(!$this->Auth->login($this->data)){
+				$error = new MyError('bad_password');
+				$this->set('error',$error->getJson());
+				return;
+			}
+			
 		}
 		
 		//handle the remember me  
@@ -374,6 +386,18 @@ class errorTypes {
 					'msg'=>Configure::read('error.msg.email_exist'),
 					'id'=>'email',
 					'context'=>'register'
+				);
+			case 'no_user':
+				return array(
+					'msg'=>Configure::read('error.msg.no_user'),
+					'id'=>'email2',
+					'context'=>'login'
+				);
+			case 'bad_password':
+				return array(
+					'msg'=>Configure::read('error.msg.bad_password'),
+					'id'=>'birthdate2',
+					'context'=>'login'
 				);
 			case 'user_failed':
 				return array(

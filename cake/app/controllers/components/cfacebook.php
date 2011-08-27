@@ -121,7 +121,7 @@ class CfacebookComponent extends Object  {
 			//API failures include oAuth and Curl errors
 			//need to redirect to login page if user is not logged in
 			}catch(FacebookApiException $e){
-				var_dump($e);
+				//var_dump($e);
 				//$this->controller->set('test',array('API ERROR'=>$e->getResult()));
 				//return;
 			}catch(Exception $e) {
@@ -315,9 +315,9 @@ class CfacebookComponent extends Object  {
 		
 		//lets check if the data already exists based on user_id
 		$data = $this->controller->{$model}->findByUserId($userId);
-		
-		if($data){ 
-			$facebook_record[$fields['id']] = $data[$model][$fields['id']];
+
+		if($data){
+			$facebook_record[$fields['id']] = $data[strtolower($model)][$fields['id']];
 		}
 		
 		return $this->controller->{$model}->save($facebook_record, array( 'validate' => false));
