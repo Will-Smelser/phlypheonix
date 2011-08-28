@@ -249,6 +249,27 @@ $(document).ready(function(){
 	
 	
 });	
+
+<?php 
+//prompts
+	$pdeletes = array();
+
+	//key = prompts id
+	//val = the prompt name
+	foreach($prompts as $key=>$p){
+		//run the prompt
+		echo $this->element('prompts/'.$p,array('id'=>$key));
+		
+		//delete the prompt
+		array_push($pdeletes,"\n\t$.post('/prompts/deleteUserPrompt/$key');\n");
+	}
+?>
+//delete prompts
+$(document).ready(function(){
+
+	<?php foreach($pdeletes as $str) {echo $str; }?>
+	
+});
 </script>
 
 </html>

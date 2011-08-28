@@ -31,6 +31,21 @@ class User extends AppModel {
 			'deleteQuery' => '',
 			'insertQuery' => ''
 		),
+		'Prompt' => array(
+			'className' => 'Prompt',
+			'joinTable' => 'users_prompts',
+			'foreignKey' => 'user_id',
+			'associationForeignKey' => 'prompt_id',
+			'unique' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+			'deleteQuery' => '',
+			'insertQuery' => ''
+		),
 	);
 	
 	var $actsAs = array('Acl' => array('type' => 'requester'));

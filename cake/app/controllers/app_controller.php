@@ -26,7 +26,17 @@ class AppController extends Controller {
 		//login by cookie
 		$this->RememberMe->check();
     	
-    	$loggedin = ($this->Auth->user('id') != false);
+		//user data
+		$auth = $this->Auth->user();
+		$user = array();
+		if(ClassRegistry::isKeySet('User')){
+			$Model =& ClassRegistry::getObject('User');
+			$user = $Model->read(null, $auth['User']['id']);
+		}
+		$this->myuser = $user;
+		$this->set('myuser',$this->myuser);
+		
+    	$loggedin = ($auth != false);
 		$this->set('loggedin',$loggedin);
     	
 		if(!$loggedin && 
@@ -50,6 +60,9 @@ class AppController extends Controller {
 			$this->redirect(array('controller'=>'users','action'=>'login'));
 			return;
 		}
+		
+		//setup the prompts
+		$this->handlePrompts();
 		
     	//just temp for site setup
     	if($this->params['controller'] == 'pages') {
@@ -105,7 +118,10 @@ class AppController extends Controller {
         //$this->secureUserSession();
 	}
 	
-function secureUserSession(){
+	/**
+	 * Will only allow 1 person per login via the session id
+	 */
+	function secureUserSession(){
 		/*
     	$userid = $this->Session->read('Auth.User.id');
     	$security = $this->UsersSecurity->find(array('user_id'=>$userid));
@@ -152,6 +168,52 @@ function secureUserSession(){
      */
     function before_login_hook(){
     	return true;
+    }
+    
+    private function handlePrompts(){
+    	//bail if no user info
+    	if(empty($this->myuser)){
+    		return false;
+    	}
+    	
+    	//bail if no prompts
+    	if(empty($this->myuser['Prompt'])){
+    		return false;
+    	}
+    	
+    	//set the prompt variables
+    	$controller = $this->params['controller'];
+    	$action = $this->params['action'];
+    	
+    	//cycle the prompts
+    	$showprompt = array();
+    	$prompts = $this->myuser['Prompt'];
+    	
+    	foreach($prompts as $p){
+    		//check if there is a valid prompt
+    		if(
+    			(
+    				$p['controller'] == $controller &&
+    				$p['action'] == $action
+    			)
+    			||
+    			(
+    				$p['controller'] == $controller &&
+    				$p['action'] == '*'
+    			)
+    			||
+    			(
+    				$p['controller'] == '*' &&
+    				$p['action'] == '*'
+    			)
+    		){
+    			var_dump('TEST');
+    			if($p['ends'] > time())
+    				$showprompt[$p['UsersPrompt']['id']] = $p['name'];
+    		}
+    	}
+    	//make available for the view
+    	$this->set('prompts',$showprompt);    	
     }
     
     

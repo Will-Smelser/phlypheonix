@@ -14,32 +14,39 @@
 class ShopController extends AppController {
 
 	var $name = 'Shop';
-	var $uses = array('Product', 'Pdetail', 'Sale', 'School', 'User', 'Order');
+	var $uses = array('Product', 'Pdetail', 'Sale', 'School', 'User', 'Prompt', 'Order');
 	var $components = array('AuthorizeNet');
 	
 	function beforeFilter() {
 	    parent::beforeFilter();
 	    
 	    $this->layout = 'shop';
-	    
-	    //user data
-		$user = $this->Auth->user();
-		$user = $this->User->read(null, $user['User']['id']);
-
-		$this->myuser = $user;
-		$this->set('myuser',$this->myuser);
 
 	}
 	
 	function index() {
 		$this->redirect(array('controller' => 'shop', 'action' => 'shop'));
 	}
-			
+	
+	//no school for user
+	function school(){
+		
+	}
+	
+	//there was no sale for schools
+	function nosale() {
+		
+	}
+	
+	//remove a prompt for the user
+	function prompt($promptId=null) {
+		if(empty($promptId)){
+			return;
+		}
+	}
+	
 	//main page for shopping
 	function main ($school=null, $sex=null, $sale = null, $product = null) {
-		
-		//check that the user has a school selected
-		$this->set('noSchools',(count($this->myuser['School']) == 0));
 		
 		if($sale == null) {
 			$saleData = $this->Sale->find('all',array('condition'=>array('Sale.ends >= ' . time()) ));
@@ -59,7 +66,7 @@ class ShopController extends AppController {
 		$productData = $this->Product->find('all',array('condition'=>'Product.id IN ('.$plist.')'));
 		
 		
-		$this->addUserSaleEndDate($saleId, $productId);
+		//$this->addUserSaleEndDate($saleId, $productId);
 	}
 	
 	private function addUserSaleEndDate($saleId, $productId) {

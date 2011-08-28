@@ -2,7 +2,7 @@
 
 $config['config']['maintenance'] = false;
 $config['config']['coming_soon'] = false;
-$config['config']['testing'] = false;
+$config['config']['testing'] = true;
 
 /* image directories */
 $config['config']['image']['product'] = 'img' . DS . 'products' . DS;

@@ -3,7 +3,7 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $components = array('Captcha','Email','Cfacebook','Session');
-	var $uses = array('User','School','Mfacebook');
+	var $uses = array('User','School','Prompt','Mfacebook');
 	var $helpers = array('Session','Form', 'Html','Javascript','Hfacebook');
 	
 	
@@ -11,12 +11,6 @@ class UsersController extends AppController {
 	    parent::beforeFilter(); 
 
 	    $this->Auth->allow(array('register','register_ajax','recover','recover_complete','captcha_image','login','logout'));
-
-	    //user data
-		$user = $this->Auth->user();
-		$user = $this->User->read(null, $user['User']['id']);
-		$this->myuser = $user;
-		$this->set('myuser',$this->myuser);
 		
 		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
 
@@ -54,7 +48,7 @@ class UsersController extends AppController {
 
 	function login($error=null){
 		$this->layout = 'landing'; 
-  
+
 		//delete registerData from session
 		//$this->Session->delete('registerData');
 		
@@ -63,12 +57,11 @@ class UsersController extends AppController {
 			$this->redirect(array('controller'=>'shop','action'=>'main'));
 		}
 		
-		$error = null;
+		$error = new MyError('no_error');
 		
 		//if there was a login error from register or login
 		if($error !== null) {
 			$error = new MyError($error);
-			$this->set('error',$error->getJson());
 		}
 		
 		//AuthComponent does not encrypt password by default if the you are not
@@ -103,6 +96,8 @@ class UsersController extends AppController {
                     $this->data['User']['password']  
                 );  
         }
+        
+        $this->set('error',$error->getJson());
         
         //$this->redirect($this->Auth->redirect());
 	}
