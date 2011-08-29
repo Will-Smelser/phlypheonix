@@ -264,12 +264,14 @@ $(document).ready(function(){
 		array_push($pdeletes,"\n\t$.post('/prompts/deleteUserPrompt/$key');\n");
 	}
 ?>
+
 //delete prompts
 $(document).ready(function(){
 
 	<?php foreach($pdeletes as $str) {echo $str; }?>
 	
 });
+
 </script>
 
 </html>
