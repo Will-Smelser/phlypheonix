@@ -47,6 +47,7 @@ class UsersController extends AppController {
 	}
 
 	function login($error=null){
+		
 		$this->layout = 'landing'; 
 
 		//delete registerData from session
@@ -133,6 +134,7 @@ class UsersController extends AppController {
 			
 			//overide the forms group_id
 			$this->data['User']['group_id'] = $this->User->defaultGroupId;
+			$this->data['User']['school_id'] = (isset($this->data['School']['School'][0])) ? $this->data['School']['School'][0] : 0;
 			
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(__('The user has been saved', true));
@@ -159,6 +161,8 @@ class UsersController extends AppController {
 				$this->data['User']['password'] == $this->data['User']['birthdate'];
 			} 
 			
+			//set the default school
+			$this->data['User']['school_id'] = (isset($this->data['School']['School'][0])) ? $this->data['School']['School'][0] : 0; 
 			
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(__('The user has been saved', true));
@@ -216,6 +220,7 @@ class UsersController extends AppController {
 			$this->data['User']['facebook_id'] = 0;
 			$this->data['User']['active'] = 1;
 			$this->data['User']['group_id'] = Configure::read('userconfig.default.group'); //2 is a customer
+			$this->data['User']['school_id'] = (isset($this->data['School']['School'][0])) ? $this->data['School']['School'][0] : 0;
 			
 			$this->User->create();
 			
@@ -424,6 +429,7 @@ class errorTypes {
 					'id'=>'gender',
 					'context'=>'register'
 				);
+			case 'none':
 			case 'no_error':
 				return array(
 					'msg' => 'success',
@@ -432,7 +438,7 @@ class errorTypes {
 				);
 			default:
 				return array(
-					'msg'=>$msg,
+					'msg'=>'Unknown Error',
 					'id'=>'error-general',
 					'context'=>'unknown'
 				);

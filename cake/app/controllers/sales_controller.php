@@ -19,6 +19,7 @@ class SalesController extends AppController {
 	function add() {
 		if (!empty($this->data)) {
 			$this->data['Sale']['ends'] = strtotime($this->data['Sale']['ends']);
+			$this->data['Sale']['starts'] = strtotime($this->data['Sale']['starts']);
 			$this->Sale->create();
 			if ($this->Sale->save($this->data)) {
 				$this->Session->setFlash(__('The sale has been saved', true));
@@ -38,6 +39,7 @@ class SalesController extends AppController {
 		}
 		if (!empty($this->data)) {
 			$this->data['Sale']['ends'] = strtotime($this->data['Sale']['ends']);
+			$this->data['Sale']['starts'] = strtotime($this->data['Sale']['starts']);
 			if ($this->Sale->save($this->data)) {
 				$this->Session->setFlash(__('The sale has been saved', true));
 				$this->redirect(array('action' => 'index'));
@@ -47,7 +49,8 @@ class SalesController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Sale->read(null, $id);
-			$this->data['Sale']['ends'] = date('Y-m-d',$this->data['Sale']['ends']);
+			$this->data['Sale']['ends'] = date('m/d/Y',$this->data['Sale']['ends']);
+			$this->data['Sale']['starts'] = date('m/d/Y',$this->data['Sale']['starts']);
 		}
 		$products = $this->Sale->Product->find('list');
 		$this->set(compact('products'));

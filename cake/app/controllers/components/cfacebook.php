@@ -134,7 +134,8 @@ class CfacebookComponent extends Object  {
 			$this->controller->set(Configure::read('facebook.var.loggedIn'),$this->fbLoggedIn);
 			$this->controller->set(Configure::read('facebook.var.urlLogin'),$this->loginUrl);
 			$this->controller->set(Configure::read('facebook.var.urlLogout'),$this->logoutUrl);
-			$this->controller->set(Configure::read('facebook.var.fbUser'),$this->fbuser['id']);
+			$temp = (isset($this->fbuser['id'])) ? $this->fbuser['id'] : 0;
+			$this->controller->set(Configure::read('facebook.var.fbUser'),$temp);
 			
 			if(count($this->error) > 0 && Configure::read('facebook.userSessionFlashErrors')){
 				$this->controller->Session->setFlash(implode('.<br/>',$this->error));

@@ -51,6 +51,11 @@
 			<?php echo $school['School']['logo_large']; ?>
 			&nbsp;
 		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Background'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $school['School']['background']; ?>
+			&nbsp;
+		</dd>
 	</dl>
 </div>
 <div class="actions">

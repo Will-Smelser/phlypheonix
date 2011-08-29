@@ -37,6 +37,15 @@
 				'field'=>'logo_large'
 			)
 		);
+		
+		echo $this->element('admin/directory_list',
+			array(
+				'title'=>'Shop Background Image',
+				'dir'  =>WWW_ROOT . Configure::read('config.image.school.background'),
+				'model'=>'School',
+				'field'=>'background'
+			)
+		);
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>

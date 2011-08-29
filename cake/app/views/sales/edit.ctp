@@ -6,7 +6,8 @@
 		echo $this->Form->input('id');
 		echo $this->Form->input('active');
 		echo $this->Form->input('name');
-		echo $this->Form->input('ends',array('label'=>'Ends On (YYYY-MM-DD)'));
+		echo $this->Form->input('ends',array('label'=>'Ends On (mm/dd/yyyy)'));
+		echo $this->Form->input('starts',array('label'=>'Starts On (mm/dd/yyyy)'));
 		echo $this->Form->input('Product');
 	?>
 	</fieldset>

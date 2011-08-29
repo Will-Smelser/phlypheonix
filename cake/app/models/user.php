@@ -176,6 +176,18 @@ class User extends AppModel {
 		$this->data['User']['birthdate'] = strtotime($this->data['User']['birthdate']);
 		return true;
 	}
+	/**
+	 * Update a users favorite
+	 * 
+	 * @param Array $data Expects array in standard Cake formate $data['User'] should exists 
+	 * @param Integer $schoolId The school id
+	 */
+	function updateSchoolFavorite($data, $schoolId){
+		$this->id = $data['User']['id'];
+		$temp = $data['User'];
+		$temp['school_id'] = $schoolId;
+		return $this->save(array('User'=>$temp));
+	}
 	
 }
 ?>

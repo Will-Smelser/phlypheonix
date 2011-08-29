@@ -1,6 +1,8 @@
 <?php
 class AppController extends Controller {
-	var $components = array('Session','Acl', 'Auth','Cookie','Cart','RememberMe');
+	var $components = array('Session','Acl', 'Auth','Cookie','Cart','RememberMe','Cprompt');
+	
+	var $myuser; //logged in users data
 	
 	function beforeFilter() {
     	//have to manually start session for things to work properly
@@ -29,7 +31,7 @@ class AppController extends Controller {
 		//user data
 		$auth = $this->Auth->user();
 		$user = array();
-		if(ClassRegistry::isKeySet('User')){
+		if(ClassRegistry::isKeySet('User') && $auth != false){
 			$Model =& ClassRegistry::getObject('User');
 			$user = $Model->read(null, $auth['User']['id']);
 		}
@@ -62,7 +64,8 @@ class AppController extends Controller {
 		}
 		
 		//setup the prompts
-		$this->handlePrompts();
+		$this->Cprompt->addDbPrompts();
+		$this->Cprompt->setPrompt();
 		
     	//just temp for site setup
     	if($this->params['controller'] == 'pages') {
@@ -207,7 +210,6 @@ class AppController extends Controller {
     				$p['action'] == '*'
     			)
     		){
-    			var_dump('TEST');
     			if($p['ends'] > time())
     				$showprompt[$p['UsersPrompt']['id']] = $p['name'];
     		}

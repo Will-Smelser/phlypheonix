@@ -5,7 +5,8 @@
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('active');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('ends');?> (YYYY-MM-DD)</th>
+			<th><?php echo $this->Paginator->sort('ends');?> (mm/dd/yyyy)</th>
+			<th><?php echo $this->Paginator->sort('starts');?> (mm/dd/yyyy)</th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
 			<th class="actions"><?php __('Actions');?></th>
 	</tr>
@@ -21,7 +22,8 @@
 		<td><?php echo $sale['Sale']['id']; ?>&nbsp;</td>
 		<td><?php echo $sale['Sale']['active']; ?>&nbsp;</td>
 		<td><?php echo $sale['Sale']['name']; ?>&nbsp;</td>
-		<td><?php echo date('Y-m-d',$sale['Sale']['ends']); ?>&nbsp;</td>
+		<td><?php echo date('m/d/Y',$sale['Sale']['ends']); ?>&nbsp;</td>
+		<td><?php echo date('m/d/Y',$sale['Sale']['starts']); ?>&nbsp;</td>
 		<td><?php echo $sale['Sale']['created']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $sale['Sale']['id'])); ?>
