@@ -28,7 +28,8 @@ class ProductsController extends AppController {
 		}
 		$manufacturers = $this->Product->Manufacturer->find('list');
 		$pattributes = $this->Product->Pattribute->find('list');
-		$this->set(compact('manufacturers', 'pattributes'));
+		$schools = $this->Product->School->find('list');
+		$this->set(compact('manufacturers', 'pattributes', 'schools'));
 	}
 
 	function edit($id = null) {
@@ -49,7 +50,8 @@ class ProductsController extends AppController {
 		}
 		$manufacturers = $this->Product->Manufacturer->find('list');
 		$pattributes = $this->Product->Pattribute->find('list');
-		$this->set(compact('manufacturers', 'pattributes'));
+		$schools = $this->Product->School->find('list');
+		$this->set(compact('manufacturers', 'pattributes', 'schools'));
 	}
 
 	function delete($id = null) {

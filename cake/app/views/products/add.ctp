@@ -4,6 +4,7 @@
 		<legend><?php __('Add Product'); ?></legend>
 	<?php
 		echo $this->Form->input('manufacturer_id');
+		echo $this->Form->input('school_id');
 		echo $this->Form->input('name');
 		echo $this->Form->input('desc');
 		echo $this->Form->input('sex');

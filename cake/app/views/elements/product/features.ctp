@@ -4,8 +4,14 @@
  */
 ?>
 <div id="uniquefeatures">
-    	<span id="uftext"class="two">Unique Features</span>
+    	<div id="uftext"class="two">Unique Features</div>
+    	<div style="padding-left:20px;">
     	<?php foreach($product['Pattribute'] as $p){ ?> 
-        <img class="one" src="<?php echo $p['image']; ?>" title="<?php echo $p['description']; ?>" width="77" height="88" />
+        <div class="feature-wrapper">
+        	<a class="feature-thumb" href="<?php echo $p['image']; 	?>" rel="<?php echo $p['image']; 	?>">
+        	<img src="<?php echo $p['image']; ?>" title="<?php echo $p['description']; ?>" width="77" height="88" />
+        	</a>
+        </div>
         <?php } ?>
+        </div>
 </div><!-- End Unique Features -->

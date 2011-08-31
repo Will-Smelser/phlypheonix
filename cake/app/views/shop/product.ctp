@@ -1,14 +1,13 @@
-<div id="slider"><!-- Begin Slider -->
+  <div class="slider" style="left:0px;"><!-- Begin Slider -->
     
-    <div id="viewer">
+    <div class="viewer">
   	<?php echo $this->element('product/features'); ?>
     
-    <?php echo $this->element('product/main_photo',array('index'=>$imageIndex)); ?>
+    <?php echo $this->element('product/main_photo',array('index'=>$imageIndex,'product'=>$product)); ?>
     
     <?php echo $this->element('product/thumbs',array('index'=>$imageIndex)); ?>
     
     </div><!-- End Viewer Container -->
-  
   
   <div id="content">
     <div id="earn5">
@@ -20,5 +19,4 @@
     <?php echo $this->element('product/details',array('product'=>$product,'index'=>$imageIndex))?>
     
   </div>
-</div>
 </div> <!-- End Slider -->

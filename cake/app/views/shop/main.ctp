@@ -7,32 +7,28 @@
 <a href="#"><img id="comments" src="/img/productpresentation/flyfoenix_product_presentation_comments.png" width="171" height="57" alt="comments" /></a>
   
   
-  <img id="buytwo" src="/img/productpresentation/flyfoenix_product_presentation_buy2.png" width="121" height="121" alt="buyTwo" />
+  <img id="buytwo" style="position:absolute;top:1px;right:1px;" 
+  	src="/img/productpresentation/flyfoenix_product_presentation_buy2.png" width="121" height="121" alt="buyTwo" />
  
   <!-- NAVIGATION ARROWS -->
-  <div id="leftarrow">
-    <a href="" onMouseOver="document.lbutton.src='/img/productpresentation/flyfoenix_product_presentation_elements_lbuttonorange.png';" onMouseOut="document.lbutton.src='/img/productpresentation/flyfoenix_product_presentation_elements_lbutton.png';"><img name="lbutton" src="/img/productpresentation/flyfoenix_product_presentation_elements_lbutton.png" width="37" height="52" alt="leftarrow" /> </a>
-    </div>
-    
-  <div id="rightarrow">
-    <a href="" onMouseOver="document.rbutton.src='/img/productpresentation/flyfoenix_product_presentation_elements_rbuttonorange.png';" onMouseOut="document.rbutton.src='/img/productpresentation/flyfoenix_product_presentation_rbutton.png';"><img name="rbutton" src="/img/productpresentation/flyfoenix_product_presentation_rbutton.png" width="36" height="50" alt="rightarrow" /></a>
-  </div>
+  <a href="#"><div id="leftarrow" class="hidden"></div></a>
+  
+  <?php $class = (count($productRight) > 0) ? '' : 'hidden'; ?>
+  <a href="#"><div id="rightarrow" class="<?php echo $class; ?>"></div></a>
   
   <!-- SLIDER WRAPPER -->
   <div id="sliderwrapper"><!-- Begin Slider Wrapper -->
-  
-  
-  <div id="slider"><!-- Begin Slider -->
+  <div id="sliderpane">
+  <div class="slider" style="left:0px;"><!-- Begin Slider -->
     
-    <div id="viewer">
+    <div class="viewer">
   	<?php echo $this->element('product/features'); ?>
     
-    <?php echo $this->element('product/main_photo',array('index'=>$imageIndex)); ?>
+    <?php echo $this->element('product/main_photo',array('index'=>$imageIndex,'product'=>$product)); ?>
     
     <?php echo $this->element('product/thumbs',array('index'=>$imageIndex)); ?>
     
     </div><!-- End Viewer Container -->
-  
   
   <div id="content">
     <div id="earn5">
@@ -44,6 +40,19 @@
     <?php echo $this->element('product/details',array('product'=>$product,'index'=>$imageIndex))?>
     
   </div>
-</div>
 </div> <!-- End Slider -->
+
+<?php
+  	$i = 1;
+  	foreach($productRight as $p){ 
+  		//calulate the position
+  		$x = 935 * $i;
+  		$i++;
+  		$url = "/shop/product/{$p['school_id']}/{$p['sex']}/{$sale['Sale']['id']}/{$p['id']}";
+  	?>
+  	<div id="<?php echo $url ?>" class="slider product-loading" style="left:<?php echo $x; ?>px">
+  	
+  	</div>
+  	<?php } ?>
+</div>
 </div> <!-- End Slider Wrapper -->

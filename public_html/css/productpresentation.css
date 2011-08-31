@@ -273,17 +273,47 @@ body{
 	position: absolute;
 	left: 8px;
 	top:240px;
-	z-index:5;
+	z-index:15;
+	
+	width:36px;
+	height:50px;
+	
+}
+a #leftarrow {
+	text-decoration:none;
+		
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_lbutton.png);
+	background-repeat:no-repeat;	
+}
+a #leftarrow :hover{
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_lbuttonorange.png);	
 }
 
 #rightarrow{
 	position: absolute;
 	top: 240px;
 	right: 21px;
-	z-index: 5;
+	z-index: 15;
+	
+	width:36px;
+	height:50px;
+	
+}
+a #rightarrow {
+	text-decoration:none;
+		
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_rbutton.png);
+	background-repeat:no-repeat;
+}
+a #rightarrow:hover{
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_rbuttonorange.png);
 }
 
-#viewer{
+#leftarrow.hidden, #rightarrow.hidden {
+	display:none;	
+}
+
+.viewer{
 	position: absolute;
 	left: 60px;
 	top: 54px;
@@ -297,11 +327,29 @@ body{
 
 
 #sliderwrapper{
+	position:absolute;
+	top:12px;
+	left:12px;
 	
+	height:525px;
+	width:935px;
+	
+	overflow:hidden;
+}
+#sliderpane{
+	position:absolute;	
+}
+.slider{
+	position:absolute;
+	width:935px;
+	height:525px;	
 }
 
-#slider{
-	
+.slider .product-loading {
+	background-image:url(/img/loading.gif);
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-color:#000;	
 }
 
 
@@ -322,25 +370,39 @@ body{
 
 #uftext{
 	text-align: center;
-    width: 112px;
-	display:block;
+
+	padding-left:10px;
+	
+	width:100px;
 }
 
-#mainphoto{
+.mainphoto{
     width: 351px;
 	height:401px;
-	display:inline-block;
-	margin-top:15px;
+	display:block;
+	
+	position:absolute;
+	top:15px;
+	left:115px;
 }
 
 #thumbnails{
-	float: right;
-    width: 112px;
-	margin-top:15px;
-}
+	position:absolute;
+	right:10px;
+	top:15px;
 
+	width:88px;
+}
+.gallery-thumb, .feature-thumb{
+	display:block;
+}
+.thumb-wrapper, .feature-wrapper{
+	padding-top:10px;
+	width:88px;
+	height:90px;
+	overflow:hidden;	
+}
 #thumbtext{
-	width: 112px;
 	text-align:center;
 	display:block;
 }	
@@ -359,7 +421,7 @@ body{
 }
 
 #sharethis{
-	
+	height:37px;
 }
 
 #inventory{
@@ -384,6 +446,7 @@ body{
 	margin-left: 6px;
 }
 #size select{
+	border-style:none;
 	float:right;
 	width:100px;	
 }
@@ -407,4 +470,8 @@ body{
 	
 /*End Body Container Elements*/
 
+//mioZoom
+.mioZoomWrapper{
+	background-color:#333;
+}
 	

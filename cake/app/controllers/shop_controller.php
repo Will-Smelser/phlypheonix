@@ -51,62 +51,70 @@ class ShopController extends AppController {
 		
 	}
 	
-	function product($school=null, $sex=null, $sale = null){
+	function product($school=null, $sex=null, $sale = null, $product = null){
+		$imageIndex = 0;
 		
 		$this->layout = 'ajax';
 		
-		$this->main($school, $sex, $sale);
+		//fix data if needed
+		$this->fixVars($product, $school, $sex, $sale, $expired);
+		
+		$productRight = array();
+		$products = $this->getProductsDetails($sale);
+		$this->getPagination($products,$product,$productRight, $index);
+		
+		$this->set(compact('school','sex','sale','product','imageIndex'));
 	}
 	
 	//TODO implament expired display
 	//main page for shopping
 	//imageIndex is the product image to show
-	function main ($school=null, $sex=null, $sale = null, $expired=false) {
+	function main ($school=null, $sex=null, $sale = null, $product = null, $expired=false) {
 		$imageIndex = 0;
-		$product = null;
+		
+		//fix data if needed
+		$this->fixVars($product, $school, $sex, $sale, $expired);
+		
+		
+		$products = $this->getProductsDetails($sale);
+		
+		//get left and right products
+		$productRight= array();
+		$this->getPagination($products,$product,$productRight, $index);
+		
+		$this->Sale->Saleuser->addUserSaleEndDate($this->myuser, $sale['Sale']['id']);
+
+		$this->addSaleEnds($this->myuser, $sale);
+		//debug($product);
+		
+		$this->set(compact('school','sex','sale','product','productRight','imageIndex'));
+	}	
+	
+	private function fixVars(&$product, &$school, &$sex, &$sale, &$expired){
 		
 		//fix data if needed
 		$school   = $this->getSchool($school);
 		$sex      = $this->getSex($sex);
 		$sale     = $this->getSale($sale, $sex, $school);
 		$product  = $this->getProduct($product, $sale, $sex, $school);
-		$products = $this->getProductsDetails($sale);
-		
-		//get left and right products
-		$productLeft = array();
-		$productRight= array();
-		$this->getPagination($products,$product,$productLeft,$productRight, $index);
-		
-		$this->Sale->Saleuser->addUserSaleEndDate($this->myuser, $sale['Sale']['id']);
-		//debug($products);
-		//debug($product);
-		$this->addSaleEnds($this->myuser, $sale);
-		
-		$this->set(compact('school','sex','sale','product','productLeft','productRight','imageIndex'));
-	}	
+	}
 	
 	//set the pagination and move detailed product data into $product
-	private function getPagination($products,&$product,&$productLeft,&$productRight, &$index){
+	private function getPagination($products,&$product,&$productRight, &$index){
 		$id = $product['id'];
 		$temp = null;
 		
-		$found = false;
+		
 		foreach($products as $p) {
 			if($p['Product']['id'] == $id){
-				$found = true;
 				$temp = $p;
 			} else {
-				//add left
-				if(!$found){
-					array_push($productLeft, $p['Product']);
-				//add right
-				} else {
-					array_push($productRight, $p['Product']);
-				}
+				array_push($productRight, $p['Product']);
 			}
 		}
+		
 		$product = $temp;
-		//$index   = $temp[]
+		
 		return;
 	}
 	
@@ -311,7 +319,7 @@ class ShopController extends AppController {
 				}
 			}
 			//forward to first product
-			$this->redirect(array('action'=>"main/{$school['id']}/{$sex}/{$sale['id']}/{$sale['Product'][0]['id']}"));
+			$this->redirect(array('action'=>"main/{$school['id']}/{$sex}/{$sale['Sale']['id']}/{$sale['Product'][0]['id']}"));
 			return;
 		}
 		//no product found
