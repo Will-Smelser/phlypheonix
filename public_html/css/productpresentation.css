@@ -1,35 +1,42 @@
 @charset "utf-8";
 /* CSS Document */
-
-span.one{
+input, select{
+	background-color:#CCC;
+	border-color:#CCC;
+	color:#333;
+	border-radius: 5px;
+	padding:5px;
+	font-size:16px;
+}
+.one{
 	color: #FBB040;
     font-family: Arial,Helvetica,sans-serif;
     font-weight: bold;
 	text-align:left;
 }
 
-span.two{
+.two{
 	color: #FFFFFF;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align: left;
 	font-size: 12px;
 }
 
-span.three{
+.three{
 	color: #FFFFFF;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align: left;
 	font-size: 16px;
 }
 
-span.four{
+.four{
 	color:#000;
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	text-align:left;
 }
 
-span.five{
+.five{
 	color:#000;
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 12px;
@@ -137,11 +144,15 @@ body{
 }
 
 #navigate{
-	left: 940px;
-    position: fixed;
-    top: 19px;
-    width: 500px;
-    z-index: 3;
+    position:relative;
+    top:7px;
+    left:0px;
+    
+    margin-left:auto;
+    margin-right:auto;
+    width:950px;
+    
+    text-align:right; 
 }
 
 #logoFlyFoenix{
@@ -197,7 +208,7 @@ body{
 	margin-top: 7px;
 }
 
-#campuscouturelogo{
+#mfg-logo{
 	left: 20px;
     position: relative;
     top: 20px;
@@ -348,7 +359,7 @@ body{
 }
 
 #sharethis{
-	height:37px;
+	
 }
 
 #inventory{
@@ -368,17 +379,30 @@ body{
 }
 
 #size{
+	display:inline-block;
+	width:250px;
 	margin-left: 6px;
 }
-
-#quantity{
-	margin-left: 20px;
+#size select{
+	float:right;
+	width:100px;	
 }
-
+#quantity{
+	padding:5px;
+	display:inline-block;
+	width:250px;
+	maring-left:6px;
+}
+#quantity input{
+	float:right;
+	width:100px;
+	border:none;
+	text-align:right;	
+}
 #addtocart{
-	position:relative;
-	left: 6px;
-	top:16px;
+	margin-top:10px;
+	font-weight:normal;
+	float:right;
 }
 	
 /*End Body Container Elements*/

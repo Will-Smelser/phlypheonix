@@ -17,6 +17,13 @@ class Pdetail extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Color' => array(
+			'className' => 'Color',
+			'foreignKey' => 'color_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 }

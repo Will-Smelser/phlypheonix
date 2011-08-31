@@ -266,6 +266,7 @@ form{
 	padding:5px;
 	width:170px;
 	border:none;
+	border:none;
 }
 #email{
 
@@ -368,7 +369,17 @@ form{
     margin-right: -10px;
     margin-top: -160px;
 }
-
+#navigate{
+    position:relative;
+    top:7px;
+    left:0px;
+    
+    margin-left:auto;
+    margin-right:auto;
+    width:950px;
+    
+    text-align:right; 
+}
 	
 /*End Body Container Elements*/
 

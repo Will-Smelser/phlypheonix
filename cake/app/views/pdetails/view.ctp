@@ -18,7 +18,7 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Color'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $pdetail['Pdetail']['color']; ?>
+			<?php echo $this->Html->link($pdetail['Color']['name'], array('controller' => 'colors', 'action' => 'view', $pdetail['Color']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Inventory'); ?></dt>
@@ -36,13 +36,15 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Edit Product Detail', true), array('action' => 'edit', $pdetail['Pdetail']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Delete Product Detail', true), array('action' => 'delete', $pdetail['Pdetail']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $pdetail['Pdetail']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Product Details', true), array('action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Edit Pdetail', true), array('action' => 'edit', $pdetail['Pdetail']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Delete Pdetail', true), array('action' => 'delete', $pdetail['Pdetail']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $pdetail['Pdetail']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('List Pdetails', true), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Pdetail', true), array('action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Products', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Colors', true), array('controller' => 'colors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Color', true), array('controller' => 'colors', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

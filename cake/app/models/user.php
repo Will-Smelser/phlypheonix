@@ -184,9 +184,7 @@ class User extends AppModel {
 	 */
 	function updateSchoolFavorite($data, $schoolId){
 		$this->id = $data['User']['id'];
-		$temp = $data['User'];
-		$temp['school_id'] = $schoolId;
-		return $this->save(array('User'=>$temp));
+		return $this->saveField('school_id',$schoolId);
 	}
 	
 }

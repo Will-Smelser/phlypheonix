@@ -17,6 +17,20 @@ class Pimage extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Color' => array(
+			'className' => 'Color',
+			'foreignKey' => 'color_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Size' => array(
+			'className' => 'Size',
+			'foreignKey' => 'size_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 }

@@ -5,6 +5,8 @@
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('product_id');?></th>
 			<th><?php echo $this->Paginator->sort('actor_id');?></th>
+			<th><?php echo $this->Paginator->sort('color_id');?></th>
+			<th><?php echo $this->Paginator->sort('choice_id');?></th>
 			<th><?php echo $this->Paginator->sort('image');?></th>
 			<th class="actions"><?php __('Actions');?></th>
 	</tr>
@@ -22,9 +24,11 @@
 			<?php echo $this->Html->link($pimage['Product']['name'], array('controller' => 'products', 'action' => 'view', $pimage['Product']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($pimage['Actor']['id'], array('controller' => 'actors', 'action' => 'view', $pimage['Actor']['id'])); ?>
+			<?php echo $this->Html->link($pimage['Actor']['name'], array('controller' => 'actors', 'action' => 'view', $pimage['Actor']['id'])); ?>
 		</td>
-		<td><?php echo $pimage['Pimage']['image']; ?>&nbsp;</td>
+		<td><?php echo $pimage['Color']['name']; ?>&nbsp;</td>
+		<td><?php echo $pimage['Size']['name']; ?>&nbsp;</td>
+		<td><img width="70" src="<?php echo $pimage['Pimage']['image']; ?>"/></td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $pimage['Pimage']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $pimage['Pimage']['id'])); ?>

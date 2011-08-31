@@ -28,7 +28,8 @@ class PdetailsController extends AppController {
 		}
 		$products = $this->Pdetail->Product->find('list');
 		$sizes = $this->Pdetail->Size->find('list');
-		$this->set(compact('products', 'sizes'));
+		$colors = $this->Pdetail->Color->find('list');
+		$this->set(compact('products', 'sizes', 'colors'));
 	}
 
 	function edit($id = null) {
@@ -49,7 +50,8 @@ class PdetailsController extends AppController {
 		}
 		$products = $this->Pdetail->Product->find('list');
 		$sizes = $this->Pdetail->Size->find('list');
-		$this->set(compact('products', 'sizes'));
+		$colors = $this->Pdetail->Color->find('list');
+		$this->set(compact('products', 'sizes', 'colors'));
 	}
 
 	function delete($id = null) {

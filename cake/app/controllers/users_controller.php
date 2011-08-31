@@ -46,7 +46,7 @@ class UsersController extends AppController {
 		$this->set('users', $this->paginate());
 	}
 
-	function login($error=null){
+	function login($err=null){
 		
 		$this->layout = 'landing'; 
 
@@ -61,8 +61,8 @@ class UsersController extends AppController {
 		$error = new MyError('no_error');
 		
 		//if there was a login error from register or login
-		if($error !== null) {
-			$error = new MyError($error);
+		if(!empty($err)) {
+			$error = new MyError($err);
 		}
 		
 		//AuthComponent does not encrypt password by default if the you are not
@@ -97,7 +97,7 @@ class UsersController extends AppController {
                     $this->data['User']['password']  
                 );  
         }
-        
+
         $this->set('error',$error->getJson());
         
         //$this->redirect($this->Auth->redirect());
@@ -368,6 +368,7 @@ class MyError {
 }
 class errorTypes {
 	public static function getType($name) {
+		
 			switch($name) {
 			case 'reg_email':
 				return array(

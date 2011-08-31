@@ -4,6 +4,7 @@
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
+			<th><?php echo $this->Paginator->sort('display');?></th>
 			<th><?php echo $this->Paginator->sort('sex');?></th>
 			<th class="actions"><?php __('Actions');?></th>
 	</tr>
@@ -18,6 +19,7 @@
 	<tr<?php echo $class;?>>
 		<td><?php echo $size['Size']['id']; ?>&nbsp;</td>
 		<td><?php echo $size['Size']['name']; ?>&nbsp;</td>
+		<td><?php echo $size['Size']['display']; ?>&nbsp;</td>
 		<td><?php echo $size['Size']['sex']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $size['Size']['id'])); ?>
@@ -45,8 +47,9 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('New Size', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Product Details', true), array('controller' => 'pdetails', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Size Choices', true), array('controller' => 'schoices', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Product Detail', true), array('controller' => 'pdetails', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Pdetails', true), array('controller' => 'pdetails', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Pdetail', true), array('controller' => 'pdetails', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Schoices', true), array('controller' => 'schoices', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Schoice', true), array('controller' => 'schoices', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

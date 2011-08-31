@@ -6,7 +6,7 @@
 		echo $this->Form->input('id');
 		echo $this->Form->input('product_id');
 		echo $this->Form->input('size_id');
-		echo $this->Form->input('color');
+		echo $this->Form->input('color_id');
 		echo $this->Form->input('inventory');
 		echo $this->Form->input('counter');
 	?>
@@ -18,10 +18,12 @@
 	<ul>
 
 		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Pdetail.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Pdetail.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Product Details', true), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(__('List Pdetails', true), array('action' => 'index'));?></li>
 		<li><?php echo $this->Html->link(__('List Products', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Colors', true), array('controller' => 'colors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Color', true), array('controller' => 'colors', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

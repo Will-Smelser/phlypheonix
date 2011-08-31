@@ -21,7 +21,6 @@ class ShopController extends AppController {
 	    parent::beforeFilter();
 	    
 	    $this->layout = 'shop';
-
 	}
 	
 	function index() {
@@ -34,6 +33,9 @@ class ShopController extends AppController {
 		if($info == 'user'){
 			
 		//could not find the school
+		} else if($info=='locate') {
+			
+		//should not go here
 		} else {
 			
 		}
@@ -44,38 +46,100 @@ class ShopController extends AppController {
 		
 	}
 	
-	//main page for shopping
-	function main ($school=null, $sex=null, $sale = null, $product = null) {
+	//no product available
+	function noproduct(){
 		
+	}
+	
+	function product($school=null, $sex=null, $sale = null){
+		
+		$this->layout = 'ajax';
+		
+		$this->main($school, $sex, $sale);
+	}
+	
+	//TODO implament expired display
+	//main page for shopping
+	//imageIndex is the product image to show
+	function main ($school=null, $sex=null, $sale = null, $expired=false) {
+		$imageIndex = 0;
+		$product = null;
+		
+		//fix data if needed
 		$school   = $this->getSchool($school);
 		$sex      = $this->getSex($sex);
-		$saleData = $this->getSale($sale, $sex, $school);
+		$sale     = $this->getSale($sale, $sex, $school);
+		$product  = $this->getProduct($product, $sale, $sex, $school);
+		$products = $this->getProductsDetails($sale);
 		
-		$this->addUserSaleEndDate($saleData['Sale']['id']);
+		//get left and right products
+		$productLeft = array();
+		$productRight= array();
+		$this->getPagination($products,$product,$productLeft,$productRight, $index);
+		
+		$this->Sale->Saleuser->addUserSaleEndDate($this->myuser, $sale['Sale']['id']);
+		//debug($products);
+		//debug($product);
+		$this->addSaleEnds($this->myuser, $sale);
+		
+		$this->set(compact('school','sex','sale','product','productLeft','productRight','imageIndex'));
+	}	
+	
+	//set the pagination and move detailed product data into $product
+	private function getPagination($products,&$product,&$productLeft,&$productRight, &$index){
+		$id = $product['id'];
+		$temp = null;
+		
+		$found = false;
+		foreach($products as $p) {
+			if($p['Product']['id'] == $id){
+				$found = true;
+				$temp = $p;
+			} else {
+				//add left
+				if(!$found){
+					array_push($productLeft, $p['Product']);
+				//add right
+				} else {
+					array_push($productRight, $p['Product']);
+				}
+			}
+		}
+		$product = $temp;
+		//$index   = $temp[]
+		return;
 	}
 	
-	private function addUserSaleEndDate($saleId) {
-		$data['Saleuser'] = array(
-			'user_id' => $this->myuser['User']['id'],
-			'sale_id' => $saleId
-		);
+	private function addSaleEnds(&$myuser, &$sale) {
+		
+		foreach($myuser['Saleuser'] as $entry) {
 
-		Configure::write('debug',0);
-		
-		$this->Sale->Saleuser->create();
-		$this->Sale->Saleuser->save($data);
-		
-		Configure::write('debug',1);
-		
-		
-	}
-	
-	private function mainInit($school=null, $sex=null, $sale = null, $product = null) {
-		//first we need a aschoo, nobody should be at 'main' without a school
-		if($school == null) {
-			
+			if($entry['sale_id'] == $sale['Sale']['id']){
+				$time = Configure::read('config.sales.length') + $entry['created'];
+				$sale['Sale']['UserSaleEnds'] = $time;
+				return;
+			}
 		}
 	}
+	
+	private function getProductsDetails(&$sale){
+		$ids = array();
+		foreach($sale['Product'] as $p){
+			array_push($ids, $p['id']);
+		}
+		$result = $this->Product->find('all',array('conditions'=>array('Product.id IN ('.implode(',',$ids).')')));
+		if(!$result) {
+			$this->redirect(array('action'=>'noproduct'));
+		}
+				
+		return $result;
+	}
+	
+	/**
+	 * Attempt to figure out what school to load if none was given
+	 * 
+	 * @param integer $schoolId The id of the school or null
+	 */
 	private function getSchool($schoolId) {
 		
 		//specific school is requested
@@ -135,35 +199,39 @@ class ShopController extends AppController {
 	 * @param unknown_type $sex
 	 */
 	private function getSex($sex){
+		//no sex given, but user does have sex
 		if(!empty($this->myuser['User']['sex']) && empty($sex)) {
 			return $this->myuser['User']['sex'];
-		}else if(empty($sex)) {
-			return 'F';
-		} else {
+		//valid sex
+		} else if($sex == 'M' || $sex == 'F') {
 			return $sex;
+		//default to F
+		} else {
+			return 'F';
 		}
 	}
 	
 	/**
-	 * Forwards users to correct url based on their input
+	 * Forwards users to correct url based on their input, or just gets the valid
+	 * sale data.
 	 * 
-	 * @param unknown_type $sale
-	 * @param unknown_type $sex
-	 * @param unknown_type $school
+	 * @param integer $saleId The sale id to lookup
+	 * @param character $sex valid reference to sex
+	 * @param object $school An array representing the school model
 	 */
-	private function getSale($sale, &$sex, &$school) {
+	private function getSale($saleId, &$sex, &$school) {
 		
 		//we dont have a sale id to lookup on
-		if(empty($sale)) {
+		if(empty($saleId)) {
 			//first check if user has any sales already available to them
 			$ids = array();
 			if(count($this->myuser['Saleuser']) > 0){
 				
-				foreach($this->myuser['Saleuser'] as $sale) {
-					array_push($ids, $sale['id']);
+				foreach($this->myuser['Saleuser'] as $suser) {
+					array_push($ids, $suser['id']);
 				}
 				
-				//lookup the sale id's
+				//lookup the sale ids
 				$usales = $this->Sale->find('all',array(
 					'conditions'=>array(
 						'Sale.id IN ('.implode(',',$ids).')',
@@ -175,6 +243,7 @@ class ShopController extends AppController {
 				//try and match sex		
 				foreach($usales as $s) {
 					if($s['Product'][0]['sex'] == $sex && $s['Product'][0]['school_id'] == $school['id']) {
+						//redirect to fully qualified url
 						$this->redirect(array('action'=>"main/{$school['id']}/{$s['Product'][0]['sex']}/{$s['Sale']['id']}"));
 						return;
 					} 
@@ -185,7 +254,7 @@ class ShopController extends AppController {
 			//could not match on users current sales
 			$order = ($sex == 'M') ? 'DESC' : 'ASC'; //sort by sex
 			
-			//sql
+			//sql to find valid sales for the given school
 			$sql = 'SELECT * FROM `sales` AS `Sale` LEFT JOIN `sales_products` ON `Sale`.`id` = `sales_products`.`sale_id` '.
 				'LEFT JOIN `products` AS `Product` ON `sales_products`.`product_id` = `Product`.`id` '.
 				'WHERE `Product`.`school_id` = ' . $school['id'] . ' AND `Sale`.`starts` <= ' . time() . ' ' .
@@ -200,21 +269,23 @@ class ShopController extends AppController {
 				$this->redirect(array('action'=>"main/{$school['id']}/{$saleData[0]['Product']['sex']}/{$saleData[0]['Sale']['id']}"));
 			}
 				
-			
+		//lookup the requested sale
 		} else {
 			$saleData = $this->Sale->find('first',array(
 				'conditions'=>array(
-					'Sale.id = '.$sale,
+					'Sale.id = '.$saleId,
 					'Sale.ends >= '.time(),
 					'Sale.starts <= '.time(), 
 				)
 			));
 			
 			if(!empty($saleData)){
+				//verify the sex requested matched
 				if($saleData['Product'][0]['sex'] == $sex){
 					return $saleData;
+				//sex did not match...redirect to fully qualified url
 				} else {
-					$this->redirect(array('action'=>"main/{$school['id']}/{$saleData['Product'][0]['sex']}/{$sale}"));
+					$this->redirect(array('action'=>"main/{$school['id']}/{$saleData['Product'][0]['sex']}/{$saleId}"));
 				}
 			}
 		}
@@ -222,5 +293,29 @@ class ShopController extends AppController {
 		//no luck jus send to error page
 		$this->redirect(array('action'=>'nosale'));
 		return false;
+	}
+	
+	//get the product
+	private function getProduct($product, &$sale, &$sex, &$school){
+		//no product given
+		if(empty($product)) {
+			if(count($sale['Product']) > 0) {
+				return $sale['Product'][0];
+			}
+		//product number requested
+		} else {
+			//look for this product
+			foreach($sale['Product'] as $p) {
+				if($p['id'] == $product) {
+					return $p;
+				}
+			}
+			//forward to first product
+			$this->redirect(array('action'=>"main/{$school['id']}/{$sex}/{$sale['id']}/{$sale['Product'][0]['id']}"));
+			return;
+		}
+		//no product found
+		$this->redirect(array('action'=>'noproduct'));
+		return;
 	}
 }

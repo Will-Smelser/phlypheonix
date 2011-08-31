@@ -5,7 +5,7 @@
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('product_id');?></th>
 			<th><?php echo $this->Paginator->sort('size_id');?></th>
-			<th><?php echo $this->Paginator->sort('color');?></th>
+			<th><?php echo $this->Paginator->sort('color_id');?></th>
 			<th><?php echo $this->Paginator->sort('inventory');?></th>
 			<th><?php echo $this->Paginator->sort('counter');?></th>
 			<th class="actions"><?php __('Actions');?></th>
@@ -26,7 +26,9 @@
 		<td>
 			<?php echo $this->Html->link($pdetail['Size']['name'], array('controller' => 'sizes', 'action' => 'view', $pdetail['Size']['id'])); ?>
 		</td>
-		<td><?php echo $pdetail['Pdetail']['color']; ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($pdetail['Color']['name'], array('controller' => 'colors', 'action' => 'view', $pdetail['Color']['id'])); ?>
+		</td>
 		<td><?php echo $pdetail['Pdetail']['inventory']; ?>&nbsp;</td>
 		<td><?php echo $pdetail['Pdetail']['counter']; ?>&nbsp;</td>
 		<td class="actions">
@@ -54,10 +56,12 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Product Detail', true), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('New Pdetail', true), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('List Products', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Colors', true), array('controller' => 'colors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Color', true), array('controller' => 'colors', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
