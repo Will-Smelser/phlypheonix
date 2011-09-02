@@ -1,12 +1,15 @@
 @charset "utf-8";
 /* CSS Document */
+body{
+	    font-family: Arial,Helvetica,sans-serif;
+}
 input, select{
 	background-color:#CCC;
 	border-color:#CCC;
 	color:#333;
 	border-radius: 5px;
 	padding:5px;
-	font-size:16px;
+	font-size:14px;
 }
 .one{
 	color: #FBB040;
@@ -26,7 +29,7 @@ input, select{
 	color: #FFFFFF;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align: left;
-	font-size: 16px;
+	font-size: 14px;
 }
 
 .four{
@@ -145,12 +148,8 @@ body{
 
 #navigate{
     position:relative;
-    top:7px;
-    left:0px;
-    
-    margin-left:auto;
-    margin-right:auto;
-    width:950px;
+    top:3px;
+    right:10px;
     
     text-align:right; 
 }
@@ -285,7 +284,7 @@ a #leftarrow {
 	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_lbutton.png);
 	background-repeat:no-repeat;	
 }
-a #leftarrow :hover{
+a #leftarrow:hover{
 	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_lbuttonorange.png);	
 }
 
@@ -315,8 +314,8 @@ a #rightarrow:hover{
 
 .viewer{
 	position: absolute;
-	left: 60px;
-	top: 54px;
+	left: 45px;
+	top: 45px;
 	width: 580px;
 	height:446px;
 	background-image:url(/img/productpresentation/flyfoenix_product_presentation_lightgraymain.png);
@@ -409,8 +408,8 @@ a #rightarrow:hover{
 
 #content{
 	position: absolute;
-	margin-top: 50px;
-	margin-left: 640px;
+	margin-top: 40px;
+	margin-left: 630px;
 	width: 260px;
 	z-index: 6;	
 }
@@ -442,30 +441,30 @@ a #rightarrow:hover{
 
 #size{
 	display:inline-block;
-	width:250px;
+	
 	margin-left: 6px;
 }
 #size select{
 	border-style:none;
-	float:right;
+	border-width:0px;
+	margin:0px;
 	width:100px;	
 }
 #quantity{
 	padding:5px;
 	display:inline-block;
-	width:250px;
-	maring-left:6px;
+	
+	margin-left:20px;
 }
 #quantity input{
-	float:right;
 	width:100px;
 	border:none;
 	text-align:right;	
 }
 #addtocart{
 	margin-top:10px;
+	margin-left:5px;
 	font-weight:normal;
-	float:right;
 }
 	
 /*End Body Container Elements*/
@@ -474,4 +473,53 @@ a #rightarrow:hover{
 .mioZoomWrapper{
 	background-color:#333;
 }
+
+/* DETAILS OF PRODUCT */
+.product-details{
 	
+	font-size:14px;
+	color:#FFF;
+	padding:2px;	
+}
+.product-details th{
+	font-weight:bold;	
+}
+.product-details.right{
+		
+}
+.product-details.left{
+	
+	margin-left:6px;
+}
+.product-details td, .product-details th{
+	text-align:center;
+	padding:2px 5px 0px 5px;
+}
+.title {
+	color: #FBB040;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+	text-align:left;
+	font-size:14px;
+	padding-left:6px;
+}
+a.whitelink.chart {
+	padding-top:10px;
+	padding-left:6px;
+	display:inline-block;
+		
+}
+.attribute-detail {
+	position:absolute; 
+	bottom:0px; 
+	left:0px; 
+	display:none;  
+	color:#FFF;	
+	padding:10px;
+	font-style:italic;
+	font-size:16px;
+	font-weight:bold;
+	opacity:.50;
+	alpha(opacity=50);
+	background-color:#333;
+}
