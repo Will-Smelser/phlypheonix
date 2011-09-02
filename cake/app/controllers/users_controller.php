@@ -49,20 +49,17 @@ class UsersController extends AppController {
 	function login($err=null){
 		
 		$this->layout = 'landing'; 
-
-		//delete registerData from session
-		//$this->Session->delete('registerData');
 		
 		//force logged-in users to shop
 		if($this->Auth->user()){
 			$this->redirect(array('controller'=>'shop','action'=>'main'));
 		}
 		
-		$error = new MyError('no_error');
-		
 		//if there was a login error from register or login
 		if(!empty($err)) {
 			$error = new MyError($err);
+			$this->set('error',$error->getJson());
+			return;
 		}
 		
 		//AuthComponent does not encrypt password by default if the you are not
@@ -75,42 +72,48 @@ class UsersController extends AppController {
 				return;
 			}
 			
+			//encrypt password
 			$this->data['User']['password'] = AuthComponent::password($this->data['User']['birthdate']);
-			if(!$this->Auth->login($this->data)){
+			
+			//login the user
+			if($this->Auth->login($this->data)){
+				
+				//handle the remember me
+				if (empty($this->data['User']['remember_me']))  
+		        {  
+		            $this->RememberMe->delete();
+		            return;  
+		        } else {
+		        	$this->RememberMe->remember(  
+		                    $this->data['User']['email'],  
+		                    $this->data['User']['password']  
+		                );
+		        }
+		        
+				//user is logged in, forward to the shop
+				$this->redirect(array('controller'=>'shop','action'=>'main'));
+				return;
+			} else {
 				$error = new MyError('bad_password');
 				$this->set('error',$error->getJson());
 				return;
 			}
-			
-		}
+		} 
 		
-		//handle the remember me  
-        if (empty($this->data['User']['remember_me']))  
-        {  
-            $this->RememberMe->delete();  
-        }  
-        else if($this->Auth->user() != false)  
-        {  
-            $this->RememberMe->remember
-                (  
-                    $this->data['User']['email'],  
-                    $this->data['User']['password']  
-                );  
-        }
-
+		$error = new MyError('no_error');
         $this->set('error',$error->getJson());
         
         //$this->redirect($this->Auth->redirect());
 	}
 	
 	function logout(){
-		
+		$this->Session->delete('registerData');
 		$this->Session->setFlash('Good-Bye');
 		$this->RememberMe->delete();
 		
 		$this->Auth->logout();
         
-		$this->redirect(array('action'=>'login'));
+		//$this->redirect(array('action'=>'login'));
         
 	}
 	

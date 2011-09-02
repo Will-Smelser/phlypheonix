@@ -87,7 +87,15 @@ class ShopController extends AppController {
 		$this->addSaleEnds($this->myuser, $sale);
 		//debug($product);
 		
-		$this->set(compact('school','sex','sale','product','productRight','imageIndex'));
+		$products = array_merge(array($product['Product']), $productRight);
+		foreach($products as $k=>$p) {
+			foreach($p as $key=>$entry)
+			if(!in_array($key,array('id','pricetag'))){
+				unset($products[$k][$key]);
+			}
+		}
+		
+		$this->set(compact('school','sex','sale','product','products','productRight','imageIndex'));
 	}	
 	
 	private function fixVars(&$product, &$school, &$sex, &$sale, &$expired){
@@ -149,6 +157,11 @@ class ShopController extends AppController {
 	 * @param integer $schoolId The id of the school or null
 	 */
 	private function getSchool($schoolId) {
+		
+		//facebook users dont get a school, so we have to do this
+		if(!isset($this->myuser['School'])){
+			$this->myuser['School'] = array();
+		}
 		
 		//specific school is requested
 		if(!empty($schoolId)){

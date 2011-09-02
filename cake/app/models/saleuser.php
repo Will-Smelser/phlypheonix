@@ -21,6 +21,7 @@ class Saleuser extends AppModel {
 	);
 	
 	function addUserSaleEndDate(&$myuser, $saleId) {
+		
 		$data['Saleuser'] = array(
 			'user_id' => $myuser['User']['id'],
 			'sale_id' => $saleId

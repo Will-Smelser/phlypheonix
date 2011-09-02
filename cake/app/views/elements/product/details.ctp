@@ -5,8 +5,6 @@
  * $index What product image is this
  */
 
-$bustText = (strtolower($product['Product']['sex']) == 'f') ? 'BUST' : 'CHEST';
-
 //allow out of inventory sales
 $presale = Configure::read('config.inventory.allowpresale');
 
@@ -15,6 +13,7 @@ $inventory = 0;
 foreach($product['Pdetail'] as $p){
 	$inventory += $p['inventory'];
 }
+
 ?>
 
 <div id="inventory">
@@ -29,16 +28,19 @@ foreach($product['Pdetail'] as $p){
     
 <img id="grayline" src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="261" height="2" alt="grayline" />
     
-<span id="description" class="two">
-	COLOR:  <?php echo $product['Pimage'][$index]['Color']['name']; ?><br/>
-    SHIRT SIZE: <?php echo $product['Pimage'][$index]['Size']['display']; ?><br />
-    HEIGHT:  <?php echo $product['Pimage'][$index]['Actor']['height']; ?><br/>
-    WEIGHT: <?php echo $product['Pimage'][$index]['Actor']['weight']; ?><br/>
-    WAIST: <?php echo $product['Pimage'][$index]['Actor']['waist']; ?><br/>
-    <?php echo $bustText; ?> SIZE: <?php echo $product['Pimage'][$index]['Actor']['bust']; ?><br/>
-    <a href="#" class="whitelink">SIZING CHART</a></span>
+    <div class="product-detail-wrapper">
+    <?php
+    	echo '<div style="display:block">'.$this->element('/product/image_details',array('pimage'=>$product['Pimage'][0],'sex'=>$product['Product']['sex'])).'</div>';
+		for($i=1; $i < count($product['Pimage']); $i++){
+			echo '<div style="display:none">'.$this->element('/product/image_details',array('pimage'=>$product['Pimage'][$i],'sex'=>$product['Product']['sex'])).'</div>';
+    	} 
+    ?>
+	</div>
+
     <img id="grayline" src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="261" height="2" alt="grayline" />
-    <div id="size" class="three">SIZE: 
+    
+    <div id="size" >
+    	<span class="three" ">Size</span><br/>
     <select name="size" size="1">
     <?php 
     	foreach($product['Pdetail'] as $p) {
@@ -48,8 +50,9 @@ foreach($product['Pdetail'] as $p){
     <?php } ?>
     </select>
     </div>
-    <div id="quantity" class="three">QUANTITY:
-    <input name="quantity" size="2" value="1" type="text" />
+    <div id="quantity">
+    	<span  class="three">Quantity</span><br/>
+    	<input name="quantity" size="2" value="1" type="text" />
 	</div>
 </span>
 

@@ -92,7 +92,7 @@ $(document).ready(function(){
 	
 		//logged in function
 		function fbloggedin(){
-			window.location.href = '<?php echo $protocal; ?>://flyfoenix.com/shop/main';
+			window.location.href = '<?php echo $protocal; ?>://flyfoenix.com/users/login';
 		}
 	
 		//logout function
@@ -144,7 +144,9 @@ $(document).ready(function(){
 			   
 	};
 
-	var showError = function(loginError) {
+	//ajax tells whether the error came from posted data,
+	//or a registration ajax check
+	var showError = function(loginError, ajax) {
 		if(loginError.id == 'error-general') {
 			qtipSetting.content = $.extend(qtipSetting.content,{
 				text : loginError.msg,
@@ -175,17 +177,16 @@ $(document).ready(function(){
 				var gender = '<?php if(isset($postsex)) echo $postsex; ?>';
 				var school = '<?php if(isset($postschool)) echo $postschool; ?>';
 	
-
-				if(email != '') $('#email input').val(email);
-				if(birth != '' && birth!='MM/DD/YYYY') $('#birthdate input').val(birth);
+				if(email != '' && !ajax) $('#email input').val(email);
+				if(birth != '' && !ajax && birth!='MM/DD/YYYY') $('#birthdate input').val(birth);
 				
-				if(gender == 'F') {
+				if(gender == 'F' && !ajax) {
 					$('#tradio input').first().prop('checked',false).next().prop('checked',true);
-				} else if(gender == 'M') {
+				} else if(gender == 'M' && !ajax) {
 					$('#tradio input').first().prop('checked',true).next().prop('checked',false);
 				}
 							
-				if(school != '') $('#school select').val(school);
+				if(school != '' && !ajax) $('#school select').val(school);
 						
 			} else {
 				//set how to display qtip
@@ -218,7 +219,7 @@ $(document).ready(function(){
 		}
 	}
 
-	showError(loginError);
+	showError(loginError, false);
 
 	//overwrite the form submit
 	$('#btnregister').click(function(){
@@ -233,7 +234,7 @@ $(document).ready(function(){
 			if(data.msg == 'success') {
 				$('#registerForm').submit();
 			} else {
-				showError(data);
+				showError(data, true);
 			}	
 		},
 		error:function(){

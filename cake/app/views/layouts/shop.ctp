@@ -31,7 +31,6 @@
   	<?php echo $this->element('layouts/header',array('school'=>$school,'myuser'=>$myuser)); ?>
   </div>
   
-
 	<?php //echo $this->Session->flash(); ?>
 
 	<?php echo $content_for_layout; ?>
@@ -52,6 +51,7 @@ $(document).ready(function(){
 		x : 0,
 		$wrapper : null,
 		$sliders : [],
+		products : <? echo json_encode($products); ?>,
 		current : 0,
 		$lnav : null,
 		$rnav : null,
@@ -73,9 +73,23 @@ $(document).ready(function(){
 				obj.$sliders[i].load(
 						obj.$sliders[i].attr('id'), //the id actually holds the url
 						function(){
+							
 							obj.$sliders[temp].removeClass('product-loading');
-							obj.$sliders[temp].find(".gallery-thumb").mioZoom({'$target':obj.$sliders[temp].find('.mainphoto')});
+							obj.$sliders[temp].find(".gallery-thumb").mioZoom(
+									{
+										'$target':obj.$sliders[temp].find('.mainphoto'),
+										'onEnterHook' : function(id){
+											//this should reference the zoom object
+											var $temp = obj.$sliders[temp].find('.product-detail-wrapper').children();
+											$temp.hide();
+											$($temp[id]).show();
+										}
+								
+									}
+							);
 							obj.$sliders[temp].find(".feature-thumb").mioZoom({'$target':obj.$sliders[temp].find('.mainphoto'),'zoom':false,'hideOnExit':true});
+
+												
 						}
 				);
 			}
@@ -98,6 +112,7 @@ $(document).ready(function(){
 			obj.current--;
 			obj.anim('+='+obj.width);
 			obj.toggleNavs();
+			obj.setPrice();
 		},
 
 		moveRight : function() {
@@ -110,8 +125,15 @@ $(document).ready(function(){
 			obj.current++;
 			obj.anim('-='+obj.width);
 			obj.toggleNavs();
+			obj.setPrice();
+			
 		},
 
+		setPrice : function() {
+			var obj = this;
+			$('#buynowtag').attr('src',obj.products[obj.current].pricetag);
+		},
+		
 		anim : function(pos) {
 			var obj = this;
 			obj.$wrapper.animate({
@@ -154,19 +176,23 @@ $(document).ready(function(){
 	      onEnterHook: function(){return;},
 	      imageWidth   :700,
 	      imageHeight  :800,
-	      wrapperWidth : 355,
-	      wrapperHeight: 405,
+	      wrapperWidth : 351,
+	      wrapperHeight: 401,
 	      zoomZindex   : 1000,
-	      imageZindex  : 999
+	      imageZindex  : 999,
+	      id : null
 	    };
 
 	    //cycle the thumbs
-	    this.each(function() {        
+	    this.each(function(key) {        
 	      // If options exist, lets merge them
 	      // with our default settings
 	      if ( options ) { 
 	        $.extend( settings, options );
 	      }
+
+	      //what is the index value
+	      this.id = key;
 	      
 	      //lets add the images to the target (hidden)
 	      var $el = $(this);
@@ -234,7 +260,8 @@ $(document).ready(function(){
 	    	  	$zoomWrapper.show();
 		      }
 	    	  $imgWrapper.show();
-	    	  settings.onEnterHook();
+	    	  settings.onEnterHook(this.id);
+	    	  
 	      });
 
 	      
@@ -287,7 +314,15 @@ $(document).ready(function(){
 $(document).ready(function(){
 	//$(".gallery-thumb").jqzoom({'ztarget':'mainphoto'});
 	var $main = $('#sliderpane').children().first();
-	$main.find(".gallery-thumb").mioZoom({'$target':$main.find('.mainphoto')});
+	$main.find(".gallery-thumb").mioZoom({
+		'$target':$main.find('.mainphoto'),
+		'onEnterHook' : function(id){
+			//this should reference the zoom object
+			var $temp = $main.find('.product-detail-wrapper').children();
+			$temp.hide();
+			$($temp[id]).show();
+		}
+	});
 	$main.find(".feature-thumb").mioZoom({'$target':$main.find('.mainphoto'),'zoom':false,'hideOnExit':true});
 });
 
