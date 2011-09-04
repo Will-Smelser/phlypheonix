@@ -203,9 +203,9 @@ $(document).ready(function(){
 				//set the user data
 				var email = '<?php if(isset($postemail)) echo $postemail; ?>';
 				var birth = '<?php if(isset($postbirthdate)) echo $postbirthdate; ?>';
-	
-				$('#email2 input').val(email);
-				$('#birthdate2 input').val(birth);
+
+				if(email != '') $('#email2 input').val(email);
+				if(birth != '') $('#birthdate2 input').val(birth);
 	
 			}
 			qtipSetting.content.text = loginError.msg;

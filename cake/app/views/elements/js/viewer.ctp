@@ -1,4 +1,4 @@
-	var viewer = {
+	window.viewer = {
 		width : 935,
 		x : 0,
 		$wrapper : null,
@@ -9,6 +9,8 @@
 		$rnav : null,
 		speed : 1000,
 		inTrans : false,
+		viewed : [0], //include the first page by default
+		checkoutUrl : '/shop/accessories',
 		
 		init : function() {
 			var obj = this;
@@ -27,6 +29,11 @@
 						function(){
 							
 							obj.$sliders[temp].removeClass('product-loading');
+							
+							obj.$sliders[temp].find('.add-to-cart').click(function(){
+								obj.addToCart(temp);
+							});
+							
 							obj.$sliders[temp].find(".gallery-thumb").mioZoom(
 									{
 										'$target':obj.$sliders[temp].find('.mainphoto'),
@@ -55,9 +62,22 @@
 									obj.$sliders[temp].find('.attribute-detail').slideUp();
 								}
 							});
+							
+							//bind checkout for tooltip
+							if(temp < obj.$sliders.length - 1){
+								obj.$sliders[temp].find('.checkout').click(function(){
+									bindCheckout(temp);
+								});
+							} else {
+								obj.$sliders[temp].find('.checkout').click(function(){
+									document.location.href= obj.checkoutUrl;
+								});
+							}
 												
 						}
 				);
+				
+				
 			}
 
 			//set left/right nav
@@ -67,6 +87,31 @@
 			//bind nav
 			obj.$rnav.click($.proxy(obj.moveRight,obj));
 			obj.$lnav.click($.proxy(obj.moveLeft,obj));
+			
+			//bind add to cart
+			obj.$sliders[0].find('.add-to-cart').click(function(){
+				obj.addToCart(0);
+			});
+		},
+		addToCart : function(index){
+			var obj = this;
+			var id = obj.products[index].id;
+			var qty = obj.$sliders[index].find('.input-quantity').val();
+			var color = obj.$sliders[index].find('.input-color').val();
+			var size = obj.$sliders[index].find('.input-size').val();
+			
+			obj.ajaxAddToCart(id, qty, size, color);
+		},
+		ajaxAddToCart : function(id, qty, size, color){
+			
+			$.getJSON('/cart/addProduct/'+id+'/'+qty+'/'+size+'/'+color,
+				//success
+				function(data){
+					if(!data.result){
+					 	alert('Error adding product to cart.');
+					}
+				}
+			);
 		},
 		moveLeft : function() {
 			var obj = this;
@@ -93,8 +138,19 @@
 			obj.toggleNavs();
 			obj.setPrice();
 			
+			obj.addViewed(obj.current);
 		},
-
+		//track whick pages have been viewed
+		addViewed : function(pos){
+			var obj = this;
+			for(var x in obj.viewed){
+				if(obj.viewed[x] == pos) return;
+			}
+			obj.viewed.push(pos);
+		},
+		allPagesViewed : function(){
+			return (this.viewed.length == this.$sliders.length);
+		},
 		setPrice : function() {
 			var obj = this;
 			$('#buynowtag').attr('src',obj.products[obj.current].pricetag);

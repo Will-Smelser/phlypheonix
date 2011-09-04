@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var qtipSetting = {
 	   content: {
-		   text: 'test',
+		   text: '',
 		   prerender: true
 	   },
 	   style: { 
@@ -37,10 +37,12 @@ $(document).ready(function(){
 	var $a = null;
 	
 	<?php foreach($data as $s) {?>
-	$img = $(document.createElement('img')).attr('src','<?php echo $s['logo_large']?>');
-	$a = $(document.createElement('a')).attr('href','/shop/main/<?php echo $s['id']; ?>').append($img);
+	$img = $(document.createElement('img')).attr('src','<?php echo $s['School']['logo_large']?>');
+	$a = $(document.createElement('a')).attr('href','/shop/main/<?php echo $s['School']['id']; ?>').append($img);
+	$wrap.append($a);
 	<?php } ?>
 	
-	$('body').qtip(qtipSetting);//.qtip('api').updateContent($wrap);
+	$('body').qtip(qtipSetting);
+	$($('body').qtip('api').elements.content).append('<h2>HELLO WORLD</h2>');
 	$('body').trigger('qtipShow');
 });

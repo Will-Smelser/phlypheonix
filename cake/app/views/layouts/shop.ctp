@@ -36,7 +36,9 @@
 	<?php echo $content_for_layout; ?>
 
 </div>
-					
+
+<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex)); ?>
+
 </body>
 
 <script type="text/javascript" src="/js/jquery.miozoom.js"></script>
@@ -84,6 +86,19 @@ $(document).ready(function(){
 	
 });
 
+//search for schools
+<?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
+
+//heart toggle...add school to favorites
+<?php echo $this->element('js/heart_toggle',array('school_id'=>$school['id'])); ?>
+
+//add to cart
+<?php echo $this->element('prompts/checkout',array('count'=>count($products))); ?>
+$(document).ready(function(){
+	$('#sliderpane:first-child .checkout').click(function(){
+		bindCheckout(1);
+	});
+});
 
 //share this
 var switchTo5x=true;

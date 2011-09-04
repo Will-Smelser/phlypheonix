@@ -25,6 +25,14 @@
 	$gender = (strtolower($product['Product']['sex']) == 'f') ? 'female' : 'male';
 	$gopsite= (strtolower($product['Product']['sex']) == 'f') ? 'M' : 'F';
 	$glink = "/shop/main/{$school['id']}/$gopsite";
+	
+	$heart_class = 'heart-no';
+	foreach($myuser['School'] as $s){
+		if($s['id'] == $school['id']){
+			$heart_class = 'heart';
+			break;
+		}
+	}
 
 ?>
 <div id="bodyHeader">
@@ -48,7 +56,7 @@
               <td><a href="#"><img id="cart" src="/img/productpresentation/flyfoenix_product_presentation_cart.png" width="14" height="13" alt="cart" /></a></td>
             </tr>
             <tr>
-              <td><a href="#"><img id="favorite" src="/img/productpresentation/flyfoenix_product_presentation_heart.png" width="14" height="13" alt="favorite" /></a></td>
+              <td><a href="#" title="Add/Remove School"  id="favorite" class="<?php echo $heart_class; ?>"></a></td>
             </tr>
             <tr>
               <td><a href="#"><img class="qtip" id="search" src="/img/productpresentation/flyfoenix_product_presentation_search.png" width="16" height="15" alt="search" /></a></td>

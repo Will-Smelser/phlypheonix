@@ -1,6 +1,6 @@
 <?php
 class AppController extends Controller {
-	var $components = array('Session','Acl', 'Auth','Cookie','Cart','RememberMe','Cprompt');
+	var $components = array('Session','Acl', 'Auth','Cookie','RememberMe','Cprompt');
 	
 	var $myuser; //logged in users data
 	

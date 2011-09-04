@@ -36,8 +36,52 @@ class UsersController extends AppController {
 		} 
 	}
 	
+	function add_school($id){
+		$this->layout = 'ajax';
+		if(!isset($this->myuser['School'])){
+			echo "{'result':false}";
+			exit;
+		}
+		
+		$id = $id * 1;
+		
+		//couldnt get cake HABTM to work
+		$ids = array();
+		foreach($this->myuser['School'] as $s){
+			array_push($ids, $s['id']);
+		}
+		
+		$result = false;
+		if(!in_array($id,$ids)){
+			$sql = "INSERT INTO `users_schools` (user_id,school_id) VALUES ({$this->Session->read('Auth.User.id')},$id)";
+			$result = ($this->User->query($sql)) ? 'true' : 'false';
+		} else {
+			$result = 'true';
+		}
+		
+		
+		echo "{\"result\":$result}";
+		exit;
+	}
+	
+	function remove_school($id){
+		$this->layout = 'ajax';
+		if(!isset($this->myuser['School'])){
+			echo "{'result':false}";
+			exit;
+		}
+		
+		$id = $id * 1;
+		
+		$sql = "DELETE FROM `users_schools` WHERE `user_id`={$this->Session->read('Auth.User.id')} AND `school_id` = $id LIMIT 1";
+		$result = ($this->User->query($sql)) ? 'true' : 'false';
+		
+		echo "{\"result\":$result}";
+		exit;
+	}
+	
 	function index() {
-		if (!$this->Session->read('Auth.User')) {
+		if (!$this->Session->read('Auth.User') && !Configure::read('config.testing')) {
 			$this->redirect(array('action'=>'login'));
 			return;
 		}
@@ -130,7 +174,7 @@ class UsersController extends AppController {
 			
 			//set the password
 			if(empty($this->data['User']['password'])) {
-				$this->data['User']['password'] == $this->data['User']['birthdate'];
+				$this->data['User']['password'] == AuthComponent::password($this->data['User']['birthdate']);
 			}
 			
 			$this->User->create();
@@ -158,14 +202,16 @@ class UsersController extends AppController {
 		}
 		
 		if (!empty($this->data)) {
-			
 			//set password to hashed birthdate
-			if(empty($this->data['User']['pass'])) {
-				$this->data['User']['password'] == $this->data['User']['birthdate'];
+			if(empty($this->data['User']['password']) ||
+				$this->data['User']['password'] == AuthComponent::password(null)
+			) {
+				$this->data['User']['password'] = AuthComponent::password($this->data['User']['birthdate']);
 			} 
 			
 			//set the default school
-			$this->data['User']['school_id'] = (isset($this->data['School']['School'][0])) ? $this->data['School']['School'][0] : 0; 
+			$this->data['User']['school_id'] = (isset($this->data['School']['School'][0])) ? $this->data['School']['School'][0] : 0;
+			 
 			
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(__('The user has been saved', true));
@@ -174,11 +220,13 @@ class UsersController extends AppController {
 				$this->Session->setFlash(__('The user could not be saved. Please, try again.', true));
 			}
 		}
+		
 		if (empty($this->data)) {
 			$this->data = $this->User->read(null, $id);
 			$this->data['User']['password'] = null;
 			$this->data['User']['birthdate'] = date('m/d/Y',$this->data['User']['birthdate']);
 		}
+		
 		$schools = $this->School->find('list');
 		$groups = $this->User->Group->find('list');
 		$this->set(compact('groups','schools'));

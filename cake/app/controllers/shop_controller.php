@@ -75,7 +75,6 @@ class ShopController extends AppController {
 		//fix data if needed
 		$this->fixVars($product, $school, $sex, $sale, $expired);
 		
-		
 		$products = $this->getProductsDetails($sale);
 		
 		//get left and right products
@@ -95,7 +94,9 @@ class ShopController extends AppController {
 			}
 		}
 		
-		$this->set(compact('school','sex','sale','product','products','productRight','imageIndex'));
+		$schools = $this->School->find('all',array('recursive'=>0));
+		
+		$this->set(compact('school','schools','sex','sale','product','products','productRight','imageIndex'));
 	}	
 	
 	private function fixVars(&$product, &$school, &$sex, &$sale, &$expired){
