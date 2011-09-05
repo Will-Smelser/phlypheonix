@@ -100,6 +100,9 @@ $(document).ready(function(){
 	});
 });
 
+//show cart
+<?php echo $this->element('prompts/cart'); ?>
+
 //share this
 var switchTo5x=true;
 $(document).ready(function(){

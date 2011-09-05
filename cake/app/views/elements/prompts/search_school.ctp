@@ -56,6 +56,7 @@ $(document).ready(function(){
 	$find.click(function(){$(this).qtip('show');});
 	
 	//handle the selecting of the school
+	/*
 	$('#list-schools a').
 		click(function(){
 			var $el = $(this);
@@ -78,4 +79,5 @@ $(document).ready(function(){
 				}
 			});
 		});
+		*/
 });

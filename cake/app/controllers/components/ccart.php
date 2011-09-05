@@ -1,30 +1,16 @@
 <?php
 class CcartComponent extends Object {
-	var $namespace;
-	var $modelName;
-	var $modelKey;
 	
 	var $amtRoute;
 	
 	var $controller;
-	var $model;
 	var $session;
 	
 	var $content = array();
 	
 	function initialize(&$controller){
 		$this->controller =& $controller;
-		
-		$this->modelName = Configure::read('cart.product.model');
-		$this->modelKey  = Configure::read('cart.product.key');
 		$this->namespace = Configure::read('cart.namespace');
-		
-		$this->referrerAllowed = Configure::read('cart.referrer');
-		
-		//save reference to model
-		if(empty($this->controller->{$this->modelName})){
-			$this->model =& ClassRegistry::init($this->modelName);
-		}
 		
 		//load the cake session component
 		if(!empty($this->controller->Session)) {
@@ -71,7 +57,9 @@ class CcartComponent extends Object {
 			
 		}
 	}
-	
+	function updateQty($id, $qty){
+		$this->content[$id]->qty = $qty;
+	}
 	function remove($cartEntry) {
 		
 		$id = $cartEntry->id;
@@ -89,7 +77,10 @@ class CcartComponent extends Object {
 		$this->updateSession();
 		return true;
 	}
-		
+	function removeAll($id){
+		unset($this->content[$id]);
+		$this->updateSession();
+	}
 	function emptyCart() {
 		$this->content = array();
 		$this->updateSession();
@@ -204,12 +195,19 @@ class CartEntry{
 	function getInfo() {
 		return $this->info;
 	}
+	/*
+	 * Must override this in extended classes
+	 */
 	public static function makeUniqueId($uniques){
 		$unique = array();
 		foreach($uniques as $val){
 			array_push($unique, $val);
 		}
 		return self::$type . self::$delimeter . implode(self::$delimeter,$unique);
+	}
+	function getType(){
+		$vars = get_class_vars(get_class($this));
+		return $vars['type'];
 	}
 }
 class ProductEntry extends CartEntry {
@@ -228,9 +226,17 @@ class ProductEntry extends CartEntry {
 	var $priceRoute = 'Product.price_retail';
 	var $descRoute = 'Product.name';
 	var $uniqueRoutes = array(
-		'color'=>'Color.name',
-		'size'=>'Size.display'
+		//'color'=>'Color.name',
+		//'size'=>'Size.display'
 	);
+	
+	public static function makeUniqueId($uniques){
+		$unique = array();
+		foreach($uniques as $val){
+			array_push($unique, $val);
+		}
+		return self::$type . self::$delimeter . implode(self::$delimeter,$unique);
+	}
 }
 class AccessoryEntry extends cartEntry {
 	public static $type = 'accessory';
@@ -244,6 +250,13 @@ class AccessoryEntry extends cartEntry {
 	var $modelKey = 'id';
 	var $priceRout = 'Accessory.price_retail';
 	
+	public static function makeUniqueId($uniques){
+		$unique = array();
+		foreach($uniques as $val){
+			array_push($unique, $val);
+		}
+		return self::$type . self::$delimeter . implode(self::$delimeter,$unique);
+	}
 }
 class CartUtils {
 	static function formatMoneyUS($amount) {

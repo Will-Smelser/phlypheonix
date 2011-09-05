@@ -103,13 +103,17 @@
 			obj.ajaxAddToCart(id, qty, size, color);
 		},
 		ajaxAddToCart : function(id, qty, size, color){
+			var items = (qty > 1) ? ' items' : ' item';
+			var $cart = $('#cart');
+			
+			$cart.qtip('api').elements.content.html('Adding '+qty+items+'...');
+			$cart.trigger('showCart');
 			
 			$.getJSON('/cart/addProduct/'+id+'/'+qty+'/'+size+'/'+color,
 				//success
 				function(data){
-					if(!data.result){
-					 	alert('Error adding product to cart.');
-					}
+					$cart.qtip('api').elements.content.html('Successfully added '+qty+items);
+					setTimeout(function(){$cart.qtip('hide');},1000);
 				}
 			);
 		},

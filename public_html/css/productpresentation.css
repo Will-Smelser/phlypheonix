@@ -591,3 +591,40 @@ p.checkout-pop-count {
 	padding-bottom:5px;
 	font-size:16px;	
 }
+#cart-wrapper table{
+	width:100%;
+}
+#cart-wrapper th{
+	color:#FFF;
+	font-weight:bold;
+	font-size:16px;
+	text-align:center;
+}
+#cart-wrapper td{
+	font-size:14px;
+	padding:5px;	
+}
+#cart-wrapper input.qty{
+	width:50px;
+	text-align:right;
+	border:none;
+}
+#cart-wrapper .cart-one{
+	width:60px;
+}
+#cart-wrapper .cart-two{
+	width:auto;
+}
+#cart-wrapper .cart-three{
+	width:80px;
+}
+#cart-wrapper .cart-details span{
+	padding-left:20px;	
+}
+#cart-wrapper .cart-total{
+	font-weight:bold;
+	font-size:16px;	
+}
+#cart-wrapper .cart-trash{
+	cursor:pointer;	
+}
