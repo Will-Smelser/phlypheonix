@@ -16,6 +16,7 @@ class ShopController extends AppController {
 	var $name = 'Shop';
 	var $uses = array('Product', 'Pdetail', 'Sale', 'School', 'User', 'Prompt', 'Order');
 	var $components = array('AuthorizeNet');
+	var $helpers = array('Hfacebook');
 	
 	function beforeFilter() {
 	    parent::beforeFilter();
@@ -70,6 +71,7 @@ class ShopController extends AppController {
 	//main page for shopping
 	//imageIndex is the product image to show
 	function main ($school=null, $sex=null, $sale = null, $product = null, $expired=false) {
+		
 		$imageIndex = 0;
 		
 		//fix data if needed
@@ -95,8 +97,9 @@ class ShopController extends AppController {
 		}
 		
 		$schools = $this->School->find('all',array('recursive'=>0));
+		$fbcommentId = "{$school['id']}-{$sex}-{$sale['Sale']['id']}-{$product['Product']['id']}";
 		
-		$this->set(compact('school','schools','sex','sale','product','products','productRight','imageIndex'));
+		$this->set(compact('school','schools','sex','sale','product','products','productRight','imageIndex','fbcommentId'));
 	}	
 	
 	private function fixVars(&$product, &$school, &$sex, &$sale, &$expired){

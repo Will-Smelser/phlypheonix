@@ -66,7 +66,45 @@ STR;
 	 */
 	function comments($id, $width=425, $opts=array()){
 		$opts = http_build_query($opts,'',' ');
+		$opts = str_replace('+','',$opts);
 		return '<fb:comments xid="'.$id.'" width="'.$width.'" '.$opts.'></fb:comments>';
+	}
+	
+	function initSimple($appId, $callback='function(){}'){
+		
+		$str  = "\n\t//Facebook\n";
+		
+		$str .= "window.fbAsyncInit = function() {\n";
+		
+		$str .= 
+<<<STR
+	FB.init({
+	appId   : '$appId',
+	status  : true, // check login status
+	cookie  : true, // enable cookies to allow the server to access the session
+	xfbml   : true, // parse XFBML
+	oauth   : true  //use Oauth 2.0
+	});
+	FB.Canvas.setAutoResize();
+
+    fbApiInit = true; //init flag
+};
+
+function fbEnsureInit(callback) {
+   if(!window.fbApiInit) {
+      setTimeout(function() {fbEnsureInit(callback);}, 50);
+   } else {
+      if(callback) {
+          callback();
+      }
+   }
+};
+
+fbEnsureInit($callback);
+	
+STR;
+		return $str;
+		
 	}
 	
 	/**

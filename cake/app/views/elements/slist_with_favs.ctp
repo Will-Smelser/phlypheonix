@@ -4,6 +4,7 @@
  * $schools
  * $userSchools
  * $sex
+ * $link
  */
 
 ?>
@@ -18,7 +19,7 @@
 				array_push($ids, $s['id']);
 				?>
 				<li class="<?php echo $class; ?> heart">
-					<a href="/shop/main/<?php echo $s['id']; ?>/<?php echo $sex; ?>" >
+					<a href="<?php echo $link.$s['id']; ?>/<?php echo $sex; ?>" >
 					<span style="padding-left:10px;width:50px;display:inline-block"><?php echo $s['name']; ?></span>
 					<?php echo $s['long']; ?>	
 					</a>
@@ -35,7 +36,7 @@
 			if(!in_array($s['School']['id'],$ids)){
 				?>
 				<li class="<?php echo $class; ?>">
-					<a href="/shop/main/<?php echo $s['School']['id']; ?>/<?php echo $sex ?>" >
+					<a href="<?php echo $link.$s['School']['id']; ?>/<?php echo $sex ?>" >
 					<span style="padding-left:10px;width:50px;display:inline-block"><?php echo $s['School']['name']; ?></span>
 					<?php echo $s['School']['long']; ?>	
 					</a>

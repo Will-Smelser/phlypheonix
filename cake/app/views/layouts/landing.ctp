@@ -83,11 +83,11 @@ $(document).ready(function(){
 	    
 		//bind to the button
 		$('#fb-auth').click(function(){
-			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history,publish_stream'); ?>
 		});
 	
 		$('#fb-reg').click(function(){
-			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history,publish_stream'); ?>
 		})
 	
 		//logged in function

@@ -33,4 +33,23 @@ class Color extends AppModel {
 		)
 	);
 
+
+	var $hasAndBelongsToMany = array(
+		'School' => array(
+			'className' => 'School',
+			'joinTable' => 'schools_colors',
+			'foreignKey' => 'color_id',
+			'associationForeignKey' => 'school_id',
+			'unique' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+			'deleteQuery' => '',
+			'insertQuery' => ''
+		)
+	);
+
 }

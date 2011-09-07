@@ -16,14 +16,19 @@
 			<?php echo $this->Html->link($pimage['Actor']['name'], array('controller' => 'actors', 'action' => 'view', $pimage['Actor']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Color Id'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Color'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $pimage['Pimage']['color_id']; ?>
+			<?php echo $this->Html->link($pimage['Color']['name'], array('controller' => 'colors', 'action' => 'view', $pimage['Color']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Schoice Id'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Size'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $pimage['Pimage']['schoice_id']; ?>
+			<?php echo $this->Html->link($pimage['Size']['name'], array('controller' => 'sizes', 'action' => 'view', $pimage['Size']['id'])); ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Name'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $pimage['Pimage']['name']; ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Image'); ?></dt>
@@ -44,5 +49,9 @@
 		<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Actors', true), array('controller' => 'actors', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Actor', true), array('controller' => 'actors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Colors', true), array('controller' => 'colors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Color', true), array('controller' => 'colors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

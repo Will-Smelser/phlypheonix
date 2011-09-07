@@ -37,8 +37,11 @@
 
 </div>
 
-<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex)); ?>
+<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/shop/main/')); ?>
 
+<!-- FB comments -->
+<div id="fb-comments" style="overflow:auto;height:350px;"><?php echo $this->Hfacebook->comments($fbcommentId,440,array()); ?></div>
+<div id="fb-root"></div>
 </body>
 
 <script type="text/javascript" src="/js/jquery.miozoom.js"></script>
@@ -102,6 +105,24 @@ $(document).ready(function(){
 
 //show cart
 <?php echo $this->element('prompts/cart'); ?>
+
+
+$(document).ready(function(){
+	<!-- FACEBOOK //-->
+	$.getScript("<?php echo $protocal; ?>://connect.facebook.net/en_US/all.js",function(){
+		<?php 
+				
+				echo $this->Hfacebook->initSimple(
+						Configure::read('facebook.apiId'),
+						'function(){var $comments=$("#comments");$comments.qtip("api").elements.content.html("");$("#fb-comments").appendTo($comments.qtip("api").elements.content);}'
+				); 
+				
+				?> 
+	});
+});
+
+//fb comments
+<?php echo $this->element('prompts/comments'); ?>
 
 //share this
 var switchTo5x=true;

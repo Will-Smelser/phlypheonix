@@ -6,7 +6,7 @@ class AppController extends Controller {
 	
 	function beforeFilter() {
     	//have to manually start session for things to work properly
-    	//session_start();
+		@session_start();
     	
 		//protocal
 		$protocal = (isset($_SERVER['HTTPS'])) ? 'https' : 'http';

@@ -31,7 +31,7 @@
 		<td><?php echo $school['School']['zip']; ?>&nbsp;</td>
 		<td><?php echo $school['School']['mascot_name']; ?>&nbsp;</td>
 		<td><?php echo $school['School']['mascot_image']; ?>&nbsp;</td>
-		<td><?php echo $school['School']['logo_small']; ?>&nbsp;</td>
+		<td><img src="<?php echo $school['School']['logo_small']; ?>" width="50%" width="50%" /></td>
 		<td><?php echo $school['School']['logo_large']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $school['School']['id'])); ?>

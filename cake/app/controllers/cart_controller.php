@@ -8,7 +8,7 @@ class CartController extends AppController {
 		$this->layout = 'ajax';
 		$this->render('ajax');
 		
-		
+		$this->Auth->allow('*');
 	}
 	
 	function addProduct($productId, $qty, $size, $color){

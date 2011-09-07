@@ -1,0 +1,513 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	    font-family: Arial,Helvetica,sans-serif;
+}
+input, select{
+	background-color:#CCC;
+	border-color:#CCC;
+	color:#333;
+	border-radius: 5px;
+	padding:5px;
+}
+
+span.one{
+color: #FBB040;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+text-align:left;
+}
+
+span.two{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 12px;
+}
+
+span.three{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 16px;
+}
+
+span.four{
+color:#000;
+font-family:Arial, Helvetica, sans-serif;
+font-size: 12px;
+text-align:left;
+}
+
+span.five{
+color:#000;
+font-family:Arial, Helvetica, sans-serif;
+font-size: 12px;
+text-align:left;
+font-weight:bold
+}
+
+span.six{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 14px;
+}
+
+span.seven{
+color: #333;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 14px;
+}
+
+span.eight{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 12px;
+	font-weight:bold;
+}
+
+span.nine{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 16px;
+font-weight:bold;
+}
+
+a.nav{
+padding-right: 10px;
+padding-left: 10px;
+text-decoration:none;
+color:#000;
+}
+
+a.nav:hover{
+padding-right: 10px;
+padding-left: 10px;
+text-decoration:none;
+color:#FFFFFF;
+}
+
+a.whitelink{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 12px;
+text-decoration:underline;
+}
+
+input.one {
+    background-color: #FBB040;
+    border: medium none;
+    border-radius: 5px 5px 5px 5px;
+    color: #333333;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 18px;
+    padding: 5px;
+}
+
+input.two{
+color: #333;
+font-family:Arial, Helvetica, sans-serif;
+font-size: 14px;
+background-color: #FBB040;
+border: none;
+padding: 5px;
+border-radius: 5px;
+}
+
+input.three{
+color: #333;
+font-family:Arial, Helvetica, sans-serif;
+font-size: 12px;
+background-color: #FBB040;
+border: none;
+padding: 3px;
+border-radius: 5px;
+margin-top:3px;
+}
+
+img.one{
+padding-top: 7px;
+}
+
+img.two{
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+body{
+	width: 100%;
+	max-width: 1366px;
+	background-color:#333;
+	background-repeat:no-repeat;
+	margin: 0px;
+	padding: 0px;
+	overflow:hidden;
+}
+
+#background{
+	width:100%;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#wrapper{
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index: 1;
+}
+
+#mainHeader{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index:1;
+	height:41px;
+	background-image:url(/img/flyfoenix_header.png);
+	background-repeat:repeat-x;
+}
+
+#logoHeader{
+	position: absolute;
+	top: 0px;
+	left:0px;
+	width: 1367px;
+	height: 41px;
+	z-index: 2;
+}
+
+#caption{
+	position: relative;
+	top: 22px;
+	left: 330px;
+	z-index: 3;
+}
+
+#navigate{
+	left: 940px;
+    position: absolute;
+    top: 19px;
+    width: 500px;
+    z-index: 3;
+}
+
+#logoFlyFoenix{
+	position: absolute;
+	margin-top: 2px;
+	margin-left: 10px;
+	z-index: 3;
+}
+
+#bodyHeader{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	top: 70px;
+	width: 972px;
+	z-index: 5;
+	height: 97px;
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_lightgrayheader.png);
+	background-repeat:no-repeat;
+}
+
+#selector{
+	display: inline-block;
+    left: 65px;
+    position: relative;
+    width: 150px;
+}
+
+#gender{
+	float: right;
+    margin-top: -25px;
+    position: relative;
+}
+
+#logoschool{
+	float: right;
+    margin-top: 20px;
+    position: relative;
+}
+
+#cart{
+	float: right;
+	margin-top: 22px;
+}
+
+#favorite{
+	display:block;
+	float: right;
+	margin-top: 7px;
+	background-repeat:no-repeat;
+	width:14px;
+	height:13px;
+}
+
+#favorite.heart-no{
+	background-image:url('/img/ajax/heart_small.png');	
+}
+#favorite.heart{
+	background-image:url('/img/ajax/heart_small_red.png');	
+}
+
+#search{
+	float: right;
+	margin-top: 7px;
+}
+
+#savemoney{
+	left: 20px;
+    position: relative;
+    top: -11px;
+    z-index: 5;
+}
+
+#additem{
+	left: 50px;
+    position: relative;
+    top: 4px;
+    z-index: 5;
+}
+
+#freeshipping{
+	left: 75px;
+    position: relative;
+    top: -6px;
+    z-index: 5;
+}
+
+/*Body Container Elements*/
+#bodyContainerDark{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	top: 50px;
+	width: 972px;
+	background-image:url(/img/upsell/flyfoenix_upsell_lightgraybig.png), url(/img/productpresentation/flyfoenix_product_presentation_darkgraymain.png);
+	height:564px;
+	background-repeat: no-repeat;
+	background-position:center;
+}
+
+#gift{
+    left: 65px;
+    position: relative;
+    top: 12px;
+    z-index: 5;
+}
+
+#earn5{
+    left: 48px;
+    position: relative;
+    top: 3px;
+    z-index: 5;
+}
+
+#sharethis{
+	left: 640px;
+    position: absolute;
+    top: 20px;
+    z-index: 5;
+}
+
+#leftarrow{
+	position: absolute;
+	left: 8px;
+	top:240px;
+	z-index:15;
+	
+	width:36px;
+	height:50px;
+	
+}
+a #leftarrow {
+	text-decoration:none;
+		
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_lbutton.png);
+	background-repeat:no-repeat;	
+}
+a #leftarrow:hover{
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_lbuttonorange.png);	
+}
+
+#rightarrow{
+	position: absolute;
+	top: 240px;
+	right: 21px;
+	z-index: 15;
+	
+	width:36px;
+	height:50px;
+	
+}
+a #rightarrow {
+	text-decoration:none;
+		
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_rbutton.png);
+	background-repeat:no-repeat;
+}
+a #rightarrow:hover{
+	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_rbuttonorange.png);
+}
+
+#leftarrow.hidden, #rightarrow.hidden {
+	display:none;	
+}
+
+#forcentering{
+	position:absolute;
+	height: 477px;
+	top: 60px;
+    width: 840px;
+	left: 60px;
+}
+
+#dwrapper{
+	margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 775px;
+    z-index: 5;	
+}
+
+#imgwrapper{
+	position: relative;
+	height: 180px;
+	width:190px;
+	z-index:5;
+	display: inline-block;
+	text-align: center;
+	padding-top: 18px;
+	
+}
+
+#upsellpic{
+	position:relative;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top: 10px;
+}
+
+#pname{
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    text-align: center;
+    width: 185px;
+}
+
+#pdetails{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:185px;
+}
+
+#price{
+	position:relative;
+	
+}
+	
+/*End Body Container Elements*/
+
+#list-schools{
+	max-height:100px;
+	overflow:auto;
+}
+#list-schools a{
+	color:#FFF;
+	text-decoration:none;
+	padding:5px;
+	display:inline-block;	
+}
+#list-schools li{
+	padding-right:50px;	
+}
+#list-schools li.loading{
+	background-image:url(/img/ajax/loading.gif);
+	background-position:95% center;
+	background-repeat:no-repeat;	
+}
+#list-schools li.added{
+	background-image:url(/img/ajax/check.png);
+	background-position:95% center;
+	background-repeat:no-repeat;
+}
+#list-schools li.fail{
+	background-image:url(/img/ajax/fail.png);
+	background-position:95% center;
+	background-repeat:no-repeat;
+}
+#list-schools li.heart{
+	background-image:url(/img/ajax/heart_red.png);
+	background-position:95% center;
+	background-repeat:no-repeat;
+}
+#list-schools li.even{
+	background-color:transparent;	
+}
+#list-schools li.odd{
+	padding-top:0px;
+	background-color:#999;	
+}
+#list-schools li:hover{
+	background-color:#333;
+}
+
+p.checkout-pop-count {
+	margin-top:30px;
+	padding-bottom:5px;
+	font-size:16px;	
+}
+#cart-wrapper table{
+	width:100%;
+}
+#cart-wrapper th{
+	color:#FFF;
+	font-weight:bold;
+	font-size:16px;
+	text-align:center;
+}
+#cart-wrapper td{
+	font-size:14px;
+	padding:5px;	
+}
+#cart-wrapper input.qty{
+	width:50px;
+	text-align:right;
+	border:none;
+}
+#cart-wrapper .cart-one{
+	width:60px;
+}
+#cart-wrapper .cart-two{
+	width:auto;
+}
+#cart-wrapper .cart-three{
+	width:80px;
+}
+#cart-wrapper .cart-details span{
+	padding-left:20px;	
+}
+#cart-wrapper .cart-total{
+	font-weight:bold;
+	font-size:16px;	
+}
+#cart-wrapper .cart-trash{
+	cursor:pointer;	
+}
+#cart-update {
+	float:right;	
+}

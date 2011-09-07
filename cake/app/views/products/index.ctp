@@ -5,6 +5,7 @@
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('manufacturer_id');?></th>
 			<th><?php echo $this->Paginator->sort('school_id');?></th>
+			<th><?php echo $this->Paginator->sort('controller'); ?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
 			<th><?php echo $this->Paginator->sort('desc');?></th>
 			<th><?php echo $this->Paginator->sort('sex');?></th>
@@ -32,6 +33,7 @@
 			<?php echo $this->Html->link($product['Manufacturer']['name'], array('controller' => 'manufacturers', 'action' => 'view', $product['Manufacturer']['id'])); ?>
 		</td>
 		<td><?php echo $product['School']['name']; ?>&nbsp;</td>
+		<td><?php echo $product['Product']['controller']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['name']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['desc']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['sex']; ?>&nbsp;</td>
@@ -40,7 +42,7 @@
 		<td><?php echo $product['Product']['price_retail']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['price_member']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['price_buynow']; ?>&nbsp;</td>
-		<td><?php echo $product['Product']['pricetag']; ?>&nbsp;</td>
+		<td><img width="150%" src="<?php echo $product['Product']['pricetag']; ?>"/></td>
 		<td><?php echo $product['Product']['cost']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['created']; ?>&nbsp;</td>
 		<td class="actions">

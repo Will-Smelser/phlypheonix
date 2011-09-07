@@ -6,7 +6,8 @@
 			<th><?php echo $this->Paginator->sort('product_id');?></th>
 			<th><?php echo $this->Paginator->sort('actor_id');?></th>
 			<th><?php echo $this->Paginator->sort('color_id');?></th>
-			<th><?php echo $this->Paginator->sort('choice_id');?></th>
+			<th><?php echo $this->Paginator->sort('size_id');?></th>
+			<th><?php echo $this->Paginator->sort('name');?></th>
 			<th><?php echo $this->Paginator->sort('image');?></th>
 			<th class="actions"><?php __('Actions');?></th>
 	</tr>
@@ -26,8 +27,13 @@
 		<td>
 			<?php echo $this->Html->link($pimage['Actor']['name'], array('controller' => 'actors', 'action' => 'view', $pimage['Actor']['id'])); ?>
 		</td>
-		<td><?php echo $pimage['Color']['name']; ?>&nbsp;</td>
-		<td><?php echo $pimage['Size']['name']; ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($pimage['Color']['name'], array('controller' => 'colors', 'action' => 'view', $pimage['Color']['id'])); ?>
+		</td>
+		<td>
+			<?php echo $this->Html->link($pimage['Size']['name'], array('controller' => 'sizes', 'action' => 'view', $pimage['Size']['id'])); ?>
+		</td>
+		<td><?php echo $pimage['Pimage']['name']; ?>&nbsp;</td>
 		<td><img width="70" src="<?php echo $pimage['Pimage']['image']; ?>"/></td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $pimage['Pimage']['id'])); ?>
@@ -59,5 +65,9 @@
 		<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Actors', true), array('controller' => 'actors', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Actor', true), array('controller' => 'actors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Colors', true), array('controller' => 'colors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Color', true), array('controller' => 'colors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

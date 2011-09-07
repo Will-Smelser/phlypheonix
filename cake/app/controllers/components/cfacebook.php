@@ -80,7 +80,7 @@ class CfacebookComponent extends Object  {
 		 * @return unknown_type
 		 */
 		function initialize(&$controller){
-		
+			
 			if($controller->params['action'] != 'login') {
 				return;
 			}
@@ -212,18 +212,21 @@ class CfacebookComponent extends Object  {
                     //Create the User 
                     if($this->controller->User->save($user_record,array('validate'=>false))){ 
                         
+                    	// login user
+                        $this->controller->Auth->login($user_record); 
+                    	
                         //send user email
                         if( Configure::read('facebook.sendNewUserEmail') && isset($this->fbuser['email']) ){
                         	$this->sendNewUserEmail();
                         }
-               			                        
-                        // login user
-                        $this->controller->Auth->login($user_record); 
                         
                         //save facebook
                         if($saveToFacebookModel){
                         	$this->saveMeData($this->fbuser['id'], $this->controller->User->id, $this->getMe());
                         }
+                        
+                        //forward to correct url
+                        $this->controller->redirect(Configure::read('facebook.afterlogin.forward'));
                     }else{
                     	array_push($this->error,'Failed to create user');
                     }
@@ -249,10 +252,15 @@ class CfacebookComponent extends Object  {
                 	
                 	$this->controller->Auth->login($user_record);
                 	
+                	//forward to correct url
+                    $this->controller->redirect(Configure::read('facebook.afterlogin.forward'));
                 }
                 
                 //login user
                 $this->controller->Auth->login($user_record);
+                
+                //forward to correct url
+                $this->controller->redirect(Configure::read('facebook.afterlogin.forward'));
             //need to make sure we have the user facebook id in DB, if not add it
             }elseif( $cakelogin && $fblogin ){
             	

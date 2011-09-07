@@ -7,8 +7,7 @@
 		echo $this->Form->input('actor_id');
 		echo $this->Form->input('color_id');
 		echo $this->Form->input('size_id');
-		//echo $this->Form->input('image');
-		
+		echo $this->Form->input('name');
 		echo $this->element('admin/choose_image',
 			array(
 				'title'=>'Choose Image',
@@ -30,5 +29,9 @@
 		<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Actors', true), array('controller' => 'actors', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Actor', true), array('controller' => 'actors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Colors', true), array('controller' => 'colors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Color', true), array('controller' => 'colors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Sizes', true), array('controller' => 'sizes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Size', true), array('controller' => 'sizes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

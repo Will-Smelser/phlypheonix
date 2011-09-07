@@ -26,6 +26,8 @@ class ColorsController extends AppController {
 				$this->Session->setFlash(__('The color could not be saved. Please, try again.', true));
 			}
 		}
+		$schools = $this->Color->School->find('list');
+		$this->set(compact('schools'));
 	}
 
 	function edit($id = null) {
@@ -44,6 +46,8 @@ class ColorsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Color->read(null, $id);
 		}
+		$schools = $this->Color->School->find('list');
+		$this->set(compact('schools'));
 	}
 
 	function delete($id = null) {

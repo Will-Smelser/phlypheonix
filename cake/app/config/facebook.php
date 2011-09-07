@@ -119,4 +119,8 @@ $config['facebook.FacebookModel'] = 'Mfacebook';
  */
 $config['facebook.AuthMapping'] = array('username' => 'email', 'password' => 'password');
 
+/**
+ * If the Auth->login->redirect is not set, then component will forward to this url
+ */
+$config['facebook.afterlogin.forward'] = '/shop/main';
 ?>

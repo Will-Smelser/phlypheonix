@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 29, 2011 at 09:21 AM
+-- Generation Time: Sep 07, 2011 at 11:07 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.1
 
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `acos` (
   `lft` int(10) DEFAULT NULL,
   `rght` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=168 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=192 ;
 
 -- --------------------------------------------------------
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `actors` (
   `sex` char(1) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `aros` (
   `lft` int(10) DEFAULT NULL,
   `rght` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 -- --------------------------------------------------------
 
@@ -131,7 +131,19 @@ CREATE TABLE IF NOT EXISTS `aros_acos` (
   `_delete` varchar(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ARO_ACO_KEY` (`aro_id`,`aco_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `colors`
+--
+
+CREATE TABLE IF NOT EXISTS `colors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -194,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `manufacturers` (
   `image` varchar(175) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -267,11 +279,13 @@ CREATE TABLE IF NOT EXISTS `pdetails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `size_id` int(11) NOT NULL,
-  `color` varchar(20) NOT NULL,
+  `color_id` int(20) NOT NULL,
   `inventory` int(11) NOT NULL,
+  `sku_vendor` varchar(75) DEFAULT NULL,
+  `sku` varchar(50) DEFAULT NULL,
   `counter` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -283,9 +297,12 @@ CREATE TABLE IF NOT EXISTS `pimages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `actor_id` int(11) NOT NULL,
+  `color_id` int(11) NOT NULL,
+  `size_id` int(11) NOT NULL,
+  `name` varchar(75) NOT NULL,
   `image` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -296,6 +313,8 @@ CREATE TABLE IF NOT EXISTS `pimages` (
 CREATE TABLE IF NOT EXISTS `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `manufacturer_id` int(11) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  `controller` varchar(100) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
   `desc` text NOT NULL,
   `sex` char(1) NOT NULL,
@@ -308,7 +327,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `cost` float(4,2) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -321,7 +340,7 @@ CREATE TABLE IF NOT EXISTS `products_pattributes` (
   `product_id` int(11) NOT NULL,
   `pattribute_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 -- --------------------------------------------------------
 
@@ -349,6 +368,7 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `active` tinyint(1) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `starts` int(11) NOT NULL,
   `ends` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -365,7 +385,7 @@ CREATE TABLE IF NOT EXISTS `sales_products` (
   `sale_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -378,8 +398,9 @@ CREATE TABLE IF NOT EXISTS `saleusers` (
   `user_id` int(11) NOT NULL,
   `sale_id` int(11) NOT NULL,
   `created` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`sale_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -390,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `saleusers` (
 CREATE TABLE IF NOT EXISTS `schoices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `size_id` int(11) NOT NULL,
-  `name` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `chest` int(11) NOT NULL,
   `waist` int(11) NOT NULL,
   `hip` int(11) NOT NULL,
@@ -415,8 +436,22 @@ CREATE TABLE IF NOT EXISTS `schools` (
   `mascot_image` varchar(200) NOT NULL,
   `logo_small` varchar(200) NOT NULL,
   `logo_large` varchar(200) NOT NULL,
+  `background` varchar(150) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schools_colors`
+--
+
+CREATE TABLE IF NOT EXISTS `schools_colors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `school_id` int(11) NOT NULL,
+  `color_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -427,9 +462,10 @@ CREATE TABLE IF NOT EXISTS `schools` (
 CREATE TABLE IF NOT EXISTS `sizes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(75) NOT NULL,
+  `display` varchar(100) NOT NULL,
   `sex` char(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -461,12 +497,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(150) NOT NULL,
   `birthdate` int(11) NOT NULL,
   `sex` char(1) NOT NULL,
+  `school_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `modified` datetime NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 -- --------------------------------------------------------
 
@@ -479,7 +516,7 @@ CREATE TABLE IF NOT EXISTS `users_prompts` (
   `user_id` int(11) NOT NULL,
   `prompt_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
 
 -- --------------------------------------------------------
 
@@ -493,7 +530,7 @@ CREATE TABLE IF NOT EXISTS `users_schools` (
   `school_id` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=120 ;
 
 -- --------------------------------------------------------
 

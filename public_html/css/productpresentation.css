@@ -8,6 +8,12 @@ input, select{
 	border-color:#CCC;
 	color:#333;
 	border-radius: 5px;
+}
+input, select{
+	background-color:#CCC;
+	border-color:#CCC;
+	color:#333;
+	border-radius: 5px;
 	padding:5px;
 	font-size:14px;
 }

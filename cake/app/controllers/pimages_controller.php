@@ -30,7 +30,7 @@ class PimagesController extends AppController {
 		$actors = $this->Pimage->Actor->find('list');
 		$colors = $this->Pimage->Color->find('list');
 		$sizes = $this->Pimage->Size->find('list');
-		$this->set(compact('products', 'actors','sizes','colors'));
+		$this->set(compact('products', 'actors', 'colors', 'sizes'));
 	}
 
 	function edit($id = null) {
@@ -53,7 +53,7 @@ class PimagesController extends AppController {
 		$actors = $this->Pimage->Actor->find('list');
 		$colors = $this->Pimage->Color->find('list');
 		$sizes = $this->Pimage->Size->find('list');
-		$this->set(compact('products', 'actors','sizes','colors'));
+		$this->set(compact('products', 'actors', 'colors', 'sizes'));
 	}
 
 	function delete($id = null) {
