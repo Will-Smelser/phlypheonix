@@ -380,7 +380,7 @@ a #rightarrow:hover{
     z-index: 5;	
 }
 
-#imgwrapper{
+.imgwrapper{
 	position: relative;
 	height: 180px;
 	width:190px;
@@ -391,7 +391,7 @@ a #rightarrow:hover{
 	
 }
 
-#upsellpic{
+.upsellpic{
 	position:relative;
 	display:block;
 	margin-left:auto;
@@ -399,23 +399,27 @@ a #rightarrow:hover{
 	margin-top: 10px;
 }
 
-#pname{
+.pname{
 	display: block;
     margin-left: auto;
     margin-right: auto;
     position: relative;
     text-align: center;
     width: 185px;
+    
+    color:#FFF;
+    font-weight:bold;
 }
 
-#pdetails{
+.pdetails{
 	position:relative;
 	margin-left:auto;
 	margin-right:auto;
 	width:185px;
+	color:#FFF;
 }
 
-#price{
+.price{
 	position:relative;
 	
 }
@@ -510,4 +514,51 @@ p.checkout-pop-count {
 }
 #cart-update {
 	float:right;	
+}
+
+.size-qty-wrapper{
+	padding-top:5px;	
+}
+.size{
+	display:inline-block;
+	margin-left: 6px;
+	float:left;
+}
+.size select{
+	border-style:none;
+	border-width:0px;
+	margin:0px;
+	width:100px;	
+}
+.quantity{
+	display:inline-block;
+	float:right;
+	margin-left:20px;
+}
+.quantity input{
+	width:100px;
+	border:none;
+	text-align:right;	
+}
+.add-to-cart, .checkout, .cancel-checkout{
+	margin-top:10px;
+	margin-left:5px;
+	font-weight:normal;
+	cursor:pointer;
+}
+.title {
+	color: #FBB040;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+	text-align:left;
+	font-size:14px;
+}
+h2{
+	font-size:18px;
+	font-weight:bold;
+	color:#FFF;
+	padding-top:20px;	
+}
+.pbutton, .acc_image{
+	cursor:pointer;			
 }

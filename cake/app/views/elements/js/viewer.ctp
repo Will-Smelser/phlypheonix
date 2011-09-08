@@ -17,6 +17,7 @@
 
 			//build info
 			obj.$wrapper = $('#sliderpane');
+			
 			obj.$wrapper.children('.slider').each(function(){
 				obj.$sliders.push($(this));
 			});
@@ -132,9 +133,12 @@
 
 		moveRight : function() {
 			var obj = this;
-
+			
 			if(obj.inTrans) return;
-			if(obj.current == obj.$sliders.length-1) return; 
+			if(obj.current == obj.$sliders.length-1){
+				document.location.href = '/accessories/index/'+window.schoolId+'/'+window.sex;
+				return;
+			} 
 			
 			obj.inTrans = true;
 			obj.current++;

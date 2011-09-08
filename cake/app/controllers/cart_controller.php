@@ -12,11 +12,13 @@ class CartController extends AppController {
 	}
 	
 	function addProduct($productId, $qty, $size, $color){
+		if(!$this->cleanInts($qty, $size, $color)) return;
 		$entry = new ProductEntry(array('id'=>$productId,'color'=>$color,'size'=>$size),$qty);
 		$this->Ccart->add($entry);
 	}
 	
 	function removeProduct($productId, $qty, $size, $color){
+		if(!$this->cleanInts($qty, $size, $color)) return;
 		$entry = new ProductEntry(array('id'=>$productId,'color'=>$color,'size'=>$size),$qty);
 		$this->Ccart->remove($entry);
 	}
@@ -25,6 +27,7 @@ class CartController extends AppController {
 	}
 	function update(){
 		foreach($_POST as $id=>$qty){
+			if(!$this->cleanInts($qty)) return;
 			if($qty > 0){
 				$this->Ccart->updateQty($id, $qty);
 			} else {
@@ -73,5 +76,12 @@ class CartController extends AppController {
 				return new AccessoryEntry($uniques);
 				break;
 		}
+	}
+	
+	private function cleanInts(){
+		foreach(func_get_args() as $entry){
+			if($entry * 1 == 0) return false;
+		}
+		return true;
 	}
 }

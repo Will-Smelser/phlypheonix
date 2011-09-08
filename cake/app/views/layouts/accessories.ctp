@@ -73,7 +73,7 @@
 		</div>
 
 		<!-- NAVIGATION ARROWS -->
-		<a href="#"><div id="leftarrow"></div></a>
+		<a href="/shop/main/<?php echo $school['School']['id'].'/'.$sex; ?>"><div id="leftarrow"></div></a>
 		<a href="#"><div id="rightarrow"></div></a>
 
 		<div id="forcentering"> <!-- Begin Wrapper Used to Center dwrapper over light gray background -->
@@ -83,9 +83,19 @@
 		
 		</div>
 		</div>
-
 </div>
-
+<?php 
+//some vars are set by the index file
+/*
+//get first color
+reset($colors);
+reset($swatches);
+$firstColor = current($colors);
+$colorId = $firstColor[0]['Color']['id'];
+*/
+	echo $this->element('swatches_wrapper',array('school'=>$school,'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images)); 
+?>
+<?php echo $this->element('accessories_wrapper'); ?>
 <?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/accessories/index/')); ?>
 
 </body>
@@ -95,6 +105,14 @@
 
 
 <script type="text/javascript">
+
+//swatches
+window.swatches = <?php echo json_encode($swatches); ?>;
+window.products = <?php echo json_encode($colors); ?>;
+window.pdetails = <?php echo json_encode($pdetails); ?>;
+
+//show the tooltip for products
+<?php echo $this->element('prompts/accessories_product'); ?>
 
 //search for schools
 <?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>

@@ -59,7 +59,7 @@ foreach($product['Pdetail'] as $p){
 		</div>
 	    <div style="clear:both;"></div>
 	</div>
-</span>
+
 <div>
 <input class="add-to-cart one" name="addtocart" type="button" value="&nbsp;Add to Cart&nbsp;" />
 <input class="checkout one" name="checkout" type="button" value="&nbsp;Checkout&nbsp;" />

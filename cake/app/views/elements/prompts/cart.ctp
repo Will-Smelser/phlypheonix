@@ -14,7 +14,7 @@ $(document).ready(function(){
 	   	   }
 	   },
 	   style: { 
-	      name: 'green', // Inherit from preset style
+	      name: 'dark', // Inherit from preset style
     	  border: {
  	         width: 3,
  	         radius: 5,
@@ -51,7 +51,7 @@ $(document).ready(function(){
 				/*
 				//$('#cart').trigger('showCart');
 				var $cart = $('#cart');
-				window.AAA = $cart.qtip('api').elements.content.find('.cart-trash');
+				
 				$cart.qtip('api').elements.content.find('.cart-trash').click(function(){
 				
 				$cart.qtip('api').updateContent('Removing...',false);

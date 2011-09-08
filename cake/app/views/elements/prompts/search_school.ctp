@@ -6,7 +6,7 @@
 $(document).ready(function(){
 	var qtipSetting = {
 	   content: {
-		   text: 'asdfa',
+		   text: 'Loading...',
 		   prerender: true,
 		   title:{
 	   		   text:false,
@@ -14,7 +14,7 @@ $(document).ready(function(){
 	   	   }
 	   },
 	   style: { 
-	      name: 'green', // Inherit from preset style
+	      name: 'dark', // Inherit from preset style
     	  border: {
  	         width: 3,
  	         radius: 5,

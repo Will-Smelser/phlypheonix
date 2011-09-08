@@ -2,7 +2,7 @@
 class AccessoriesController extends AppController {
 	
 	var $name = 'Accessories';
-	var $uses = array('School','Product','Color','Pimage');
+	var $uses = array('School','Product','Color','Pimage','Accessory');
 	var $helpers = array('Sizer');
 	
 	function beforeFilter() {
@@ -11,24 +11,21 @@ class AccessoriesController extends AppController {
 		//$this->layout = 'default';
 	}
 	
-	function index($school,$sex=null){
+	function index($school, $sex=null, $color = null){
 		$school = $school * 1;
+		$color = $color * 1;
+		
+		if(empty($school)){
+			$this->redirect('no_school');
+		}
 		
 		$sex = (strtolower($sex) == 'm') ? 'M' : 'F';
 		
-		$sql = "SELECT `Product`.*, `Color`.* FROM `schools` AS `School` " . 
-				"LEFT JOIN `schools_colors` AS `SchoolsColor` ON (`School`.`id` = `SchoolsColor`.`school_id`) " .
-				"LEFT JOIN `colors` AS `Color` ON (`SchoolsColor`.`color_id` = `Color`.`id`) " .
-				"LEFT JOIN `pdetails` AS `Pdetail` ON (`Pdetail`.`color_id` = `SchoolsColor`.`color_id`) " .
-				"LEFT JOIN `products` AS `Product` ON (`Pdetail`.`product_id` = `Product`.`id`) " .
-				//"LEFT JOIN `pimages` AS `Pimage` ON (`Color`.`id` = `Pimage`.`color_id`) " .
-				"WHERE `School`.`id` = $school AND `Product`.`sex` = '$sex' AND `Product`.`controller` = 'accessories' " . 
-				"GROUP BY `Product`.`id` " . 
-				"ORDER BY `Color`.`id` ASC ";
+		$data = $this->Accessory->getData($school,$sex,$color);
 		
-		$data = $this->School->query($sql);
-		//debug($sql);
-		//debug($data);
+		if(empty($data)){
+			$this->redirect('no_products');
+		}
 		
 		$school = $this->School->findById($school);
 		$schools = $this->School->find('all',array('recursive'=>0));
@@ -38,47 +35,46 @@ class AccessoriesController extends AppController {
 		$swatches = array();
 		$cids = array();
 		$pids = array();
-		foreach($data as $entry){
-			$colorid = $entry['Color']['id'];
-			
-			if(preg_match('/swatch/i',$entry['Product']['name'])){
-				if(!key_exists($colorid,$swatches)){
-					$swatches[$colorid] = array();
-				}
-				array_push($swatches[$colorid],$entry);
-			} else {
-				
-				array_push($cids, $colorid);
-				if(!key_exists($colorid,$colors)){
-					$colors[$colorid] = array();
-				}
-				array_push($colors[$colorid],$entry);
-			}
-			array_push($pids, $entry['Product']['id']);
+		
+		$this->Accessory->aggregateData($data, $swatches, $colors, $pids, $cids);
+		$images = $this->Accessory->aggregateImages($pids, $cids);
+		$pdetails = $this->Accessory->getPdetails($this->Product->Pdetail,$pids);
+		
+		//set the data
+		$this->set(compact('data','school','schools','sex','colors','swatches','images','pdetails'));
+		
+	}
+	
+	function no_school(){
+		$sex = $this->myuser['User']['sex'];
+		$school = $this->myuser['User']['school_id'];
+		
+		if($school == 0){
+			$this->redirect(array('action'=>'shop','controller'=>'noschool'));
 		}
-		//debug($swatches);
-		//debug($colors);
+		$schools = $this->School->find('all',array('recursive'=>0));
+		$school = $this->School->findById($school);
 		
-		//get the images
-		//$images[product_id] = array(Pimage entry)
-		$sql = 'SELECT * FROM `Pimages` AS `Pimage` WHERE `product_id` IN ('.implode(',',$pids).') AND `color_id` IN ('.implode(',',$cids).')';
-		$result = mysql_query($sql);
-		$images = array();
-		while($row = mysql_fetch_assoc($result)){
-			if(!array_key_exists($row['product_id'],$images)){
-				$images[$row['product_id']] = array();
-				$images[$row['product_id']][0] = $row;
-			}else{
-				array_push($images[$row['product_id']], $row);
-			}
+		if(empty($school)){
+			$this->redirect(array('action'=>'shop','controller'=>'noschool'));
 		}
-		//debug($images);
 		
+		$swatches = array();
+		$products = array();
+		$colors = array();
+		$pdetails = array();
+		$this->set(compact('school','sex','schools','swatches','products','colors','pdetails'));
+	}
+	
+	function no_products(){
 		
-		
-		//debug($school);
-		$this->set(compact('data','school','schools','sex','colors','swatches','images'));
-		
-		//debug($this->myuser);
+		$sex = $this->myuser['User']['sex'];
+		$school = $this->School->findById($this->myuser['User']['school_id']);
+		$schools = $this->School->find('all',array('recursive'=>0));
+		$swatches = array();
+		$products = array();
+		$colors = array();
+		$pdetails = array();
+		$this->set(compact('school','sex','schools','swatches','products','colors','pdetails'));
 	}
 }

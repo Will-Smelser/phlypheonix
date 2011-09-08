@@ -1,8 +1,4 @@
-<!-- HEADER FOR PRODUCT MFG and SELECTOR -->
-<?php echo $this->element('layouts/shop_top_banner',array('sale'=>$sale,'product'=>$product,'school'=>$school,'myuser'=>$myuser)); ?>
 
-<!-- MAIN PRODUCT VIEWER -->
-<div id="bodyContainerDark">
 
 <a href="#"><img id="comments" src="/img/productpresentation/flyfoenix_product_presentation_comments.png" width="171" height="57" alt="comments" /></a>
   
@@ -55,4 +51,4 @@
   	</div>
   	<?php } ?>
 </div>
-</div> <!-- End Slider Wrapper -->
+</div>

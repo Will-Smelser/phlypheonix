@@ -3,11 +3,11 @@ $(document).ready(function(){
 	//first time user
 	var qtipSetting = {
 	   content: {
-		   text: 'Dark themes are all the rage!',
+		   text: 'Loading...',
 		   prerender: true
 	   },
 	   style: { 
-	      name: 'green', // Inherit from preset style
+	      name: 'dark', // Inherit from preset style
     	  border: {
  	         width: 3,
  	         radius: 5,

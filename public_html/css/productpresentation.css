@@ -280,9 +280,12 @@ body{
 }
 
 #buytwo{
-	float: right;
     margin-right: 23.5px;
     margin-top: 9.5px;
+    position: absolute;
+    top:0px;
+    right:0px;
+    z-index:10;
 }
 
 #leftarrow{
@@ -633,4 +636,78 @@ p.checkout-pop-count {
 }
 #cart-wrapper .cart-trash{
 	cursor:pointer;	
+}
+
+
+
+
+
+
+#accessories-link{
+	padding-right:30px;
+	background-repeat:no-repeat;
+	background-position:bottom right;
+	display:block;	
+}
+#accessories-link.up{
+	background-image:url('/img/productpresentation/arrow_up.png');
+}
+#accessories-link.down{
+	background-image:url('/img/productpresentation/arrow_down.png');
+}
+.pbutton, .acc_image{
+	cursor:pointer;			
+}
+.imgwrapper{
+	position: relative;
+	height: 180px;
+	width:190px;
+	z-index:5;
+	display: inline-block;
+	text-align: center;
+	padding-top: 18px;
+	
+}
+
+.upsellpic{
+	position:relative;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top: 10px;
+}
+
+.pname{
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    text-align: center;
+    width: 185px;
+    
+    color:#FFF;
+    font-weight:bold;
+}
+
+.pdetails{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:185px;
+	color:#FFF;
+}
+
+.price{
+	position:relative;
+	
+}
+input.three {
+    background-color: #FBB040;
+    border: medium none;
+    border-radius: 5px 5px 5px 5px;
+    color: #333333;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    margin-top: 3px;
+    padding: 3px;
 }

@@ -21,7 +21,7 @@ $bustText = (strtolower($sex) == 'f') ? 'Bust' : 'Chest';
 		</tr>
 	</table>
 	
-	<img id="grayline" src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="261" height="2" alt="grayline" />
+	<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="261" height="2" alt="grayline" />
 	<div class="actor-stats">
 	<span  class="title">Model</span>
 	<table class="product-details right">
@@ -39,4 +39,4 @@ $bustText = (strtolower($sex) == 'f') ? 'Bust' : 'Chest';
 		</tr>
 	</table>
     </div>
-    <a href="#" class="whitelink chart">SIZING CHART</a></span>
+    <a href="#" class="whitelink chart">SIZING CHART</a>

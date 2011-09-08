@@ -14,9 +14,9 @@
 class ShopController extends AppController {
 
 	var $name = 'Shop';
-	var $uses = array('Product', 'Pdetail', 'Sale', 'School', 'User', 'Prompt', 'Order');
+	var $uses = array('Product', 'Pdetail', 'Sale', 'School','Accessory');
 	var $components = array('AuthorizeNet');
-	var $helpers = array('Hfacebook');
+	var $helpers = array('Hfacebook','Sizer');
 	
 	function beforeFilter() {
 	    parent::beforeFilter();
@@ -71,7 +71,7 @@ class ShopController extends AppController {
 	//main page for shopping
 	//imageIndex is the product image to show
 	function main ($school=null, $sex=null, $sale = null, $product = null, $expired=false) {
-		
+		//$this->layout = 'default';
 		$imageIndex = 0;
 		
 		//fix data if needed
@@ -100,6 +100,25 @@ class ShopController extends AppController {
 		$fbcommentId = "{$school['id']}-{$sex}-{$sale['Sale']['id']}-{$product['Product']['id']}";
 		
 		$this->set(compact('school','schools','sex','sale','product','products','productRight','imageIndex','fbcommentId'));
+		
+		//used for accessories portion
+		$data = $this->Accessory->getData($school['id'],$sex);
+		
+		if(!empty($data)){
+		
+			//filter the products by color...look for the swatch
+			$colors = array();
+			$swatches = array();
+			$cids = array();
+			$pids = array();
+			
+			$this->Accessory->aggregateData($data, $swatches, $colors, $pids, $cids);
+			$images = $this->Accessory->aggregateImages($pids, $cids);
+			$pdetails = $this->Accessory->getPdetails($this->Product->Pdetail,$pids);
+			
+			//set the data
+			$this->set(compact('data','colors','swatches','images','pdetails'));
+		}
 	}	
 	
 	private function fixVars(&$product, &$school, &$sex, &$sale, &$expired){

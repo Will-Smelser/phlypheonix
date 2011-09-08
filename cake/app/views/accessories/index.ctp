@@ -19,7 +19,11 @@ echo $this->element('product/accessories_product',
 		'image'=>$images[$firstSwatch['Product']['id']][0]['image'],
 		'price'=>$firstSwatch['Product']['desc'],
 		'DOMbtnId'=>'swatch_btn',
-		'btnText'=>'View Another Color'
+		'btnText'=>'View Another Color',
+		'productClass'=>'swatch_image',
+		'productId'=>$firstSwatch['Product']['id'],
+		'colorId'=>$colorId,
+		'sex'=>$sex
 	)
 );
 
@@ -32,7 +36,11 @@ foreach($firstColor as $entry){
 			'image'=>$images[$pid][0]['image'],
 			'price'=>'Sale&nbsp;$'.$entry['Product']['price_buynow'],
 			'DOMbtnId'=>$btn . $i,
-			'btnText'=>'View Product'
+			'btnText'=>'View Product',
+			'productClass'=>'acc_image',
+			'productId'=>$entry['Product']['id'],
+			'colorId'=>$colorId,
+			'sex'=>$sex
 		)
 	);
 	$i++;

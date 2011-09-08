@@ -226,7 +226,7 @@
             if(self.elements.tooltip.css('display') !== 'none') return self;
 
             // Clear animation queue
-            self.elements.tooltip.stop(true, false);
+            self.elements.tooltip.stop(true, true);
 
             // Call API method and if return value is false, halt
             returned = self.beforeShow.call(self, event);

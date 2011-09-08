@@ -32,12 +32,89 @@
   </div>
   
 	<?php //echo $this->Session->flash(); ?>
-
+	<!-- HEADER FOR PRODUCT MFG and SELECTOR -->
+	<?php echo $this->element('layouts/shop_top_banner',array('sale'=>$sale,'product'=>$product,'school'=>$school,'myuser'=>$myuser)); ?>
+	
+	<!-- MAIN PRODUCT VIEWER -->
+	<div id="bodyContainerDark">
+	
 	<?php echo $content_for_layout; ?>
-
+	
+	<div id="accessories-wrapper" style="position:absolute;bottom:35px;right:25px;width:930px;height:30px;overflow:hidden">
+	
+	<div style="text-align:right;">
+		<a href="#" id="accessories-link" class="up">
+			<img src="/img/productpresentation/accessories_<?php echo (strtolower($sex)=='f') ? 'female' : 'male'; ?>.png" />
+		</a>
+	</div>
+	
+	
+	<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/shop/main/')); ?>
+	<div style="display:none;">
+	<?php 
+	
+	$btn = 'buynow_';
+	$i=0;
+	
+	//get first color
+	reset($colors);
+	reset($swatches);
+	$firstColor = current($colors);
+	$colorId = $firstColor[0]['Color']['id'];
+	
+	$firstSwatch = $swatches[$colorId][0];
+	
+	echo $this->element('product/accessories_product',
+		array(
+			'name'=>'Viewing:&nbsp;'.$images[$firstSwatch['Product']['id']][0]['name'],
+			'image'=>$images[$firstSwatch['Product']['id']][0]['image'],
+			'price'=>$firstSwatch['Product']['desc'],
+			'DOMbtnId'=>'swatch_btn',
+			'btnText'=>'View Another Color',
+			'productClass'=>'swatch_image',
+			'productId'=>$firstSwatch['Product']['id'],
+			'colorId'=>$colorId,
+			'sex'=>$sex
+		)
+	);
+	
+	?>
+	</div>
+	<?php 
+	
+	foreach($firstColor as $entry){
+		$pid = $entry['Product']['id'];
+		echo $this->element('product/accessories_product',
+			array(
+				'name'=>$entry['Product']['name'],
+				'image'=>$images[$pid][0]['image'],
+				'price'=>'Sale&nbsp;$'.$entry['Product']['price_buynow'],
+				'DOMbtnId'=>$btn . $i,
+				'btnText'=>'View Product',
+				'productClass'=>'acc_image',
+				'productId'=>$entry['Product']['id'],
+				'colorId'=>$colorId,
+				'sex'=>$sex
+			)
+		);
+		$i++;
+	}
+	
+	?>
+	
+	<?php echo $this->element('swatches_wrapper',array('school'=>array('School'=>$school),'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images)); ?>
+	<?php echo $this->element('accessories_wrapper'); ?>
+</div>
+	
+	
+	
+	
+	</div> <!-- End Slider Wrapper -->
+	
 </div>
 
-<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/shop/main/')); ?>
+
+
 
 <!-- FB comments -->
 <div id="fb-comments" style="overflow:auto;height:350px;"><?php echo $this->Hfacebook->comments($fbcommentId,440,array()); ?></div>
@@ -46,12 +123,28 @@
 
 <script type="text/javascript" src="/js/jquery.miozoom.js"></script>
 
-<script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.min.js"></script>
+<script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
 
 
 <script type="text/javascript">
+
+
+var schoolId = <?php echo $school['id']; ?>;
+var sex = '<?php echo $sex; ?>';
+
 //product viewer
 $(document).ready(function(){
+	//swatches
+	window.swatches = <?php echo json_encode($swatches); ?>;
+	window.products = <?php echo json_encode($colors); ?>;
+	window.pdetails = <?php echo json_encode($pdetails); ?>;
+
+	//show the tooltip for products
+	<?php echo $this->element('prompts/accessories_product'); ?>
+
+	<?php echo $this->element('prompts/accessories_for_shop'); ?>
+
+	
 	<?php echo $this->element('js/viewer'); ?>
 
 	//reference to the current slider pane
