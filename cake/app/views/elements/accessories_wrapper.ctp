@@ -10,7 +10,9 @@
 		<span class="title">Product Photo</span>
 	</div>
 	
+	<div style="text-align:center">
 	<img style="margin-top:5px;margin-bottom:5px;" src="" width="260" height="297" id="target-image" />
+	</div>
 	
 	<div id="inventory" style="display:none;">
 	    <span class="one">Inventory:  <span id="inventory-wrapper"></span></span>

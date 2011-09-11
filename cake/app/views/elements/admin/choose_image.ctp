@@ -14,7 +14,7 @@ echo "<table cellpadding='0' cellspacing='0'>";
 $img = 0;
 
 foreach(scandir($dir) as $file){
-	if($file[0] != '.') {
+	if($file[0] != '.' && !is_dir($dir . DS . $file)) {
 		$rel = str_replace(WWW_ROOT,'',$dir  . $file);
 		$rel = '/' . str_replace(DS, '/', $rel);
 		

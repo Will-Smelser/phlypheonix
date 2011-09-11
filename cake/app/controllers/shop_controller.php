@@ -14,7 +14,7 @@
 class ShopController extends AppController {
 
 	var $name = 'Shop';
-	var $uses = array('Product', 'Pdetail', 'Sale', 'School','Accessory');
+	var $uses = array('User','Product', 'Pdetail', 'Sale', 'School','Accessory');
 	var $components = array('AuthorizeNet');
 	var $helpers = array('Hfacebook','Sizer');
 	
@@ -30,6 +30,10 @@ class ShopController extends AppController {
 	
 	//no school for user or could not find the school
 	function noschool($info='user'){
+		$this->layout = 'shop_noschool';
+		
+		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
+		
 		//no school for current user
 		if($info == 'user'){
 			
@@ -86,13 +90,16 @@ class ShopController extends AppController {
 		$this->Sale->Saleuser->addUserSaleEndDate($this->myuser, $sale['Sale']['id']);
 
 		$this->addSaleEnds($this->myuser, $sale);
-		//debug($product);
 		
+		$mfgs = $this->Product->Manufacturer->find('list',array('fields'=>array('id','image')));
 		$products = array_merge(array($product['Product']), $productRight);
+		
 		foreach($products as $k=>$p) {
-			foreach($p as $key=>$entry)
-			if(!in_array($key,array('id','pricetag'))){
-				unset($products[$k][$key]);
+			$products[$k]['mfgimage'] = $mfgs[$products[$k]['manufacturer_id']];
+			foreach($p as $key=>$entry){
+				if(!in_array($key,array('id','pricetag'))){
+					unset($products[$k][$key]);
+				}
 			}
 		}
 		
@@ -104,21 +111,24 @@ class ShopController extends AppController {
 		//used for accessories portion
 		$data = $this->Accessory->getData($school['id'],$sex);
 		
+		//filter the products by color...look for the swatch
+		$colors = array();
+		$swatches = array();
+		$cids = array();
+		$pids = array();
+		$pdetails = array();
+		$images = array();
 		if(!empty($data)){
-		
-			//filter the products by color...look for the swatch
-			$colors = array();
-			$swatches = array();
-			$cids = array();
-			$pids = array();
 			
 			$this->Accessory->aggregateData($data, $swatches, $colors, $pids, $cids);
 			$images = $this->Accessory->aggregateImages($pids, $cids);
 			$pdetails = $this->Accessory->getPdetails($this->Product->Pdetail,$pids);
 			
-			//set the data
-			$this->set(compact('data','colors','swatches','images','pdetails'));
+			
 		}
+		
+		//set the data
+		$this->set(compact('data','colors','swatches','images','pdetails'));
 	}	
 	
 	private function fixVars(&$product, &$school, &$sex, &$sale, &$expired){

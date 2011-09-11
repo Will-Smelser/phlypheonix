@@ -80,7 +80,7 @@ class CartController extends AppController {
 	
 	private function cleanInts(){
 		foreach(func_get_args() as $entry){
-			if($entry * 1 == 0) return false;
+			if($entry * 1 == 0 && $entry != 0) return false;
 		}
 		return true;
 	}

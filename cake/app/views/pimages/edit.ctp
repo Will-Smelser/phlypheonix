@@ -9,6 +9,11 @@
 		echo $this->Form->input('color_id');
 		echo $this->Form->input('size_id');
 		echo $this->Form->input('name');
+		
+		$dir = WWW_ROOT . Configure::read('config.image.product');
+		echo $this->element('admin/recursive_dir_list',array('dir'=>$dir,'replace'=>$dir,'controller'=>'pimages','action'=>'loaddir'));
+		
+		/*
 		echo $this->element('admin/choose_image',
 			array(
 				'title'=>'Choose Image',
@@ -16,7 +21,7 @@
 				'model'=>'Pimage',
 				'field'=>'image'
 			)
-		);
+		);*/
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>

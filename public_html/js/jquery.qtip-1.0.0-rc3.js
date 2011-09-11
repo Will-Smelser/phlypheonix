@@ -27,9 +27,9 @@
             $.fn.qtip.log.error.call(self, 1, $.fn.qtip.constants.NO_TOOLTIP_PRESENT, false);
 
          // Return requested object
-         if(options == 'api')
+         if(options == 'api' && typeof $(this).data('qtip') != 'undefined')
             return $(this).data('qtip').interfaces[ $(this).data('qtip').current ];
-         else if(options == 'interfaces')
+         else if(options == 'interfaces' && typeof $(this).data('qtip') != 'undefined')
             return $(this).data('qtip').interfaces;
       }
 

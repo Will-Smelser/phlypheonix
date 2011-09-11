@@ -5,8 +5,15 @@ class AppController extends Controller {
 	var $myuser; //logged in users data
 	
 	function beforeFilter() {
-    	//have to manually start session for things to work properly
-		@session_start();
+		if($this->params['action'] == 'logout'){
+			session_set_cookie_params(0); 
+			@session_start();
+			session_regenerate_id(true);
+		} else {
+	    	//have to manually start session for things to work properly
+			@session_start();
+		}
+		
     	
 		//protocal
 		$protocal = (isset($_SERVER['HTTPS'])) ? 'https' : 'http';
@@ -22,7 +29,7 @@ class AppController extends Controller {
     	$this->Auth->autoRedirect = false;
         $this->Auth->authorize = 'actions';
         $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
+        //$this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
         $this->Auth->loginRedirect = array('controller' => 'shop', 'action' => 'main');
 		
 		//login by cookie
@@ -84,7 +91,7 @@ class AppController extends Controller {
     		) 
     		
     	){
-    		/*
+    		
     		//check if this is login attemt
     		$loggingin = (
     			($this->params['controller'] == 'users' && $this->params['action'] == 'login')
@@ -100,7 +107,7 @@ class AppController extends Controller {
 	    			)
 	    	)
 	    	{
-	    		$this->redirect(array('controller' => 'customer', 'action' => 'maintenance'));
+	    		$this->redirect(array('controller' => 'pages', 'action' => 'maintenance'));
 	    		
 	    	} else if (
 	    	    !$loggingin
@@ -113,9 +120,9 @@ class AppController extends Controller {
 	    			)
 	    		) 
 	    	{
-	    		$this->redirect(array('controller' => 'customer', 'action' => 'coming_soon'));	
+	    		$this->redirect(array('controller' => 'pages', 'action' => 'coming_soon'));	
 	    	}
-	    	*/
+	    	
     	}
     	
         //$this->secureUserSession();

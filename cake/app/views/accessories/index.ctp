@@ -15,7 +15,7 @@ $firstSwatch = $swatches[$colorId][0];
 
 echo $this->element('product/accessories_product',
 	array(
-		'name'=>'Viewing:&nbsp;'.$images[$firstSwatch['Product']['id']][0]['name'],
+		'name'=>'Current Pattern',
 		'image'=>$images[$firstSwatch['Product']['id']][0]['image'],
 		'price'=>$firstSwatch['Product']['desc'],
 		'DOMbtnId'=>'swatch_btn',
@@ -29,21 +29,24 @@ echo $this->element('product/accessories_product',
 
 
 foreach($firstColor as $entry){
-	$pid = $entry['Product']['id'];
-	echo $this->element('product/accessories_product',
-		array(
-			'name'=>$entry['Product']['name'],
-			'image'=>$images[$pid][0]['image'],
-			'price'=>'Sale&nbsp;$'.$entry['Product']['price_buynow'],
-			'DOMbtnId'=>$btn . $i,
-			'btnText'=>'View Product',
-			'productClass'=>'acc_image',
-			'productId'=>$entry['Product']['id'],
-			'colorId'=>$colorId,
-			'sex'=>$sex
-		)
-	);
-	$i++;
+	if(!preg_match('/swatch/i',$entry['Product']['name'])){
+		$pid = $entry['Product']['id'];
+		echo $this->element('product/accessories_product',
+			array(
+				'name'=>$entry['Product']['name'],
+				'image'=>$images[$pid][0]['image'],
+				'price'=>'Sale&nbsp;$'.$entry['Product']['price_buynow'],
+				'DOMbtnId'=>$btn . $i,
+				'btnText'=>'View Product',
+				'productClass'=>'acc_image',
+				'productId'=>$entry['Product']['id'],
+				'colorId'=>$colorId,
+				'sex'=>$sex
+			)
+		);
+		$i++;
+	}
 }
+
 
 ?>

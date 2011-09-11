@@ -68,4 +68,13 @@ class PimagesController extends AppController {
 		$this->Session->setFlash(__('Pimage was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+	
+	function loaddir($dir){
+		$this->layout = 'ajax';
+		$dir = ltrim($dir,'*');
+		$dir = str_replace('*',DS,$dir);
+		$abs = WWW_ROOT . Configure::read('config.image.product') . $dir . DS;
+		
+		$this->set(compact('abs'));
+	}
 }

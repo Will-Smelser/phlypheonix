@@ -39,7 +39,9 @@
 		        <select class="fieldwidth" name="data[School][School][id]" style="width:180px">
 		        <?php 
 		        	foreach($schools as $entry) {
-		        		echo "\t\t\t<option value='{$entry['School']['id']}' >{$entry['School']['long']}</option>\n";
+		        		if(!preg_match('/swatch/i',$entry['School']['long'])){
+		        			echo "\t\t\t<option value='{$entry['School']['id']}' >{$entry['School']['long']}</option>\n";
+		        		}
 		        	}
 		        ?>
 		        </select>

@@ -5,7 +5,7 @@
 $(document).ready(function(){
 	var qtipSetting = {
 	   content: {
-		  text: '<p>Are you sure you want to checkout?</p><input type="button" value="Cancel" class="cancel-checkout one"/>&nbsp;<input type="button" value="Yes" class="checkout one"/><p class="checkout-pop-count">Viewing <span class="pos">x</span> of <?php echo $count; ?> products</p>',
+		  text: '<p>Are you sure you want to checkout?</p><input id="prompt-cancel-checkout" type="button" value="Cancel" class="cancel-checkout one"/>&nbsp;<input id="prompt-checkout" type="button" value="Yes" class="checkout one"/><p class="checkout-pop-count">Viewing <span class="pos">x</span> of <?php echo $count; ?> products</p>',
 		   prerender: true,
 		   title:{
 	   		   text:false,
@@ -58,6 +58,8 @@ $(document).ready(function(){
 	$rightArrow.qtip(qtipSetting);
 	$rightArrow.click(function(){$(this).qtip('hide');});
 	
+	$rightArrow.qtip('api').elements.content.find('#prompt-cancel-checkout').click(function(){$rightArrow.qtip('hide');});
+	$rightArrow.qtip('api').elements.content.find('#prompt-checkout').click(function(){document.location.href = window.viewer.checkoutUrl;});
 	
 	window.bindCheckout = function(pos){
 		if(window.viewer.allPagesViewed()){

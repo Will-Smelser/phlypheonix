@@ -530,6 +530,12 @@ a #rightarrow:hover{
 	font-size:14px;
 	padding-left:6px;
 }
+h2{
+	font-size:18px;
+	font-weight:bold;
+	color:#FFF;
+	padding-top:20px;	
+}
 a.whitelink.chart {
 	padding-top:10px;
 	padding-left:6px;

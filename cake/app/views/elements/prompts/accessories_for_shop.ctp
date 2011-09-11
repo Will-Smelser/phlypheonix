@@ -37,6 +37,7 @@ $(document).ready(function(){
 		$('#buytwo').hide();
 		$('#sliderwrapper').hide();
 	};
+	
 	var toggleDown = function(){
 		open = false;
 		$('#accessories-wrapper').animate({height:30},function(){

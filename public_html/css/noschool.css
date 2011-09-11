@@ -1,0 +1,232 @@
+@charset "utf-8";
+/* CSS Document */
+
+input, select{
+background-color:#CCC;
+border-color:#CCC;
+color:#333;
+border-radius: 5px;
+}
+
+span.one{
+color: #FBB040;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+text-align:left;
+}
+
+span.two{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 12px;
+}
+
+span.three{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 16px;
+}
+
+span.four{
+color:#000;
+font-family:Arial, Helvetica, sans-serif;
+font-size: 12px;
+text-align:left;
+}
+
+span.five{
+color:#000;
+font-family:Arial, Helvetica, sans-serif;
+font-size: 12px;
+text-align:left;
+font-weight:bold
+}
+
+span.six{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 14px;
+}
+
+span.seven{
+color: #333;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 14px;
+}
+
+span.eight{
+	color: #FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-size: 12px;
+	font-weight:bold;
+}
+
+a.nav{
+padding-right: 10px;
+padding-left: 10px;
+text-decoration:none;
+color:#000;
+}
+
+a.nav:hover{
+padding-right: 10px;
+padding-left: 10px;
+text-decoration:none;
+color:#FFFFFF;
+}
+
+a.whitelink{
+color: #FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+text-align: left;
+font-size: 12px;
+text-decoration:underline;
+}
+
+input.two{
+color: #333;
+font-family:Arial, Helvetica, sans-serif;
+font-size: 14px;
+background-color: #FBB040;
+border: none;
+padding: 5px;
+border-radius: 5px;
+}
+
+img.one{
+padding-top: 7px;
+}
+
+body{
+	width: 100%;
+	background-color:#333;
+	background-repeat:no-repeat;
+	margin: 0px;
+	padding: 0px;
+	overflow:hidden;
+}
+
+#background{
+	width:100%;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#wrapper{
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index: 1;
+}
+
+#mainHeader{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index:1;
+	height:41px;
+	background-image:url(/img/flyfoenix_header.png);
+	background-repeat:repeat-x;
+}
+
+#logoHeader{
+	position: relative;
+	top: 0px;
+	left:0px;
+	width: 1367px;
+	height: 41px;
+	z-index: 2;
+}
+
+#caption{
+	position: relative;
+	top: 22px;
+	left: 330px;
+	z-index: 3;
+}
+
+#navigate{
+	left: 940px;
+    position: fixed;
+    top: 19px;
+    width: 500px;
+    z-index: 3;
+}
+
+#logoFlyFoenix{
+	position: absolute;
+	margin-top: 2px;
+	margin-left: 10px;
+	z-index: 3;
+}
+
+#bodyHeader{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	top: 70px;
+	width: 527px;
+	height:90px;
+	z-index: 5;
+	background-image: url(/img/noschool/flyfoenix_noschool_lightgrayheader.png);
+	background-repeat:no-repeat;
+}
+
+#bodyContainerDark{
+	position:relative;
+	background-image:  url(/img/noschool/flyfoenix_noschool_lightgraybig.png) ,url(/img/noschool/flyfoenix_noschool_darkgray.png) ;
+	width:527px;
+	height:233px;
+	margin-left:auto;
+	margin-right:auto;
+	background-repeat:no-repeat;
+	z-index:5;
+	top: 55px;
+	background-position: 50% 45%;
+}
+
+#comingsoon{
+	left: 145px;
+    position: relative;
+    top: 18px;	
+}
+
+#canwe{
+	left: 69px;
+    position: relative;
+    top: 45px;
+}
+
+#btnselect{
+	float: right;
+    position: relative;
+    right: 80px;
+    top: 15px;
+}
+
+#school{
+	left: 80px;
+    position: relative;
+    top: 40px;
+}
+
+#content{
+	left: 80px;
+    position: relative;
+    top: 35px;
+    width: 375px;
+}
+
+#fieldwidth{
+	width:220px;
+}

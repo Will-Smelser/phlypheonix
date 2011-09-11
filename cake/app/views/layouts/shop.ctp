@@ -9,7 +9,6 @@
 
 		echo $this->Html->css('reset.css');
 		echo $this->Html->css('productpresentation.css');
-		echo $this->Html->css('kvkContBubbles.css');
 
 		echo $scripts_for_layout;
 
@@ -50,60 +49,58 @@
 	
 	
 	<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/shop/main/')); ?>
-	<div style="display:none;">
+
 	<?php 
 	
 	$btn = 'buynow_';
 	$i=0;
 	
-	//get first color
-	reset($colors);
-	reset($swatches);
-	$firstColor = current($colors);
-	$colorId = $firstColor[0]['Color']['id'];
+	if(count($colors) > 0){
 	
-	$firstSwatch = $swatches[$colorId][0];
-	
-	echo $this->element('product/accessories_product',
-		array(
-			'name'=>'Viewing:&nbsp;'.$images[$firstSwatch['Product']['id']][0]['name'],
-			'image'=>$images[$firstSwatch['Product']['id']][0]['image'],
-			'price'=>$firstSwatch['Product']['desc'],
-			'DOMbtnId'=>'swatch_btn',
-			'btnText'=>'View Another Color',
-			'productClass'=>'swatch_image',
-			'productId'=>$firstSwatch['Product']['id'],
-			'colorId'=>$colorId,
-			'sex'=>$sex
-		)
-	);
-	
-	?>
-	</div>
-	<?php 
-	
-	foreach($firstColor as $entry){
-		$pid = $entry['Product']['id'];
-		echo $this->element('product/accessories_product',
-			array(
-				'name'=>$entry['Product']['name'],
-				'image'=>$images[$pid][0]['image'],
-				'price'=>'Sale&nbsp;$'.$entry['Product']['price_buynow'],
-				'DOMbtnId'=>$btn . $i,
-				'btnText'=>'View Product',
-				'productClass'=>'acc_image',
-				'productId'=>$entry['Product']['id'],
-				'colorId'=>$colorId,
-				'sex'=>$sex
-			)
-		);
-		$i++;
+		//get first color
+		reset($colors);
+		reset($swatches);
+		$firstColor = current($colors);
+		$colorId = $firstColor[0]['Color']['id'];
+		
+		$firstSwatch = $swatches[$colorId][0];
+		
+		foreach($firstColor as $entry){
+			if(!preg_match('/swatch/i',$entry['Product']['name'])){
+				$pid = $entry['Product']['id'];
+				echo $this->element('product/accessories_product',
+					array(
+						'name'=>$entry['Product']['name'],
+						'image'=>$images[$pid][0]['image'],
+						'price'=>'Sale&nbsp;$'.$entry['Product']['price_buynow'],
+						'DOMbtnId'=>$btn . $i,
+						'btnText'=>'View Product',
+						'productClass'=>'acc_image',
+						'productId'=>$entry['Product']['id'],
+						'colorId'=>$colorId,
+						'sex'=>$sex
+					)
+				);
+				$i++;
+			}
+		}
+		
+		echo $this->element('swatches_wrapper',array('school'=>array('School'=>$school),'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images));
+		echo $this->element('accessories_wrapper');
+	} else{
+		//just gotta put the swatches wrapper
+		echo '<div id="swatches-wrapper" style="display:none;"></div>';
+		
+		//no accessories
+		echo '<div id="tooltip-product">';
+		echo '<h2>No Accessories available.</h2>';
+		echo '</div>';
 	}
 	
 	?>
 	
-	<?php echo $this->element('swatches_wrapper',array('school'=>array('School'=>$school),'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images)); ?>
-	<?php echo $this->element('accessories_wrapper'); ?>
+
+	<?php  ?>
 </div>
 	
 	
@@ -140,7 +137,7 @@ $(document).ready(function(){
 	window.pdetails = <?php echo json_encode($pdetails); ?>;
 
 	//show the tooltip for products
-	<?php echo $this->element('prompts/accessories_product'); ?>
+	<?php if(count($colors) > 0) echo $this->element('prompts/accessories_product'); ?>
 
 	<?php echo $this->element('prompts/accessories_for_shop'); ?>
 

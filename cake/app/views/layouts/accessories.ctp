@@ -93,9 +93,12 @@ reset($swatches);
 $firstColor = current($colors);
 $colorId = $firstColor[0]['Color']['id'];
 */
-	echo $this->element('swatches_wrapper',array('school'=>$school,'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images)); 
+	if(count($colors) > 0){
+		echo $this->element('swatches_wrapper',array('school'=>$school,'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images));
+		echo $this->element('accessories_wrapper'); 
+	}
 ?>
-<?php echo $this->element('accessories_wrapper'); ?>
+
 <?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/accessories/index/')); ?>
 
 </body>
@@ -112,7 +115,7 @@ window.products = <?php echo json_encode($colors); ?>;
 window.pdetails = <?php echo json_encode($pdetails); ?>;
 
 //show the tooltip for products
-<?php echo $this->element('prompts/accessories_product'); ?>
+<?php if(count($colors)>0) echo $this->element('prompts/accessories_product'); ?>
 
 //search for schools
 <?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>

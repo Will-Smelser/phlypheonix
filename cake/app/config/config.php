@@ -2,7 +2,7 @@
 
 $config['config']['maintenance'] = false;
 $config['config']['coming_soon'] = false;
-$config['config']['testing'] = true;
+$config['config']['testing'] = false;
 
 //false = do not allow purchase when no inventory
 $config['config']['inventory']['allowpresale'] = false;

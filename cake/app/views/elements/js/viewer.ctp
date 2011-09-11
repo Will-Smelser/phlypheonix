@@ -10,21 +10,22 @@
 		speed : 1000,
 		inTrans : false,
 		viewed : [0], //include the first page by default
-		checkoutUrl : '/shop/accessories',
+		checkoutUrl : '/accessories/index/'+window.schoolId+'/'+window.sex,
 		
 		init : function() {
 			var obj = this;
-
+			
 			//build info
 			obj.$wrapper = $('#sliderpane');
 			
 			obj.$wrapper.children('.slider').each(function(){
 				obj.$sliders.push($(this));
 			});
-
+			
 			//load other pages
 			for(var i = 1; i < obj.$sliders.length; i++){
 				var temp = i;
+				
 				obj.$sliders[i].load(
 						obj.$sliders[i].attr('id'), //the id actually holds the url
 						function(){
@@ -47,6 +48,7 @@
 								
 									}
 							);
+							
 							obj.$sliders[temp].find(".feature-thumb").
 								mioZoom({
 								'$target':obj.$sliders[temp].find('.mainphoto'),
@@ -145,6 +147,7 @@
 			obj.anim('-='+obj.width);
 			obj.toggleNavs();
 			obj.setPrice();
+			obj.setMfg();
 			
 			obj.addViewed(obj.current);
 		},
@@ -163,7 +166,10 @@
 			var obj = this;
 			$('#buynowtag').attr('src',obj.products[obj.current].pricetag);
 		},
-		
+		setMfg : function(){
+			var obj = this;
+			$('#mfg-logo').attr('src',obj.products[obj.current].mfgimage);
+		},
 		anim : function(pos) {
 			var obj = this;
 			obj.$wrapper.animate({

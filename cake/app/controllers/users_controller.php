@@ -151,14 +151,15 @@ class UsersController extends AppController {
 	}
 	
 	function logout(){
+		
 		$this->Session->delete('registerData');
 		$this->Session->setFlash('Good-Bye');
 		$this->RememberMe->delete();
 		
-		$this->Auth->logout();
-        
-		//$this->redirect(array('action'=>'login'));
-        
+		//lets make sure we are good
+		$this->Cookie->destroy();
+		$this->Session->destroy();
+		        
 	}
 	
 	function view($id = null) {

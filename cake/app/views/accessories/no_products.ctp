@@ -1,1 +1,1 @@
-<h2>No products located.</h2>
+<h2>No accessories located.</h2>
