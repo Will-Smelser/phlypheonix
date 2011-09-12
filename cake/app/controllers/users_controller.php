@@ -92,7 +92,7 @@ class UsersController extends AppController {
 
 	function login($err=null){
 		
-		$this->layout = 'landing'; 
+		//$this->layout = 'landing'; 
 		
 		//force logged-in users to shop
 		if($this->Auth->user()){

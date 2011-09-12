@@ -11,7 +11,7 @@ class RememberMeComponent extends Object
      * @var string 
      */  
     var $period = 'never'; 
-    var $cookieName = 'User';  
+    var $cookieName = 'Remember';  
   
     function startup(&$controller)  
     {  

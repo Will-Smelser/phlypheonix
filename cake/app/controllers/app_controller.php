@@ -5,6 +5,7 @@ class AppController extends Controller {
 	var $myuser; //logged in users data
 	
 	function beforeFilter() {
+		
 		if($this->params['action'] == 'logout'){
 			session_set_cookie_params(0); 
 			@session_start();

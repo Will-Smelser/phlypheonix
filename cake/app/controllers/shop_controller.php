@@ -30,8 +30,12 @@ class ShopController extends AppController {
 	
 	//no school for user or could not find the school
 	function noschool($info='user'){
-		$this->layout = 'shop_noschool';
 		
+		$this->layout = 'dynamic';
+		
+		$title = '/img/noschool/flyfoenix_noschool_comingsoon.png';
+		
+		$this->set('title',$title);
 		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
 		
 		//no school for current user
@@ -48,7 +52,37 @@ class ShopController extends AppController {
 		
 	//there was no sale for schools
 	function nosale() {
+		$this->layout = 'dynamic';
 		
+		//gotta get a list of sales and their schools
+		$sql = 'SELECT `School`.*,`Sale`.* FROM `sales` AS `Sale` ' .
+				
+				'LEFT JOIN `sales_products` ON `Sale`.`id` = `sales_products`.`sale_id` ' .
+				'LEFT JOIN `products` AS `Product` ON `sales_products`.`product_id` = `Product`.`id` '.
+				'LEFT JOIN `schools` AS `School` ON `Product`.school_id = `School`.id ' .
+				
+				'WHERE `Sale`.`starts` <= ' . time() . ' ' .
+				'AND `Sale`.`ends` >= ' . time() . ' ' . 
+				'AND `Sale`.`active` = 1 ' .
+				'GROUP BY `School`.id ' .
+				'ORDER BY `School`.`name` ASC';
+		
+		$schools = $this->Sale->query($sql);
+		
+		$title = '/img/noschool/flyfoenix_noschool_comingsoon.png';				
+		
+		$this->set(compact('schools','title'));
+	}
+	
+	function expiredsale($saleId=null){
+		//no informaiton on what sale were looking for
+		//really should not end up here
+		if(empty($saleId)){
+			
+		//give user chance to share with friends to extend the sale
+		} else {
+			
+		}
 	}
 	
 	//no product available
@@ -56,6 +90,7 @@ class ShopController extends AppController {
 		
 	}
 	
+	//the viewer dynamically loads pages from this
 	function product($school=null, $sex=null, $sale = null, $product = null){
 		$imageIndex = 0;
 		
@@ -90,6 +125,12 @@ class ShopController extends AppController {
 		$this->Sale->Saleuser->addUserSaleEndDate($this->myuser, $sale['Sale']['id']);
 
 		$this->addSaleEnds($this->myuser, $sale);
+		
+		//check the found sale has not expired for the user
+		//$sale['Sale']['UserSaleEnds']  is added to $sale in addSaleEnds call
+		if($sale['Sale']['UserSaleEnds'] < time() && !Configure::read('config.testing')) {
+			$this->redirect(array('action'=>'expiredsale/'.$sale['Sale']['id']));
+		}
 		
 		$mfgs = $this->Product->Manufacturer->find('list',array('fields'=>array('id','image')));
 		$products = array_merge(array($product['Product']), $productRight);
@@ -291,6 +332,7 @@ class ShopController extends AppController {
 						'Sale.id IN ('.implode(',',$ids).')',
 						'Sale.ends >= '.time(),
 						'Sale.starts <= '.time(),
+						'Sale.active = 1',
 					)
 				));
 				
@@ -312,7 +354,7 @@ class ShopController extends AppController {
 			$sql = 'SELECT * FROM `sales` AS `Sale` LEFT JOIN `sales_products` ON `Sale`.`id` = `sales_products`.`sale_id` '.
 				'LEFT JOIN `products` AS `Product` ON `sales_products`.`product_id` = `Product`.`id` '.
 				'WHERE `Product`.`school_id` = ' . $school['id'] . ' AND `Sale`.`starts` <= ' . time() . ' ' .
-					'AND `Sale`.`ends` >= ' . time() . ' ' .
+					'AND `Sale`.`ends` >= ' . time() . ' AND `Sale`.`active` = 1 ' .
 				'ORDER BY `Product`.`sex` '.$order . ' LIMIT 1';
 			
 			
@@ -329,7 +371,8 @@ class ShopController extends AppController {
 				'conditions'=>array(
 					'Sale.id = '.$saleId,
 					'Sale.ends >= '.time(),
-					'Sale.starts <= '.time(), 
+					'Sale.starts <= '.time(),
+					'Sale.active = 1',
 				)
 			));
 			
@@ -344,7 +387,7 @@ class ShopController extends AppController {
 			}
 		}
 		
-		//no luck jus send to error page
+		//no luck just send to error page
 		$this->redirect(array('action'=>'nosale'));
 		return false;
 	}

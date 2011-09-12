@@ -1,0 +1,214 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	font-family:arial;	
+	color:#FFF;
+	
+	width: 100%;
+	
+	background-color:#333;
+	background-repeat:no-repeat;
+	
+	margin: 0px;
+	padding: 0px;
+	
+	overflow:hidden;
+}
+
+input, select{
+	background-color:#CCC;	
+	color: #333;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	border: none;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.btn{
+	font-weight:bold;
+	background-color:#FBB040;
+	cursor:pointer;	
+}
+
+.btn.space-left{
+	margin-left:10px;	
+	display:inline-block;
+}
+
+#navigate{
+	font-weight:bold;
+	font-size:12px;	
+	color:#000;
+	margin-top:22px;
+	float:right;
+}
+
+a.nav{
+	padding-right: 10px;
+	padding-left: 10px;
+	text-decoration:none;
+	color:#000;
+}
+
+a.nav:hover{
+	text-decoration:none;
+	color:#FFFFFF;
+}
+
+
+#background{
+	width:100%;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#wrapper{
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index: 1;
+}
+
+#mainHeader{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index:1;
+	height:41px;
+	background-image:url(/img/flyfoenix_header.png);
+	background-repeat:repeat-x;
+}
+
+#logoHeader{
+	position: relative;
+	top: 0px;
+	left:0px;
+	width: 1367px;
+	height: 41px;
+	z-index: 2;
+}
+
+#caption{
+	position: relative;
+	top: 22px;
+	left: 330px;
+	z-index: 3;
+}
+
+#logoFlyFoenix{
+	position: absolute;
+	margin-top: 2px;
+	margin-left: 10px;
+	z-index: 3;
+}
+
+#bodyHeader{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	top: 70px;
+	width: 527px;
+	height:90px;
+	z-index: 5;
+}
+#bodyHeader table{
+	width:527px;
+	text-align:center;	
+}
+#bodyHeader .left{
+	width:25px;
+	height:90px;
+	background-position:left top;
+	background-image:url('/img/layout/bar-left.png');	
+}
+#bodyHeader .right{
+	width:30px;
+	height:90px;
+	background-position:right top;
+	background-image:url('/img/layout/bar-right.png');	
+}
+#bodyHeader .bg-main{
+	background-position:top;
+	background-image:url('/img/layout/bar-back.png');
+}
+
+#bodyContainerDark{
+	position:relative;
+	
+	width:527px;
+	height:233px;
+	margin-left:auto;
+	margin-right:auto;
+	
+	background-repeat:no-repeat;
+	
+	z-index:5;
+	top: 65px;
+	
+	background-position: 50% 45%;
+}
+
+.top{
+	height:50px;
+} 	
+.bottom{
+	height:55px;	
+}
+.left{
+	width:65px;
+} 
+.right{
+	width:70px;	
+}
+
+.top.left{
+	background-position:top left;
+	background-image:url('/img/layout/topleft.png');
+	background-repeat:no-repeat;
+}
+.top.right{
+	background-position:top right;
+	background-image:url('/img/layout/topright.png');
+	background-repeat:no-repeat;	
+}
+.bottom.right{
+	background-position:bottom right;
+	background-image:url('/img/layout/bottomright.png');
+	background-repeat:no-repeat;		
+}
+.bottom.left{
+	background-position:bottom left;
+	background-image:url('/img/layout/bottomleft.png');
+	background-repeat:no-repeat;		
+}
+.top.edge{
+	background-position:top;
+	background-image:url('/img/layout/top.png');
+	background-repeat:repeat-x;		
+}
+.left.edge{
+	background-position:left;
+	background-image:url('/img/layout/left.png');
+	background-repeat:repeat-y;			
+}
+.right.edge{
+	background-position:right;
+	background-image:url('/img/layout/right.png');
+	background-repeat:repeat-y;			
+}
+.bottom.edge{
+	background-position:bottom;
+	background-image:url('/img/layout/bottom.png');
+	background-repeat:repeat-x;		
+}
+.bg-main{
+	padding:10px;
+	background-image:url('/img/layout/back.png');	
+}

@@ -1,8 +1,9 @@
 	<img id="canwe" src="/img/noschool/flyfoenix_noschool_canwe.png" width="380" height="55" alt="canwe" />
   
 	<div id="content" style="padding-bottom:10px">
-		<span class="eight">Sorry, the requested school is not available yet!  
-		We will let you know when a sales starts.  Until then are you interested in another school?
+		<span class="eight">
+		Unfortunately we do not have a sale for the requested school at this time.  Below is a list of schools which do have a
+		sale current running.
 		</span>
 	</div><!-- End content -->
   
