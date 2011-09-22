@@ -79,7 +79,7 @@
 	
 </div>
 
-<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$myuser['sex'],'link'=>'/shop/main/')); ?>
+<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$myuser['User']['sex'],'link'=>'/shop/main/')); ?>
 
 <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
 
