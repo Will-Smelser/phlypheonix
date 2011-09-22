@@ -1,0 +1,84 @@
+@CHARSET "ISO-8859-1";
+
+#receipt-wrapper table{
+	width:100%;	
+}
+#receipt-wrapper TH, #receipt-wrapper TD{
+	padding:5px;	
+}
+#receipt-wrapper .header TH, #receipt-wrapper TR TH:hover{
+	font-weight:bold;
+	font-size:16px;	
+	background-color:#000;
+	padding:8px;
+}
+#receipt-wrapper TR:hover{
+	background-color:#333;	
+}
+#receipt-wrapper TR.no-hover:hover{
+	background-color:transparent;	
+}
+.border-rad-left{
+	border-radius:5px 0px 0px 5px;
+	-moz-border-radius:5px 0px 0px 5px;
+}
+.border-rad-right{
+	border-radius:0px 5px 5px 0px;
+	-moz-border-radius: 0px 5px 5px 0px;
+}
+
+.total, .unit, .tax, .sub, .grand{
+	text-align:right;	
+}
+
+.sub, .grand{
+	font-weight:bold;	
+}
+.grand{
+	font-size:16px;	
+}
+TD.sub.total{
+	border-top:solid #FFF 1px;	
+}
+TD.grand.total{
+	border-top:solid #fff 2px;	
+}
+
+#receipt-wrapper TD.product-details{
+	padding-left:20px;	
+}
+
+.color{
+	padding-right:20px;
+}
+
+
+#receipt-wrapper{
+	float:left;
+	width:500px;	
+}
+#details-wrapper{
+	width:270px;
+	float:right;
+}
+.title{
+	color: #FBB040;
+	font-weight: bold;
+	text-align: left;
+	font-size:14px;	
+}
+input.line{
+	width:255px;	
+}
+.line-3{
+	display:inline-block;	
+}
+.city{
+	width:105px;	
+}
+.state{
+	width:40px;	
+}
+.zip{
+	width:75px;	
+}
