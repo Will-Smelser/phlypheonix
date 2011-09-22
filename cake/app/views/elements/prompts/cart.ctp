@@ -90,6 +90,7 @@ $(document).ready(function(){
 					
 					//obj.$el.qtip('hide');
 					//setTimeout(function(){obj.$el.trigger('click');},100);
+					obj.deleteCallback();
 				}
 			);
 		},
@@ -102,8 +103,12 @@ $(document).ready(function(){
 			$.post('/cart/update',data,function(){
 					//obj.$el.qtip('hide');
 					//setTimeout(function(){obj.$el.trigger('click');},100);
+					obj.updateCallback();
 				}
 			);
-		}
+		},
+		
+		updateCallback : function(){},
+		deleteCallback : function(){}
 	}
 });

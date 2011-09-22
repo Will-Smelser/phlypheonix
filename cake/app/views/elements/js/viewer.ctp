@@ -131,6 +131,7 @@
 			obj.anim('+='+obj.width);
 			obj.toggleNavs();
 			obj.setPrice();
+			obj.setMfg();
 		},
 
 		moveRight : function() {

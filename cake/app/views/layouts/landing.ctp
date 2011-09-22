@@ -28,7 +28,7 @@
 <div id="wrapper"> 
   <div id="mainHeader">
     <img id="logoFlyFoenix" src="/img/logos/logo_flyfoenix.png" alt="flyfoenixlogo" />
-    <span id="caption" class="four">Unique Collegiate Fashion.&nbsp;&nbsp;Quick Shopping.&nbsp;&nbsp;Great Fit & Feel.&nbsp;&nbsp;High Style.&nbsp;&nbsp;Lower Prices.</span>    
+    <span id="caption" class="four"></span>    
   </div><!--End Main Header -->
   
 	<div id="bodyHeader">
@@ -58,9 +58,6 @@
 
 </div>
 
-    
-    
-	<div style="position:fixed;bottom:25px;z-index:1000;background-color:#FFF;"><h1><?php var_dump($loggedin); ?></h1></div>
 	<?php //echo $this->element('sql_dump'); ?>
 </body>
 
@@ -103,7 +100,7 @@ $(document).ready(function(){
 		}
 	});
 
-	$.getScript('<?php echo $protocal; ?>://w.sharethis.com/button/buttons.js',function(){
+	$.getScript('<?php echo $protocal; ?>://w<?php if($protocal == 'https') echo 's'; ?>.sharethis.com/button/buttons.js',function(){
 		stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7'});
 	});
 	

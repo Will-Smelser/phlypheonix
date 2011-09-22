@@ -26,7 +26,8 @@ $(document).ready(function(){
  	      color: '#DDD',
  	      padding: 15,
  	      tip:true,
- 	      width:400
+ 	      width:520,
+ 	      height:400,
 	   },
 	   position: {
 	      corner: {

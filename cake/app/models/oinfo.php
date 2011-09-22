@@ -4,9 +4,16 @@ class Oinfo extends AppModel {
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $belongsTo = array(
-		'Product' => array(
-			'className' => 'Product',
-			'foreignKey' => 'product_id',
+		'Order' => array(
+			'className' => 'Order',
+			'foreignKey' => 'order_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Pdetail' => array(
+			'className' => 'Pdetail',
+			'foreignKey' => 'pdetail_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

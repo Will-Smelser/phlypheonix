@@ -154,7 +154,7 @@ body{
 
 #navigate{
     position:relative;
-    top:3px;
+    top:20px;
     right:10px;
     
     text-align:right; 
@@ -558,7 +558,7 @@ a.whitelink.chart {
 }
 
 #list-schools{
-	max-height:100px;
+	height:390px;
 	overflow:auto;
 }
 #list-schools a{

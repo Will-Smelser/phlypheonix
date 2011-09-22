@@ -3,14 +3,14 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $components = array('Captcha','Email','Cfacebook','Session');
-	var $uses = array('User','School','Prompt','Mfacebook');
+	var $uses = array('User','School','Prompt','Mfacebook','Referer');
 	var $helpers = array('Session','Form', 'Html','Javascript','Hfacebook');
 	
 	
 	function beforeFilter() {
 	    parent::beforeFilter(); 
 
-	    $this->Auth->allow(array('register','register_ajax','recover','recover_complete','captcha_image','login','logout'));
+	    $this->Auth->allow(array('register','register_ajax','recover','recover_complete','captcha_image','login','logout','referred'));
 		
 		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
 
@@ -34,6 +34,16 @@ class UsersController extends AppController {
 				$this->set('postschool',$data['School']['id']);
 			}
 		} 
+	}
+	
+	function referred($userid){
+		
+		if(!$this->User->findById($userid)){
+			$this->redirect('/users/login/bad_referer');
+		} else {
+			$this->Session->write('Referer.id',$userid);
+			$this->redirect('/users/login');
+		}
 	}
 	
 	function add_school($id){
@@ -92,7 +102,7 @@ class UsersController extends AppController {
 
 	function login($err=null){
 		
-		//$this->layout = 'landing'; 
+		$this->layout = 'landing'; 
 		
 		//force logged-in users to shop
 		if($this->Auth->user()){
@@ -151,6 +161,10 @@ class UsersController extends AppController {
 	}
 	
 	function logout(){
+		$this->layout = 'dynamic';
+		$title = '/img/header/thankyou.png';
+		$classWidth = 'width-small';
+		$this->set(compact('title','classWidth'));
 		
 		$this->Session->delete('registerData');
 		$this->Session->setFlash('Good-Bye');
@@ -278,6 +292,17 @@ class UsersController extends AppController {
 			
 			if ($this->User->save($this->data,array('validate'=>false))) {
 				$this->Auth->login($this->data); // autologin
+				
+				//save the referal
+				try{  //using mysql db information to prevent duplicates, so errors on input are possible
+					$referer = $this->Session->read('Referer.id');
+					if(!empty($referer)){
+						$userid = $this->User->id;
+						$this->Referer->save(array('referer_user_id'=>$referer,'user_id'=>$userid));
+					}
+				}catch(Exception $e){
+					//do nothing
+				}
 				
 				//add the remember me
 				if(isset($this->data['User']['remember_me'])){
@@ -488,6 +513,12 @@ class errorTypes {
 					'msg' => 'success',
 					'id' => 'N/A',
 					'context' => 'none'
+				);
+			case 'bad_referer':
+				return array(
+					'msg' => Configure::read('error.msg.bad_referer'),
+					'id'=>'error-general',
+					'context'=>'none'
 				);
 			default:
 				return array(

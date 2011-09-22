@@ -12,9 +12,11 @@ class Accessory extends AppModel {
 				"LEFT JOIN `pdetails` AS `Pdetail` ON (`Pdetail`.`color_id` = `SchoolsColor`.`color_id`) " .
 				"LEFT JOIN `products` AS `Product` ON (`Pdetail`.`product_id` = `Product`.`id`) " .
 				//"LEFT JOIN `pimages` AS `Pimage` ON (`Color`.`id` = `Pimage`.`color_id`) " .
-				"WHERE `School`.`id` = $school AND `Product`.`sex` = '$sex' AND `Product`.`controller` = 'accessories' "; 
+				"WHERE (`School`.`id` = $school AND `Product`.`sex` = '$sex' AND `Product`.`controller` = 'accessories') ";//OR " .
+				//"`Product`.`name` LIKE '%swatch%' "; 
 		//if(empty($color)){
-			$sql .= "GROUP BY `Product`.`id` ";
+			//$sql .= "GROUP BY `Product`.`id` ";
+			$sql .= "GROUP BY `Pdetail`.`color_id`,`Product`.`id` ";
 			$sql .= "ORDER BY `Color`.`id` ASC ";
 		/*} else {
 			$sql .= "AND `Color`.`id` = $color ";
@@ -22,20 +24,31 @@ class Accessory extends AppModel {
 		}
 		return $this->query($sql);
 		*/
+		//debug($color);
 		$result = $this->query($sql);
-		
+		//debug($sql);
 		//sort by the color putting color at front
+		
 		if(!empty($result) && !empty($color)){
-			$temp = null;
+			$temp = array();
+			$swatch = array();
 			foreach($result as $key=>$entry){
-				if($entry['Color']['id'] == $color){
-					$temp = $entry;
+				if($entry['Color']['id'] == $color ){
+					//debug("MADE IT");
+					array_push($temp,$entry);
 					unset($result[$key]);
-					break;
+					//break;
+				} elseif(preg_match('/swatch/i',$entry['Product']['name'])){
+					array_push($swatch,$entry);
+					
 				}
 			}
-			if($temp != null) array_unshift($result, $temp);
+			//$result = array_merge($temp, $result);
+			$result = $temp;
+			$result = array_merge($result,$swatch);
 		}
+		
+		//debug($result);
 		return $result;
 	}
 	
@@ -99,5 +112,7 @@ class Accessory extends AppModel {
 		
 		return $pdetails;
 	}
+	
+	
 }
 ?>

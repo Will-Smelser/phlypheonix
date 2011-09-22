@@ -1,0 +1,192 @@
+/* FORMS */
+body{
+	font-family:arial;	
+	color:#FFF;
+	
+	width: 100%;
+	
+	background-color:#333;
+	background-repeat:no-repeat;
+	
+	margin: 0px;
+	padding: 0px;
+	
+	overflow:auto;
+	
+	font-size:12px;
+}
+
+input, select{
+	background-color:#CCC;	
+	color: #333;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	border: none;
+	
+	border-radius: 5px;
+}
+input{
+	padding: 5px;
+}
+select{
+	padding: 4px;
+	margin:0px;
+}
+input[type="checkbox"]{
+	background-color:transparent;	
+}
+A{
+	text-decoration:none;
+	font-family:arial;	
+	color:#FFF;
+	font-size:12px;	
+}
+/* SELECTOR */
+#selector{
+	width:40px;
+	position:absolute;
+	top:12px;
+	right:12px;	
+}
+#selector TD{
+	padding:3px;	
+}
+
+input.one{
+	color: #333333;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	background-color: #FBB040;
+	border: none;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+/* SCHOOL LIST */
+#list-schools{
+	height:390px;
+	overflow:auto;
+}
+#list-schools a{
+	color:#FFF;
+	text-decoration:none;
+	padding:5px;
+	display:inline-block;	
+}
+#list-schools li{
+	padding-right:50px;	
+}
+#list-schools li.loading{
+	background-image:url(/img/ajax/loading.gif);
+	background-position:95% center;
+	background-repeat:no-repeat;	
+}
+#list-schools li.added{
+	background-image:url(/img/ajax/check.png);
+	background-position:95% center;
+	background-repeat:no-repeat;
+}
+#list-schools li.fail{
+	background-image:url(/img/ajax/fail.png);
+	background-position:95% center;
+	background-repeat:no-repeat;
+}
+#list-schools li.heart{
+	background-image:url(/img/ajax/heart_red.png);
+	background-position:95% center;
+	background-repeat:no-repeat;
+}
+#list-schools li.even{
+	background-color:transparent;	
+}
+#list-schools li.odd{
+	padding-top:0px;
+	background-color:#999;	
+}
+#list-schools li:hover{
+	background-color:#333;
+}
+
+
+/* CART */
+p.checkout-pop-count {
+	margin-top:30px;
+	padding-bottom:5px;
+	font-size:16px;	
+}
+#cart-wrapper table{
+	width:100%;
+}
+#cart-wrapper th{
+	color:#FFF;
+	font-weight:bold;
+	font-size:16px;
+	text-align:center;
+}
+#cart-wrapper td{
+	font-size:14px;
+	padding:5px;	
+}
+#cart-wrapper input.qty{
+	width:50px;
+	text-align:right;
+	border:none;
+}
+#cart-wrapper .cart-one{
+	width:60px;
+}
+#cart-wrapper .cart-two{
+	width:auto;
+}
+#cart-wrapper .cart-three{
+	width:80px;
+}
+#cart-wrapper .cart-details span{
+	padding-left:20px;	
+}
+#cart-wrapper .cart-total{
+	font-weight:bold;
+	font-size:16px;	
+}
+#cart-wrapper .cart-trash{
+	cursor:pointer;	
+}
+.quantity{
+	display:inline-block;
+	float:right;
+	margin-left:20px;
+}
+.quantity input{
+	width:100px;
+	border:none;
+	text-align:right;	
+}
+.add-to-cart, .checkout, .cancel-checkout{
+	margin-top:10px;
+	margin-left:5px;
+	font-weight:normal;
+	cursor:pointer;
+}
+.cancel-checkout{
+	margin-left:30px;	
+}
+.checkout, .cancel-checkout{
+	float:right;	
+}
+.qtip-title{
+	font-size:14px;	
+}
+
+
+.border-rad-small{
+	border-radius:3px;
+	-moz-border-radius: 3px;
+}
+.border-rad-med{
+	border-radius:5px;
+	-moz-border-radius: 5px;
+}
+.border-rad-large{
+	border-radius:8px;
+	-moz-border-radius: 8px;
+}

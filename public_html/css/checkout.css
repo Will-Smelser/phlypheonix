@@ -1,21 +1,21 @@
 @CHARSET "ISO-8859-1";
 
-#receipt-wrapper table{
+#receipt-table{
 	width:100%;	
 }
-#receipt-wrapper TH, #receipt-wrapper TD{
+#receipt-table TH, #receipt-table TD{
 	padding:5px;	
 }
-#receipt-wrapper .header TH, #receipt-wrapper TR TH:hover{
+#receipt-table .header TH, #receipt-table TR TH:hover{
 	font-weight:bold;
 	font-size:16px;	
-	background-color:#000;
+	background-color:#222;
 	padding:8px;
 }
-#receipt-wrapper TR:hover{
+#receipt-table TR:hover{
 	background-color:#333;	
 }
-#receipt-wrapper TR.no-hover:hover{
+#receipt-table TR.no-hover:hover{
 	background-color:transparent;	
 }
 .border-rad-left{
@@ -30,21 +30,23 @@
 .total, .unit, .tax, .sub, .grand{
 	text-align:right;	
 }
-
+.qty{
+	text-align:right;	
+}
 .sub, .grand{
 	font-weight:bold;	
 }
 .grand{
 	font-size:16px;	
 }
-TD.sub.total{
+#receipt-table TD.sub.total{
 	border-top:solid #FFF 1px;	
 }
-TD.grand.total{
+#receipt-table TD.grand.total{
 	border-top:solid #fff 2px;	
 }
 
-#receipt-wrapper TD.product-details{
+#receipt-table TD.product-details{
 	padding-left:20px;	
 }
 
@@ -55,10 +57,11 @@ TD.grand.total{
 
 #receipt-wrapper{
 	float:left;
-	width:500px;	
+	width:600px;	
 }
 #details-wrapper{
 	width:270px;
+	padding:13px 0px;
 	float:right;
 }
 .title{
@@ -72,6 +75,7 @@ input.line{
 }
 .line-3{
 	display:inline-block;	
+	text-align:left;
 }
 .city{
 	width:105px;	
@@ -81,4 +85,53 @@ input.line{
 }
 .zip{
 	width:75px;	
+}
+
+
+/* Overwrite The LT BG */
+#tableContainer td.bg-main{
+	padding:0px;
+	margin:0px;	
+}
+#container-light .top{
+	height:20px;
+} 	
+#container-light .bottom{
+	height:20px;	
+}
+#container-light .left{
+	width:25px;
+} 
+#container-light .right{
+	width:20px;	
+}
+	
+#tableContainer .left {
+	width: 20px;
+}
+
+
+
+/* ERRORS */
+#error-console{
+	background-color: #C96A61;
+	padding:8px;
+	margin: 15px 15px 0px 15px;
+}
+#error-console div{
+	padding:2px 0px;	
+}
+.ename{
+	display:inline-block;
+	width:130px;
+	padding-left:25px;
+	padding-right:20px;
+	background-image: url('/img/icons/error.png');
+	background-repeat:no-repeat;	
+}
+.error{
+	background-color:#DDACA6;
+}
+.eline2{
+	padding-left:175px;	
 }

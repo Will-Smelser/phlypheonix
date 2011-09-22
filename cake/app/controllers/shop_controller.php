@@ -15,7 +15,7 @@ class ShopController extends AppController {
 
 	var $name = 'Shop';
 	var $uses = array('User','Product', 'Pdetail', 'Sale', 'School','Accessory');
-	var $components = array('AuthorizeNet');
+	//var $components = array('AuthorizeNet');
 	var $helpers = array('Hfacebook','Sizer');
 	
 	function beforeFilter() {
@@ -32,10 +32,11 @@ class ShopController extends AppController {
 	function noschool($info='user'){
 		
 		$this->layout = 'dynamic';
+		$classWidth = 'width-small';
 		
 		$title = '/img/noschool/flyfoenix_noschool_comingsoon.png';
 		
-		$this->set('title',$title);
+		$this->set(compact('title','classWidth'));
 		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
 		
 		//no school for current user
@@ -53,6 +54,7 @@ class ShopController extends AppController {
 	//there was no sale for schools
 	function nosale() {
 		$this->layout = 'dynamic';
+		$classWidth = 'width-small';
 		
 		//gotta get a list of sales and their schools
 		$sql = 'SELECT `School`.*,`Sale`.* FROM `sales` AS `Sale` ' .
@@ -71,18 +73,64 @@ class ShopController extends AppController {
 		
 		$title = '/img/noschool/flyfoenix_noschool_comingsoon.png';				
 		
-		$this->set(compact('schools','title'));
+		$this->set(compact('schools','title','classWidth'));
 	}
 	
-	function expiredsale($saleId=null){
+	function expiredsale($saleId=null,$userid=null,$school=null,$sex=null){
+		$this->layout = 'dynamic';
+		$title = '/img/header/expired.png';
+		$classWidth = 'width-small';
+		$this->set(compact('title','classWidth'));
+		
+		$shopUrl = "/shop/main/$school/$sex/$saleId";
+		
+		$extendToken = md5(time());
+		$this->Session->write('expiredsale.token',$extendToken);
+		
+		$sale = $saleId;
+		
+		$this->set(compact('sale','school','sex','extendToken','shopUrl'));
+		
+		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
+		
 		//no informaiton on what sale were looking for
 		//really should not end up here
 		if(empty($saleId)){
 			
 		//give user chance to share with friends to extend the sale
 		} else {
+			$sale = $this->Sale->findById($saleId);
+			
+			$ids = array();
+			foreach($sale['Product'] as $entry){
+				array_push($ids, $entry['id']);
+			}
+			
+			$images = $this->Product->Pimage->find('list',array(
+				'fields' => array(
+					'id','image'
+				),
+				'conditions'=>array(
+					'Pimage.product_id IN (' . implode(',',$ids) . ')'
+				)
+			));
+			$this->set('images',$images);
 			
 		}
+	}
+	
+	function extendtime($sale,$token=null){
+		$this->layout = 'ajax';
+		//if($token != $this->Session->read('expiredsale.token')) return;
+		
+		//just easier to use sql
+		$sale = $sale * 1; //prevent injection
+		$time = time() - Configure::read('config.sales.length') + (24 * 3600); //only add 24 hours
+		$userid = $this->myuser['User']['id'];
+		$sql = "UPDATE `saleusers` SET created = $time WHERE `sale_id` = $sale AND `user_id` = $userid LIMIT 1";
+		$this->User->query($sql);
+		
+		$this->render('ajax');
 	}
 	
 	//no product available
@@ -129,7 +177,7 @@ class ShopController extends AppController {
 		//check the found sale has not expired for the user
 		//$sale['Sale']['UserSaleEnds']  is added to $sale in addSaleEnds call
 		if($sale['Sale']['UserSaleEnds'] < time() && !Configure::read('config.testing')) {
-			$this->redirect(array('action'=>'expiredsale/'.$sale['Sale']['id']));
+			$this->redirect(array('action'=>'expiredsale/'.$sale['Sale']['id'].'/'.$this->myuser['User']['id'].'/'.$school['id'].'/'.$sex));
 		}
 		
 		$mfgs = $this->Product->Manufacturer->find('list',array('fields'=>array('id','image')));
@@ -144,7 +192,7 @@ class ShopController extends AppController {
 			}
 		}
 		
-		$schools = $this->School->find('all',array('recursive'=>0));
+		$schools = $this->School->find('all',array('recursive'=>0,'order'=>array('name ASC')));
 		$fbcommentId = "{$school['id']}-{$sex}-{$sale['Sale']['id']}-{$product['Product']['id']}";
 		
 		$this->set(compact('school','schools','sex','sale','product','products','productRight','imageIndex','fbcommentId'));

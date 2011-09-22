@@ -14,6 +14,7 @@ foreach($product['Pdetail'] as $p){
 	$inventory += $p['inventory'];
 }
 
+
 ?>
 
 <div id="inventory">
@@ -40,7 +41,7 @@ foreach($product['Pdetail'] as $p){
     <img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="261" height="2" />
     
     <div class="size-qty-wrapper">
-    	<input class="input-color" type="hidden" value="<?php echo $product['Pimage'][0]['color_id']; ?>" />
+    	<input class="input-color" type="hidden" value="<?php echo $product['Pdetail'][0]['color_id']; ?>" />
 	    <div class="size" >
 	    	<span class="three" ">Size</span><br/>
 	    <select class="input-size" name="size" size="1">

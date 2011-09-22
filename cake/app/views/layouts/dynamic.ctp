@@ -8,7 +8,12 @@
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('reset.css');
+		echo $this->Html->css('default.css');
 		echo $this->Html->css('dynamic.css');
+		
+		if(file_exists(WWW_ROOT . 'css' . DS . $this->params['controller'] . '.css')){
+			echo $this->Html->css($this->params['controller'] . '.css');
+		}
 
 		echo $scripts_for_layout;
 
@@ -25,26 +30,33 @@
 
 <img id="background" src="/img/schools/background/ohiostate_brutusrun.jpg" alt="ohiostatebackground" />
 
-<div id="wrapper"> 
+<div id="wrapper" > 
   <div id="mainHeader">
   	<?php echo $this->element('layouts/header',array('myuser'=>$myuser)); ?>
   </div>
-  
-	<div id="bodyHeader"><!-- Begin bodyHeader -->
-	<table>
+  	<div id="bodyHeader" class="<?php echo $classWidth; ?>"><!-- Begin bodyHeader -->
+  	<table width="100%">
 		<tr>
 			<td class="left"></td>
 			<td class="bg-main">
-				<img src="<?php echo $title; ?>" alt="title" id="title-image" />
+			<img src="<?php echo $title; ?>" alt="title" id="title-image" />
+ 			
+  			<?php
+ 				echo "<!-- HEADER FOR PRODUCT MFG and SELECTOR -->\n";
+  				echo $this->element('selector_noschool',array());
+			?>
+			
 			</td>
 			<td class="right"></td>
 		</tr>
 	</table>
 	</div><!-- End bodyHeader -->
 	
+	
+	
 	<!-- MAIN PRODUCT VIEWER -->
-	<div id="bodyContainerDark">
-	<table id="tableContainer">
+	<div id="bodyContainerDark"  class="<?php echo $classWidth; ?>">
+	<table id="tableContainer"  width="100%">
 		<tr>
 			<td class="top left"></td>
 			<td class="top edge"></td>
@@ -67,24 +79,18 @@
 	
 </div>
 
+<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$myuser['sex'],'link'=>'/shop/main/')); ?>
+
 <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
 
 
 <script type="text/javascript">
 
-//bind to form
-$(document).ready(function(){
-	var schoolid = $('#school-list').val();
-	$('#btnselect').click(function(){
-		$.getJSON('/users/add_school/'+schoolid,function(data){
-			if(data.result){ 
-				document.location.href = '/shop/main/'+schoolid+'/<?php echo $myuser['User']['sex']; ?>';
-			} else {
+//search for schools
+<?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
 
-			}
-		});
-	});
-});
+//show cart
+<?php echo $this->element('prompts/cart'); ?>
 
 //prompts
 <?php echo $this->element('layouts/prompts',array('cprompts'=>$cprompts,'cpdata'=>$cpdata)); ?>

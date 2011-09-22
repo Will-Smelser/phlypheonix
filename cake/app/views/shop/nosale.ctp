@@ -10,18 +10,17 @@
 	
 		<div id="school">
         <select id="school-list" class="fieldwidth" name="data[school][id]" size="1">
-        <?php 
-        	foreach($schools as $entry) {
-        		if(!preg_match('/swatch/i',$entry['School']['long'])){
-        			echo "\t\t\t<option value='{$entry['School']['id']}' >{$entry['School']['long']}</option>\n";
-        		}
-        	}
-		 ?>
+        <?php echo $this->element('school_select_box',array('schools'=>$schools)); ?>
         </select>
         <input id="btnselect" class="btn space-left" name="select" type="submit" value="&nbsp;Select&nbsp;" />
         </div>
 		
-        
-      
-    	 <!-- End Register --> 
+<script language="javascript">
+$(document).ready(function(){
+	$('#btnselect').click(function(){
+		var school = $('#school-list').val();
+		document.location.href = '/shop/main/'+school+'/<?php echo $myuser['User']['sex']; ?>';
+	});
+});
+</script>
   

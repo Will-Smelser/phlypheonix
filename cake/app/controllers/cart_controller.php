@@ -1,7 +1,7 @@
 <?php
 class CartController extends AppController {
 	
-	var $uses = array('Product', 'Size', 'Color');
+	var $uses = array('Product', 'Size', 'Color', 'Pdetail');
 	var $components = array('Ccart');
 	
 	function beforeFilter(){
@@ -12,8 +12,22 @@ class CartController extends AppController {
 	}
 	
 	function addProduct($productId, $qty, $size, $color){
+		
 		if(!$this->cleanInts($qty, $size, $color)) return;
-		$entry = new ProductEntry(array('id'=>$productId,'color'=>$color,'size'=>$size),$qty);
+		
+		//lookup the pdetail
+		$pdetail = $this->Pdetail->find('first',array(
+							'conditions'=>array(
+								'product_id'=>$productId,
+								'size_id'=>$size,
+								'color_id'=>$color
+							),
+							'recursive'=>0
+					)
+		);
+	
+		$entry = new ProductEntry(array('id'=>$productId,'color'=>$color,'size'=>$size,'pdetail'=>$pdetail['Pdetail']['id']),$qty);
+		
 		$this->Ccart->add($entry);
 	}
 	
@@ -45,6 +59,7 @@ class CartController extends AppController {
 		$sizes = $this->Size->find('list',array('fields' => array('display')));
 		$colors = $this->Color->find('list');
 		$content = $this->Ccart->content;
+		
 		
 		$this->set(compact('sizes','colors','content'));
 		

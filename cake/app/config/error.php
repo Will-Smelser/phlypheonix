@@ -32,4 +32,5 @@ $config['error']['msg']['bad_exp'] = 'Ivalid expiration date.  Must be a date in
 
 //GENERAL
 $config['error']['msg']['unknown'] = 'Unknown Error.  Try refreshing the page.';
+$config['error']['msg']['referer'] = 'The referal id could not be matched to a user.  If this is a mistake please contact customer support.';
 ?>

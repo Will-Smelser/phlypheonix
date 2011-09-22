@@ -161,7 +161,7 @@ class CartEntry{
 		$this->model =& ClassRegistry::init($this->modelName);
 		
 		//find the product
-		$condition = array('condition'=>"{$this->modelName}.{$this->modelKey} = {$this->uniques['id']}");
+		$condition = array('conditions'=>"{$this->modelName}.{$this->modelKey} = {$this->uniques['id']}");
 		$this->info = $this->model->find('first',$condition);
 		
 		foreach($this->uniqueRoutes as $field => $route){
@@ -216,7 +216,8 @@ class ProductEntry extends CartEntry {
 	var $uniques = array(
 		'id'=>null,
 		'color'=>null,
-		'size'=>null
+		'size'=>null,
+		'pdetail'=>null
 	);
 	
 	var $details = array();

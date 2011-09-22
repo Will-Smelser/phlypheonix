@@ -12,4 +12,21 @@ class Order extends AppModel {
 			'order' => ''
 		)
 	);
+
+	var $hasMany = array(
+		'Oinfo' => array(
+			'className' => 'Oinfo',
+			'foreignKey' => 'order_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+
 }

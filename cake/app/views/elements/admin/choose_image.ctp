@@ -12,10 +12,11 @@ echo "<div class='input text'><label for'Image'>$title</label>";
 
 echo "<table cellpadding='0' cellspacing='0'>";
 $img = 0;
-
+$dir = rtrim($dir,'\\\/');
 foreach(scandir($dir) as $file){
 	if($file[0] != '.' && !is_dir($dir . DS . $file)) {
-		$rel = str_replace(WWW_ROOT,'',$dir  . $file);
+		
+		$rel = str_replace(WWW_ROOT,'',$dir . DS  . $file);
 		$rel = '/' . str_replace(DS, '/', $rel);
 		
 		$info = getimagesize($dir . DS . $file);

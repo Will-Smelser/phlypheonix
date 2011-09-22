@@ -37,13 +37,7 @@
 	        <div id="school">
 		        <span class="six">School&nbsp;&nbsp;</span><br />
 		        <select class="fieldwidth" name="data[School][School][id]" style="width:180px">
-		        <?php 
-		        	foreach($schools as $entry) {
-		        		if(!preg_match('/swatch/i',$entry['School']['long'])){
-		        			echo "\t\t\t<option value='{$entry['School']['id']}' >{$entry['School']['long']}</option>\n";
-		        		}
-		        	}
-		        ?>
+		        <?php echo $this->element('school_select_box',array('schools'=>$schools)); ?>
 		        </select>
 	        </div>
 	        

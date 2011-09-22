@@ -55,77 +55,8 @@ $(document).ready(function(){
 				
 			},
 		beforeShow : function(){
-			var $el = $(this.elements.target);
 			
-			var parts = $el.attr('id').split('_'); //0=>product, 1=>color, 2=>sex
-		
-			var pid = parts[0].split('-')[1];
-			var cid = parts[1].split('-')[1];
-			var sex = parts[2].split('-')[1];
-			
-			var text = 'Error loading product information.';
-			
-			//set the content
-			var $target = this.elements.content;
-			
-			//get the inventory
-			var inv = 0;
-			var sizes = [];
-			for(var x in window.pdetails){
-				if(window.pdetails[x].Pdetail.product_id == pid){
-					inv += window.pdetails[x].Pdetail.inventory * 1;
-					sizes[window.pdetails[x].Size.id] = window.pdetails[x].Size.display;
-					
-					//we need to resize image correctly
-					var $img = $target.find('#target-image');
-					var ght = 290; //goal height
-					var gwdth = 260; //goal width
-					var x = $el.attr('width');
-					var y = $el.attr('height');
-					
-					//the multiplier
-					var mult = Math.min(gwdth/x,ght/y);
-					
-					$img.attr('width',mult*x);
-					$img.attr('height',mult*y);
-					$img.attr('src',$el.attr('src'));
-				}
-			}	
-			
-			//inventory
-			$target.find('#inventory-wrapper').html(inv);
-			
-			//size menu
-			$select = $target.find('#input-size');
-			$select.html('');
-			for(var x in sizes){
-				$el = $(document.createElement('option'));
-				$el.attr('value',x);
-				$el.html(sizes[x]);
-				$select.append($el);
 			}
-			
-			//hide size if its empty
-			if(sizes.length == 0){
-				$select.hide();
-			}else{
-				$select.show();
-			}
-			
-			//set the product
-			$target.find('#input-product').val(pid);
-			$target.find('#input-color').val(cid);
-			
-			//set the text
-			for(var x in window.products[cid]){
-				if(window.products[cid][x].Product.id == pid){
-					text = window.products[cid][x].Product.desc;
-					$target.find('#description-wrapper').html(text);
-					return;
-				}
-			}
-			$target.find('#description-wrapper').html(text);
-		}
 	   }
 	   
 	};
@@ -135,12 +66,13 @@ $(document).ready(function(){
 	var $products = $('.acc_image');
 	
 	//setup the add to cart button
-	$('#add-cart').click(function(){
+	$('#accessories-tool-tips .add-to-cart').click(function(){
 		var $parent = $(this).parent();
-		var pid = $parent.find('#input-product').val();
-		var qty = $parent.find('#input-quantity').val();
-		var size = $parent.find('#input-size').val();
-		var color = $parent.find('#input-color').val();
+		
+		var pid = $parent.find('.input-product').val();
+		var qty = $parent.find('.input-quantity').val();
+		var size = $parent.find('.input-size').val();
+		var color = $parent.find('.input-color').val();
 		
 		ajaxAddToCart(pid,qty,size,color);
 		
@@ -148,11 +80,26 @@ $(document).ready(function(){
 	});
 	
 	if($products.length > 0){
-		$products.qtip(qtipSetting);
-	
-		$products.qtip('api').elements.content.html('');
-		$('#tooltip-product').css('display','block').appendTo($products.qtip('api').elements.content);
-		$products.click(function(){$(this).trigger('showDetails');});
+		$products.each(function(){
+			var $target = $(this); 
+			$target.qtip(qtipSetting);
+			
+			$target.qtip('api').elements.content.html('');
+			
+			var parts = $target.attr('id').split('_'); //0=>product, 1=>color, 2=>sex
+		
+			var pid = parts[0].split('-')[1];
+			var cid = parts[1].split('-')[1];
+			var sex = parts[2].split('-')[1];
+			
+			var $content = $('#tooltip-product-'+pid);
+			
+			$content.css('display','block').appendTo($target.qtip('api').elements.content);
+			
+			$products.click(function(){
+				$(this).trigger('showDetails');
+			});
+		});
 	}
 	
 	$swatch.click(function(){$(this).trigger('showDetails');});

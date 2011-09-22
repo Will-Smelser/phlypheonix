@@ -58,4 +58,24 @@ class SchoolsController extends AppController {
 		$this->Session->setFlash(__('School was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+	
+	function addAllSchools(){
+		//build the list of schools
+		$sql = 'SELECT * FROM temp_schools';
+		$result = $this->School->query($sql);
+		
+		$sql = 'INSERT INTO `schools` (`name`,`long`,`logo_small`,`background`) VALUES ';
+		$img = '/img/schools/small/';
+		foreach($result as $entry){
+			$short = trim($entry['temp_schools']['short']);
+			$long = trim($entry['temp_schools']['long']);
+			$shortl = strtolower($short);
+			
+			if(!in_array($short,array('OSU','WVU','UNC')) ){//&& file_exists(WWW_ROOT.'img'.DS.'schools'.DS.'small'.DS.$shortl.'.png')){
+				$sql .= "('$short','$long','{$img}{$shortl}.png','default.jpg'), ";
+			}
+		}
+		
+		debug($sql);
+	}
 }

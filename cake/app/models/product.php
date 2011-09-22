@@ -24,19 +24,7 @@ class Product extends AppModel {
 	);
 
 	var $hasMany = array(
-		'Oinfo' => array(
-			'className' => 'Oinfo',
-			'foreignKey' => 'product_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
+		
 		'Pdetail' => array(
 			'className' => 'Pdetail',
 			'foreignKey' => 'product_id',

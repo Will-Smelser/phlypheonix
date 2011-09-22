@@ -16,8 +16,16 @@ reset($swatches);
 	foreach($swatches as $entry){
 		$productId = $entry[0]['Product']['id'];
 		$name = $entry[0]['Product']['name'];
-	
-		$imageData = $images[$productId][0];
+
+		//get the image and size
+		$img = null;
+		foreach($images[$productId] as $imageColors){
+			if($entry[0]['Color']['id'] == $imageColors['color_id']){
+				$imageData = $imageColors;
+			}
+		}
+		
+		//$imageData = $images[$productId][0];
 		
 		$absImg = WWW_ROOT . str_replace('/',DS,$imageData['image']);
 		$dims = $this->Sizer->resizeConstrainX($absImg, 100, 100);
@@ -25,7 +33,7 @@ reset($swatches);
 		echo "<div class='swatch-wrap' style='padding:5px'>
 		<a href='/accessories/index/{$school['School']['id']}/{$sex}/{$imageData['color_id']}'>
 			<img height='{$dims[1]}' width='{$dims[0]}' src='{$imageData['image']}' /></a><br/>
-			<span class='nine' style='text-align:center;padding:5px;'>{$name}</span>	
+			<span class='nine' style='text-align:center;padding:5px;'>{$imageData['name']}</span>	
 		</div>";
 	} 
 	

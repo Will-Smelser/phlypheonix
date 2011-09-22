@@ -55,6 +55,10 @@ class Receipt {
 		}
 	}
 	
+	function reset(){
+		$this->Receipt();
+	}
+	
 	/**
 	 * Wrapper for setting the shipTo
 	 */
@@ -86,29 +90,29 @@ class Receipt {
 	 * @param $desc (optional) The description of the entry
 	 * @param $priceRetail (optional) The retail price
 	 */
-	function addEntry($typeStr, $id, $name, $priceUnit, $desc = null, $priceRetail = null) {
+	function addEntry($typeStr, $id, $pdetail, $qty, $name, $priceUnit, $desc = null, $priceRetail = null) {
 		$type = new ReceiptEntryTypes($typeStr);
-		$entry = new ReceiptEntry($type, $id, $name, $priceUnit, $desc, $priceRetail);
+		$entry = new ReceiptEntry($type, $id, $pdetail, $qty, $name, $priceUnit, $desc, $priceRetail);
 		
 		//add the entry
 		array_push($this->entries[$typeStr], $entry);
 		
 		//track taxes
 		if($type->isTaxable()){
-			$this->taxes += $entry->priceUnit * $this->taxRate;
+			$this->taxes += $entry->priceUnit * $this->taxRate * $entry->qty;
 		}
 		
 		//track the subtotal
 		if($type->beforeSub()) {
-			echo "{$this->subtotal} += {$entry->priceUnit}<br/>";
-			$this->subtotal += $entry->priceUnit;
+			//echo "{$this->subtotal} += {$entry->priceUnit}<br/>";
+			$this->subtotal += $entry->priceUnit * $entry->qty;
 		}
 	}
 	
 	function sumOfTaxableEntries() {
 		$sum = 0.00;
 		foreach($this->getTaxEntries() as $entry) {
-			$sum += ($entry->priceUnit * $this->taxRate);
+			$sum += ($entry->priceUnit * $this->taxRate * $entry->qty);
 		}
 		return $sum;
 	}
@@ -163,7 +167,7 @@ class Receipt {
 	 * get the subtotal
 	 */
 	function getSubTotal(){
-		return $this->subTotal;
+		return $this->subtotal;
 	}
 	
 	/**
@@ -173,10 +177,30 @@ class Receipt {
 		$total = 0.00;
 		foreach($this->entries as $entryType) {
 			foreach($entryType as $entry) {
-				$total += $entry->priceUnit;
+				$total += $entry->priceUnit * $entry->qty;
 			}
 		}
 		return $total;
+	}
+	
+	function getTotalCount($types=array()){
+		$cnt = 0;
+		foreach($types as $type){
+			foreach($this->entries[$type] as $entry){
+				$cnt += $entry->qty;
+			}
+		}
+		return $cnt;
+	}
+	
+	function getContentsByType($types=array()){
+		$result = array();
+		foreach($types as $type){
+			foreach($this->entries[$type] as $entry){
+				array_push($result, $entry);
+			}
+		}
+		return $result;
 	}
 }
 class receiptEntryTypes {
@@ -229,15 +253,22 @@ class receiptEntryTypes {
 class ReceiptEntry {
 	
 	var $id;
+	var $productId;
+	var $pdetail;
+	var $qty;
 	var $name;
 	var $desc;
 	var $priceUnit;
 	var $priceRetail;
 	var $type; //(receiptEntryTypes)
 	
-	function ReceiptEntry(receiptEntryTypes $type,$id, $name, $priceUnit, $desc = null, $priceRetail = null, $taxable=true) {
+	function ReceiptEntry(receiptEntryTypes $type, $productId, $id, $pdetail, $qty, $name, $priceUnit, $desc = null, $priceRetail = null, $taxable=true) {
+		
+		$this->productId = $productId;
 		$this->id = $id;
+		$this->qty = $qty;
 		$this->name = $name;
+		$this->pdetail = $pdetail;
 		$this->priceUnit = $priceUnit;
 		$this->desc = $desc;
 		$this->priceRetail = $priceRetail;

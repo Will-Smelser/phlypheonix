@@ -44,7 +44,7 @@ foreach($content as $cartEntry){
 		echo "<td>$name<td align='right'>$price";
 		
 		//must always have this additional row
-		echo "<tr><td class='cart-details' colspan='3' align='right'><b>color:</b> $color</span><span><b>size:</b> $size</span><td><td>&nbsp;";
+		echo "<tr><td class='cart-details' colspan='3' align='right'><span><b>color:</b> $color</span><span><b>size:</b> $size</span><td><td>&nbsp;";
 	} elseif($cartEntry->getType() == 'accessory'){
 		
 	}

@@ -95,7 +95,7 @@ $colorId = $firstColor[0]['Color']['id'];
 */
 	if(count($colors) > 0){
 		echo $this->element('swatches_wrapper',array('school'=>$school,'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images));
-		echo $this->element('accessories_wrapper'); 
+		echo $this->element('accessories_wrapper',array('pdetails'=>$pdetails,'products'=>$colors,'images'=>$images)); 
 	}
 ?>
 
