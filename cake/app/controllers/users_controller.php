@@ -15,25 +15,39 @@ class UsersController extends AppController {
 		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
 
 		//set the lastposted data
+		$scriptData = array();
+		//this is a login attempt
 		if(isset($this->data) && isset($this->data['User']['email'])) {
-			$this->set('postemail',$this->data['User']['email']);
-			$this->set('postbirthdate',$this->data['User']['birthdate']);
-			
+			$postemail = $this->data['User']['email'];
+			$postbirthdate = $this->data['User']['birthdate'];
+			$scriptData['postemail'] = $postemail;
+			$scriptData['postbirthdate'] = $postbirthdate;
+		
 			if(isset($this->data['User']['school'])) {
-				$this->set('postsex',$this->data['User']['sex']);
-				$this->set('postschool',$this->data['School']['id']);
+				$postsex = $this->data['User']['sex'];
+				$postschool = $this->data['School']['id'];
+				$scriptData['postsex'] = $postsex;
+				$scriptData['postschool'] = $postschool;
 			}
+			$this->set(compact('postemail','postborthdate','postemail','postsex','postschool'));
+		//registration attempt
 		} else if($this->Session->read('registerData')) {
 			$data = $this->Session->read('registerData');
+			$regpostemail = $data['User']['email'];
+			$regpostbirthdate = $data['User']['birthdate'];
+			$regscriptData['postemail'] = $regpostemail;
+			$scriptData['postbirthdate'] = $regpostbirthdate;
 			
-			$this->set('postemail',$data['User']['email']);
-			$this->set('postbirthdate',$data['User']['birthdate']);
-			
-			if(isset($data['User']['school'])) {
-				$this->set('postsex',$data['User']['sex']);
-				$this->set('postschool',$data['School']['id']);
+			if(isset($data['School']['School'])) {
+				$regpostsex = (isset($data['User']['sex'])) ? $data['User']['sex'] : '';
+				$regpostschool = $data['School']['School']['id'];
+				$scriptData['postsex'] = $regpostsex;
+				$scriptData['postschool'] = $regpostschool;
 			}
+			
+			$this->set(compact('regpostemail','regpostbirthdate','regpostemail','regpostsex','regpostschool'));
 		} 
+		$this->set('scriptData',$scriptData);
 	}
 	
 	function referred($userid){
@@ -69,12 +83,20 @@ class UsersController extends AppController {
 			$result = 'true';
 		}
 		
+		if(isset($_POST['returnUrl'])){
+			$this->redirect($_POST['returnUrl']);
+			return;
+		}
 		
 		echo "{\"result\":$result}";
+		
+		
+		
 		exit;
 	}
 	
 	function remove_school($id){
+		
 		$this->layout = 'ajax';
 		if(!isset($this->myuser['School'])){
 			echo "{'result':false}";
@@ -86,7 +108,13 @@ class UsersController extends AppController {
 		$sql = "DELETE FROM `users_schools` WHERE `user_id`={$this->Session->read('Auth.User.id')} AND `school_id` = $id LIMIT 1";
 		$result = ($this->User->query($sql)) ? 'true' : 'false';
 		
+		if(isset($_POST['returnUrl'])){
+			$this->redirect($_POST['returnUrl']);
+			return;
+		}
+				
 		echo "{\"result\":$result}";
+		
 		exit;
 	}
 	
@@ -102,7 +130,11 @@ class UsersController extends AppController {
 
 	function login($err=null){
 		
-		$this->layout = 'landing'; 
+		$this->layout = 'dynamic';
+		$this->set('title','/img/landing/flyfoenix_landingpage_joinshopsave.png');
+		$this->set('titleCSS','position:absolute;top:-40px;left:115px;z-index:100;');
+		$this->set('classWidth','width-custom');
+		
 		
 		//force logged-in users to shop
 		if($this->Auth->user()){
@@ -113,6 +145,8 @@ class UsersController extends AppController {
 		if(!empty($err)) {
 			$error = new MyError($err);
 			$this->set('error',$error->getJson());
+			$errors[$error->getDOMid()] = $error;
+			$this->set('errors',$errors);
 			return;
 		}
 		
@@ -123,6 +157,8 @@ class UsersController extends AppController {
 			if(!$this->User->checkEmailExists($this->data)){
 				$error = new MyError('no_user');
 				$this->set('error',$error->getJson());
+				$errors[$error->getDOMid()] = $error;
+				$this->set('errors',$errors);
 				return;
 			}
 			
@@ -150,12 +186,15 @@ class UsersController extends AppController {
 			} else {
 				$error = new MyError('bad_password');
 				$this->set('error',$error->getJson());
+				$errors[$error->getDOMid()] = $error;
+				$this->set('errors',$errors);
 				return;
 			}
 		} 
 		
 		$error = new MyError('no_error');
         $this->set('error',$error->getJson());
+        
         
         //$this->redirect($this->Auth->redirect());
 	}
@@ -165,6 +204,8 @@ class UsersController extends AppController {
 		$title = '/img/header/thankyou.png';
 		$classWidth = 'width-small';
 		$this->set(compact('title','classWidth'));
+		
+		$this->Auth->logout();
 		
 		$this->Session->delete('registerData');
 		$this->Session->setFlash('Good-Bye');
@@ -441,90 +482,107 @@ class MyError {
 	public function getJson() {
 		return json_encode($this->info);
 	}
-	
+	public function getDisplayName(){
+		return $this->info['name'];
+	}
 }
 class errorTypes {
 	public static function getType($name) {
+		$temp = str_replace('no_','',$name);
+		$temp = str_replace('_',' ',$temp);
 		
-			switch($name) {
+		switch($name) {
 			case 'reg_email':
 				return array(
 					'msg'=>Configure::read('error.msg.email_bad'),
 					'id'=>'email',
-					'context'=>'register'
+					'context'=>'register',
+					'name'=>'Register Email'
 				);
 			case 'email':
 				return array(
 					'msg'=>Configure::read('error.msg.email_bad'),
 					'id'=>'email2',
-					'context'=>'login'
+					'context'=>'login',
+					'name'=>'Login Email'
 				);
 			case 'emailexist':
 				return array(
 					'msg'=>Configure::read('error.msg.email_exist'),
 					'id'=>'email',
-					'context'=>'register'
+					'context'=>'register',
+					'name'=>'Register Email'
 				);
 			case 'no_user':
 				return array(
 					'msg'=>Configure::read('error.msg.no_user'),
 					'id'=>'email2',
-					'context'=>'login'
+					'context'=>'login',
+					'name'=>'Login Email'
 				);
 			case 'bad_password':
 				return array(
 					'msg'=>Configure::read('error.msg.bad_password'),
 					'id'=>'birthdate2',
-					'context'=>'login'
+					'context'=>'login',
+					'name'=>'Login Birthdate'
 				);
 			case 'user_failed':
 				return array(
 					'msg'=>Configure::read('error.msg.user_failed'),
 					'id'=>'error-general',
-					'context'=>'register'
+					'context'=>'register',
+					'name'=>'Register Creation'
 				);
 			case 'bad_birthdate':
 				return array(
 					'msg'=>Configure::read('error.msg.bad_birthdate'),
 					'id'=>'birthdate2',
-					'context'=>'login'
+					'context'=>'login',
+					'name'=>'Login Birthdate'
 				);
 			case 'reg_bad_birthdate':
 				return array(
 					'msg'=>Configure::read('error.msg.bad_birthdate'),
 					'id'=>'birthdate',
-					'context'=>'register'
+					'context'=>'register',
+					'name'=>'Register Birthdate'
 				);
 			case 'nodata':
 				return array(
 					'msg'=>'No user data submitted.',
 					'id'=>'error-general',
-					'context'=>'unknown'
+					'context'=>'unknown',
+					'name'=>'Unknown'
 				);
 			case 'bad_sex':
 				return array(
 					'msg'=>Configure::read('error.msg.bad_sex'),
 					'id'=>'gender',
-					'context'=>'register'
+					'context'=>'register',
+					'name'=>'Register Gender'
 				);
 			case 'none':
 			case 'no_error':
 				return array(
 					'msg' => 'success',
 					'id' => 'N/A',
-					'context' => 'none'
+					'context' => 'none',
+					'name'=>'Success'
 				);
 			case 'bad_referer':
 				return array(
 					'msg' => Configure::read('error.msg.bad_referer'),
 					'id'=>'error-general',
-					'context'=>'none'
+					'context'=>'none',
+					'name'=>'Referer Error'
 				);
 			default:
 				return array(
 					'msg'=>'Unknown Error',
 					'id'=>'error-general',
-					'context'=>'unknown'
+					'context'=>'unknown',
+					'name'=>'Unknown'
 				);
 		}
 	}

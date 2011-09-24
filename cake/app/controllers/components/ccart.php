@@ -17,6 +17,7 @@ class CcartComponent extends Object {
 			$this->session =& $this->controller->Session;
 			
 		} else {
+			
 			App::import('Component', 'Session');
 			$this->session =& new SessionComponent();
 		}

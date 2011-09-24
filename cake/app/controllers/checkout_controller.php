@@ -1,12 +1,14 @@
 <?php
+
 class CheckoutController extends AppController {
-	
+	var $name = 'Checkout';
+	var $components = array('Ccart','Receipt','Email','Session');
 	var $uses = array('Size', 'Color','School','Order','Pdetail');
-	var $components = array('Ccart','Receipt','AuthorizeNet','Email');
+	var $helpers = array('Hfacebook','Sizer');
 	
 	var $receipt = null;
 	
-	public function beforeFilter(){
+	function beforeFilter() {
 		parent::beforeFilter();
 		
 		$schools = $this->School->find('all',array('recursive'=>0,'order'=>array('name ASC')));
@@ -346,7 +348,7 @@ class CheckoutController extends AppController {
 	}
 	
 	private function getShipping(){
-		return 4.95 + $this->receipt->getTotalCount(array('product'));
+		return 3.95 + $this->receipt->getTotalCount(array('product'));
 	}
 	private function addAllCartProducts(){
 		$this->receipt->reset();
@@ -531,7 +533,7 @@ class CheckoutController extends AppController {
 	}
 	
 	private function logFailure(){
-		$this->log('Failed to Save order info - serialized receipt: '.serialize($this->receipt));
+		$this->log(date("D M j G:i:s T Y") . ' - Failed to Save order info - serialized receipt: '.serialize($this->receipt),'checkout');
 				
 		$this->Email->from    = 'FlyFoenix <admin@flyfoenix.com>';
 		$this->Email->to      = 'Will Smelser <willsmelser@gmail.com>';

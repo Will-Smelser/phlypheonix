@@ -190,3 +190,27 @@ p.checkout-pop-count {
 	border-radius:8px;
 	-moz-border-radius: 8px;
 }
+
+/* ERRORS */
+#error-console{
+	background-color: #C96A61;
+	padding:8px;
+	margin: 15px 15px 0px 15px;
+}
+#error-console div{
+	padding:2px 0px;	
+}
+.ename{
+	display:inline-block;
+	width:130px;
+	padding-left:25px;
+	padding-right:20px;
+	background-image: url('/img/icons/error.png');
+	background-repeat:no-repeat;	
+}
+.error{
+	background-color:#DDACA6;
+}
+.eline2{
+	padding-left:175px;	
+}

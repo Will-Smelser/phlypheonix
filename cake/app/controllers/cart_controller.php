@@ -1,14 +1,15 @@
 <?php
 class CartController extends AppController {
-	
+	var $name = "Cart";
 	var $uses = array('Product', 'Size', 'Color', 'Pdetail');
-	var $components = array('Ccart');
+	var $components = array('Session');
 	
 	function beforeFilter(){
+		parent::beforeFilter();
 		$this->layout = 'ajax';
 		$this->render('ajax');
 		
-		$this->Auth->allow('*');
+		//$this->Auth->allow('*');
 	}
 	
 	function addProduct($productId, $qty, $size, $color){
@@ -29,15 +30,40 @@ class CartController extends AppController {
 		$entry = new ProductEntry(array('id'=>$productId,'color'=>$color,'size'=>$size,'pdetail'=>$pdetail['Pdetail']['id']),$qty);
 		
 		$this->Ccart->add($entry);
+		
+		return $entry->qty;
 	}
-	
+	function addProductNoAjax(){
+		$size = intval($_POST['size']);
+		$color = intval($_POST['color']);
+		$qty = intval($_POST['quantity']);
+		$product = intval($_POST['product']);
+		
+		$this->addProduct($product,$qty,$size,$color);
+		
+		$this->Session->setFlash('Added product(s).');
+		
+		$this->redirect($_POST['returnUrl']);
+	}
 	function removeProduct($productId, $qty, $size, $color){
 		if(!$this->cleanInts($qty, $size, $color)) return;
 		$entry = new ProductEntry(array('id'=>$productId,'color'=>$color,'size'=>$size),$qty);
 		$this->Ccart->remove($entry);
 	}
-	function removeAll($id){
+	function removeAll($id,$noajax){
 		$this->Ccart->removeAll($id);
+		if(!empty($noajax)){
+			$this->redirect('/cart/view');
+		}
+	}
+	function updateAll(){
+		foreach($_POST as $entry=>$val){
+			if(preg_match('/^(entry)/i',$entry)){
+				$cartId = str_replace('entry_','',$entry);
+				$this->Ccart->updateQty($cartId,$val);
+			}
+		}
+		$this->redirect('/cart/view');
 	}
 	function update(){
 		foreach($_POST as $id=>$qty){
@@ -64,6 +90,21 @@ class CartController extends AppController {
 		$this->set(compact('sizes','colors','content'));
 		
 		$this->render('index');
+	}
+	
+	function view(){
+		$this->layout = 'dynamic';
+		$this->set('title','/img/header/attention.png');
+		$this->set('classWidth','width-medium');
+		
+		$sizes = $this->Size->find('list',array('fields' => array('display')));
+		$colors = $this->Color->find('list');
+		$content = $this->Ccart->content;
+		
+		
+		$this->set(compact('sizes','colors','content'));
+		
+		$this->render('view');
 	}
 	
 	function ajaxGetItems(){

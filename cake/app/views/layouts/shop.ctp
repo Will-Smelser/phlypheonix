@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<html xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
 	<?php echo $this->Html->charset(); ?>
 	
@@ -37,16 +38,31 @@
 	<!-- MAIN PRODUCT VIEWER -->
 	<div id="bodyContainerDark">
 	
+	<?php  $flash = $this->Session->flash(); ?>
+	<?php if(strlen($flash) > 0){ ?>
+	<noscript>
+		<div style="position:absolute;top:2px;left:45px;">
+			<div id="error-console" class="border-rad-med error" style="width:558px;">
+				<span class='ename'>Message</span>
+				<span class='emsg'><?php  echo $flash; ?></span>
+			</div>
+		</div>
+	</noscript>
+	<?php } ?>
+	
 	<?php echo $content_for_layout; ?>
 	
 	<div id="accessories-wrapper" style="position:absolute;bottom:35px;right:25px;width:930px;height:30px;overflow:hidden">
 	
-	<div style="text-align:right;">
-		<a href="#" id="accessories-link" class="up">
-			<img src="/img/productpresentation/accessories_<?php echo (strtolower($sex)=='f') ? 'female' : 'male'; ?>.png" />
-		</a>
+	<div style="height:35px;">
+	<noscript><div style="display:none"></noscript>
+		<div style="text-align:right;">
+			<a href="#" id="accessories-link" class="up">
+				<img src="/img/productpresentation/accessories_<?php echo (strtolower($sex)=='f') ? 'female' : 'male'; ?>.png" />
+			</a>
+		</div>
+	<noscript></div></noscript>
 	</div>
-	
 	
 	<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/shop/main/')); ?>
 

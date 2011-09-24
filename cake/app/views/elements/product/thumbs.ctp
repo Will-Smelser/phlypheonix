@@ -17,7 +17,7 @@
     	<div id="thumbtext" class="two">More Photos</div>
         <?php foreach($product['Pimage'] as $p){ ?>
         	<div class="thumb-wrapper">
-        	<a class="gallery-thumb" href="<?php echo $p['image']; 	?>" rel="<?php echo $p['image']; 	?>">
+        	<a class="gallery-thumb" href="<?php echo $p['image']; 	?>" rel="<?php echo $p['image']; 	?>" target="_blank">
         		<img  src="<?php echo $p['image']; 	?>" width="77" height="88" />
         	</a>
         	</div>

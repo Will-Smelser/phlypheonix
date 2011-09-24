@@ -1,0 +1,63 @@
+@CHARSET "ISO-8859-1";
+
+#register{
+	float:left;
+}
+
+#login{
+	float:right;
+}
+.inner{
+	padding:0px;	
+	height:350px;
+	width:200px;
+}
+#loginimg{
+	padding-top:5px;
+}
+
+#fb1{
+	text-align:center;
+}
+
+.img-wrapper{
+	text-align:center;
+}
+.img-wrapper img{
+	padding:10px 0px;
+}
+
+td.bg-mail{
+	padding:0px;	
+}
+div.width-custom{
+	width:630px;	
+}
+.f-spacer{
+	height:10px;
+}
+#tradio label{
+	display:inline-block;
+	padding-left:15px;
+}
+
+#btnregister, #btnlogin{
+	float: right;
+	cursor:pointer;
+}
+
+#rememberme{
+	text-align:right;
+	margin-top:40px;
+}
+.fieldwidth{
+	width:190px;	
+}
+#fb1, #fb2{
+	display:none;
+	text-align:center;
+}
+#fb1 a, #fb2 a{
+	display:inline-block;
+	height:22px;	
+}

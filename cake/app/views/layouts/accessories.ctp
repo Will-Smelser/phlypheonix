@@ -74,7 +74,7 @@
 
 		<!-- NAVIGATION ARROWS -->
 		<a href="/shop/main/<?php echo $school['School']['id'].'/'.$sex; ?>"><div id="leftarrow"></div></a>
-		<a href="#"><div id="rightarrow"></div></a>
+		<a href="/checkout/index"><div id="rightarrow"></div></a>
 
 		<div id="forcentering"> <!-- Begin Wrapper Used to Center dwrapper over light gray background -->
 		<div id="dwrapper"><!-- Begin Dynamicly Sized Wrapper -->

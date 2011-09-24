@@ -4,9 +4,8 @@
 
 ?> 
 
-<!--
-<img id="network" src="/img/invite/flyfoenix_invite_network.png" width="101" height="119" alt="network" style="position:absolute;right:60px;top:45px" />
-//-->
+<?php echo $this->element('layouts/lightbg_top'); ?>
+
 <img id="moretime" src="/img/expiredtime/flyfoenix_expiredtime_moretime.png" width="286" height="48" alt="moretime" />
 
 <div style="clear:both;"></div>
@@ -17,42 +16,47 @@
 	<p>
 	Earn $5 everytime a referral makes a purchase!
 	</p>
-	<p>
-	<label for="sharing" style="cursor:pointer;"><input id="sharing" type="checkbox" value="" name="sharing">&nbsp;&nbsp;I want more time!</label>
-	</p>
+	
 </div><!-- End content -->
-
-  	<div id="hideShareThis" style="position:absolute;top:185px;left:50px;height:40px;width:300px;z-index:1000"></div>
-	<div style="padding-top:10px;height:30px;">
-	    
-	    <div id="sharethis" style="height:30px; display:inline;">
-	
-	      <span st_url='<?php echo $st_url; ?>'  class='st_twitter_large' ></span>
-	
-	      <span st_url='<?php echo $st_url; ?>'  class='st_facebook_large' ></span>
-	
-	      <span st_url='<?php echo $st_url; ?>'  class='st_yahoo_large' ></span>
-	
-	      <span st_url='<?php echo $st_url; ?>'  class='st_gbuzz_large' ></span>
-	
-	      <span st_url='<?php echo $st_url; ?>'  class='st_email_large' ></span>
-	
-	      <span st_url='<?php echo $st_url; ?>'  class='st_sharethis_large' ></span>
-	
-	    </div>
-	
-	    
+	<div id="shareWrapper" style="display:none">
+		<p>
+		<label for="sharing" style="cursor:pointer;"><input id="sharing" type="checkbox" value="" name="sharing">&nbsp;&nbsp;I want more time!</label>
+		</p>
+		
+	  	<div id="hideShareThis" style="position:absolute;top:185px;left:50px;height:40px;width:300px;z-index:1000"></div>
+		<div style="padding-top:10px;height:30px;">
+		    
+		    <div id="sharethis" style="height:30px; display:inline;">
+		
+		      <span st_url='<?php echo $st_url; ?>'  class='st_twitter_large' ></span>
+		
+		      <span st_url='<?php echo $st_url; ?>'  class='st_facebook_large' ></span>
+		
+		      <span st_url='<?php echo $st_url; ?>'  class='st_yahoo_large' ></span>
+		
+		      <span st_url='<?php echo $st_url; ?>'  class='st_gbuzz_large' ></span>
+		
+		      <span st_url='<?php echo $st_url; ?>'  class='st_email_large' ></span>
+		
+		      <span st_url='<?php echo $st_url; ?>'  class='st_sharethis_large' ></span>
+		
+		    </div>
+		
+		    
+		</div>
+	</div>
+	<div id="default">
+		<form method="post" action="<?php echo "/shop/extendtime2/$sale/$school" ?>" >
+			<input type="submit" value="Extend Sale" class="btn" />
+		</form>
 	</div>
 	<div style="height:10px;"></div>
     <img id="viewschool" src="/img/expiredtime/flyfoenix_expiredtime_view.png" width="290" height="45" alt="viewschool" />
-
-	
-
     
     <div id="school" style="padding-top:5px;">
 
         <select id="school-select" name="data[school][id]" size="1">
-		<?php echo $this->element('school_select_box',array('schools'=>$schools)); ?>
+		<?php echo $this->element('school_select_box',array('schools'=>$schools,'selected'=>$school)); ?>
         </select>
 
         <input id="btnselect" class="btn space-left" name="select" type="submit" value="&nbsp;Select&nbsp;" />
@@ -65,6 +69,8 @@
 
    <div id="imgcontainer" style="padding-top:5px;">
 
+
+
   <div id="imgtxt" class="two" style="padding:5px;">Your sale includes these items, plus accessories...</div>
 	<?php 
 	reset($images);
@@ -72,7 +78,7 @@
 	$i = 0;
 	while ($i < count($images) && $i < 4){
 		$margin = ($i == 3) ? 0 : 5;
-		echo "\n\t<div class='border-rad-med' style='margin-right:{$margin}px;display:inline-block;border:solid #333 5px;'><img src='{$entry}' width='77' height='88' /></div>";
+		echo "\n\t<div class='border-rad-med' style='margin-right:{$margin}px;display:inline-block;border:solid #333 5px;'><img src='{$entry}' width='92' height='105' /></div>";
 		$entry = next($images);	
 		$i++;
 	}
@@ -80,8 +86,13 @@
 	?>
     </div>
 
-    <script language="javascript">
+<?php echo $this->element('layouts/lightbg_bottom'); ?>
 
+    <script language="javascript">
+	//hide the default form
+	$('#default').hide();
+	$('#shareWrapper').show();
+	
 	$('#btnselect').click(function(){
 		var val = $('#school-select').val();
 		document.location.href = '/shop/main/'+val;

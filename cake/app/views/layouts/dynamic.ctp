@@ -16,7 +16,7 @@
 		}
 
 		echo $scripts_for_layout;
-
+		
 	?>
 	
 	<!-- Google //-->
@@ -39,11 +39,13 @@
 		<tr>
 			<td class="left"></td>
 			<td class="bg-main">
-			<img src="<?php echo $title; ?>" alt="title" id="title-image" />
+			<img src="<?php echo $title; ?>" alt="title" id="title-image" style="<?php if(isset($titleCSS)) echo $titleCSS; ?>" />
  			
   			<?php
- 				echo "<!-- HEADER FOR PRODUCT MFG and SELECTOR -->\n";
-  				echo $this->element('selector_noschool',array());
+  				if($loggedin){
+	 				echo "<!-- HEADER FOR PRODUCT MFG and SELECTOR -->\n";
+	  				echo $this->element('selector_noschool',array());
+  				}
 			?>
 			
 			</td>
@@ -79,7 +81,11 @@
 	
 </div>
 
-<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$myuser['User']['sex'],'link'=>'/shop/main/')); ?>
+<?php
+	if($loggedin){ 
+		echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$myuser['User']['sex'],'link'=>'/shop/main/'));
+	}
+?>
 
 <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
 
@@ -87,13 +93,18 @@
 <script type="text/javascript">
 
 //search for schools
-<?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
+<?php if($loggedin) echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
 
 //show cart
-<?php echo $this->element('prompts/cart'); ?>
+<?php if($loggedin) echo $this->element('prompts/cart'); ?>
 
 //prompts
 <?php echo $this->element('layouts/prompts',array('cprompts'=>$cprompts,'cpdata'=>$cpdata)); ?>
 
+//page specific scripts
+<?php 
+	if(file_exists(ELEMENTS . 'js' . DS . $this->params['controller'] . '.ctp')) 
+		echo $this->element('js/'.$this->params['controller'],compact('scriptData','protocal','loggedin')); 
+?>
 </script>
 </html>

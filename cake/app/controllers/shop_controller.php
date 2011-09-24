@@ -50,7 +50,17 @@ class ShopController extends AppController {
 			
 		}
 	}
+
+	function findschool($info='user'){
+		$this->layout = 'dynamic';
+		$classWidth = 'width-small';
 		
+		$title = '/img/header/attention.png';
+		
+		$this->set(compact('title','classWidth'));
+		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
+	}
+	
 	//there was no sale for schools
 	function nosale() {
 		$this->layout = 'dynamic';
@@ -79,7 +89,7 @@ class ShopController extends AppController {
 	function expiredsale($saleId=null,$userid=null,$school=null,$sex=null){
 		$this->layout = 'dynamic';
 		$title = '/img/header/expired.png';
-		$classWidth = 'width-small';
+		$classWidth = 'width-medium';
 		$this->set(compact('title','classWidth'));
 		
 		$shopUrl = "/shop/main/$school/$sex/$saleId";
@@ -133,6 +143,21 @@ class ShopController extends AppController {
 		$this->render('ajax');
 	}
 	
+	function extendtime2($sale,$school=null){
+		$sale = $sale * 1; //prevent injection
+		$time = time() - Configure::read('config.sales.length') + (24 * 3600); //only add 24 hours
+		$userid = $this->myuser['User']['id'];
+		$sql = "UPDATE `saleusers` SET created = $time WHERE `sale_id` = $sale AND `user_id` = $userid LIMIT 1";
+		$this->User->query($sql);
+		
+		if(!empty($school)){
+			$this->redirect("/shop/main/$school");
+		} else {
+			$this->redirect("/shop/main");
+		}
+		return;
+	}
+	
 	//no product available
 	function noproduct(){
 		
@@ -183,6 +208,36 @@ class ShopController extends AppController {
 		$mfgs = $this->Product->Manufacturer->find('list',array('fields'=>array('id','image')));
 		$products = array_merge(array($product['Product']), $productRight);
 		
+		//build navigation links for no-javascript
+		$currentLink = "/shop/main/{$school['id']}/$sex/{$sale['Sale']['id']}/{$products[0]['id']}"; 
+		if(!$this->Session->check('shop.nav.sale') 
+			|| $this->Session->read('shop.nav.sale') != $sale['Sale']['id']){
+			$temp = array();
+			foreach($products as $p){
+				$link = "/shop/main/{$school['id']}/$sex/{$sale['Sale']['id']}/{$p['id']}";
+				array_push($temp, $link);
+			}
+			$this->Session->write('shop.nav.links',$temp);
+			$this->Session->write('shop.nav.sale',$sale['Sale']['id']);
+		} 
+		$found = false;
+		$prev = $next = array();
+		foreach($this->Session->read('shop.nav.links') as $link){
+			if($link == $currentLink){
+				$found = true;
+			}else if(!$found){
+				array_push($prev, $link);
+			} else {
+				array_push($next, $link);
+			}
+		}
+		$nextLink = (isset($next[0])) ? $next[0] : "/accessories/index/{$school['id']}/$sex";
+		$prevLink = (isset($prev[0])) ? $prev[0] : '#';
+		$this->Session->write('shop.nav.next',$nextLink);
+		$this->Session->write('shop.nav.prev',$prevLink);
+		$this->Session->write('shop.nav.curr',$currentLink);
+		$this->set(compact('nextLink','prevLink','currentLink'));
+
 		foreach($products as $k=>$p) {
 			$products[$k]['mfgimage'] = $mfgs[$products[$k]['manufacturer_id']];
 			foreach($p as $key=>$entry){

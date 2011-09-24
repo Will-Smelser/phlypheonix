@@ -1,21 +1,45 @@
 @charset "utf-8";
 /* CSS Document */
 body{
-	    font-family: Arial,Helvetica,sans-serif;
+	font-family:arial;	
+	color:#FFF;
+	
+	width: 100%;
+	
+	background-color:#333;
+	background-repeat:no-repeat;
+	
+	margin: 0px;
+	padding: 0px;
+	
+	overflow:auto;
+	
+	font-size:12px;	
 }
 input, select{
-	background-color:#CCC;
-	border-color:#CCC;
-	color:#333;
+	background-color:#CCC;	
+	color: #333;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	border: none;
+	
 	border-radius: 5px;
 }
-input, select{
-	background-color:#CCC;
-	border-color:#CCC;
-	color:#333;
-	border-radius: 5px;
-	padding:5px;
-	font-size:14px;
+input{
+	padding: 5px;
+}
+select{
+	padding: 4px;
+	margin:0px;
+}
+input[type="checkbox"]{
+	background-color:transparent;	
+}
+A{
+	text-decoration:none;
+	font-family:arial;	
+	color:#FFF;
+	font-size:12px;	
 }
 .one{
 	color: #FBB040;
@@ -288,7 +312,7 @@ body{
     z-index:10;
 }
 
-#leftarrow{
+#leftarrow, #leftarrow2{
 	position: absolute;
 	left: 8px;
 	top:240px;
@@ -298,17 +322,17 @@ body{
 	height:50px;
 	
 }
-a #leftarrow {
+a #leftarrow, a #leftarrow2 {
 	text-decoration:none;
 		
 	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_lbutton.png);
 	background-repeat:no-repeat;	
 }
-a #leftarrow:hover{
+a #leftarrow:hover, a #leftarrow2:hover{
 	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_lbuttonorange.png);	
 }
 
-#rightarrow{
+#rightarrow, #rightarrow2{
 	position: absolute;
 	top: 240px;
 	right: 21px;
@@ -318,13 +342,13 @@ a #leftarrow:hover{
 	height:50px;
 	
 }
-a #rightarrow {
+a #rightarrow, a #rightarrow2 {
 	text-decoration:none;
 		
 	background-image:url(/img/productpresentation/flyfoenix_product_presentation_rbutton.png);
 	background-repeat:no-repeat;
 }
-a #rightarrow:hover{
+a #rightarrow:hover, a #rightarrow2:hover{
 	background-image:url(/img/productpresentation/flyfoenix_product_presentation_elements_rbuttonorange.png);
 }
 
@@ -716,4 +740,44 @@ input.three {
     font-size: 12px;
     margin-top: 3px;
     padding: 3px;
+}
+
+/* ERRORS */
+#error-console{
+	background-color: #C96A61;
+	padding:8px;
+	margin: 15px 15px 0px 15px;
+}
+#error-console div{
+	padding:2px 0px;	
+}
+.ename{
+	display:inline-block;
+	width:130px;
+	padding-left:25px;
+	padding-right:20px;
+	background-image: url('/img/icons/error.png');
+	background-repeat:no-repeat;	
+}
+.error{
+	background-color:#DDACA6;
+}
+.eline2{
+	padding-left:175px;	
+}
+#flashMessage, .message{
+	display:inline-block;
+}
+
+.border-rad-small{
+	border-radius:3px;
+	-moz-border-radius: 3px;
+}
+.border-rad-med{
+	border-radius:5px;
+	-moz-border-radius: 5px;
+}
+.border-rad-large{
+	border-radius:8px;
+	-moz-border-radius: 8px;
 }
