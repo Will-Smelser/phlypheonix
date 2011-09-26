@@ -589,7 +589,8 @@ a.whitelink.chart {
 	color:#FFF;
 	text-decoration:none;
 	padding:5px;
-	display:inline-block;	
+	display:inline-block;
+	width:100%;
 }
 #list-schools li{
 	padding-right:50px;	

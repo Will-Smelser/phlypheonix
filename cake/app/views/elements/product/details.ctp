@@ -71,8 +71,8 @@ foreach($product['Pdetail'] as $p){
 		</noscript>
 
 		<input class="checkout one" name="checkout" type="button" value="&nbsp;Checkout&nbsp;" />
-		<input style="display:none" id="add-to-cart" class="add-to-cart one" name="addtocart" type="button" value="&nbsp;Add to Cart&nbsp;" />
+		<input style="display:none" class="add-to-cart one" name="addtocart" type="button" value="&nbsp;Add to Cart&nbsp;" />
 		<div style="clear:both;"></div>
 	</div>
 	</form>
-	<script language="javascript">$('#add-to-cart').show();</script>
+	<script language="javascript">$('.add-to-cart').show();</script>

@@ -9,8 +9,11 @@
 }
 .inner{
 	padding:0px;	
-	height:350px;
+	height:312px;
 	width:200px;
+	
+	position:relative;
+	top:-15px;
 }
 #loginimg{
 	padding-top:5px;
@@ -31,7 +34,7 @@ td.bg-mail{
 	padding:0px;	
 }
 div.width-custom{
-	width:630px;	
+	width:565px;	
 }
 .f-spacer{
 	height:10px;

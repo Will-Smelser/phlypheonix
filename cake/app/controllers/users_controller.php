@@ -132,9 +132,9 @@ class UsersController extends AppController {
 		
 		$this->layout = 'dynamic';
 		$this->set('title','/img/landing/flyfoenix_landingpage_joinshopsave.png');
-		$this->set('titleCSS','position:absolute;top:-40px;left:115px;z-index:100;');
+		$this->set('titleCSS','position:absolute;top:-30px;left:115px;z-index:100;');
 		$this->set('classWidth','width-custom');
-		
+		$this->set('bgImg','/img/schools/background/flyfoenix_landingpage_background_03.jpg');
 		
 		//force logged-in users to shop
 		if($this->Auth->user()){

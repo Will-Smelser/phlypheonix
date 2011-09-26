@@ -30,6 +30,8 @@
 						obj.$sliders[i].attr('id'), //the id actually holds the url
 						function(){
 							
+							obj.$sliders[temp].find('.add-to-cart').show();
+							
 							obj.$sliders[temp].removeClass('product-loading');
 							
 							obj.$sliders[temp].find('.add-to-cart').click(function(){

@@ -10,7 +10,9 @@ function shortName($name){
 }
 
 ?>
+<?php echo $this->element('layouts/lightbg_top'); ?>
 <div id="cart-wrapper">
+
 <form id="cart-form" method="POST" action="/cart/updateAll">
 <table>
 	<tr>
@@ -54,7 +56,9 @@ echo "\n<tr><td colspan='4' class='cart-total' align='right' class='cart-total'>
 
 ?>
 </table>
-<input id="cart-update" type="submit" value="Update" class="checkout one" />
+<a href="/checkout/index"><input type="button" value="Checkout" class="btn" /></a>
+<input id="cart-update" type="submit" value="Update" class="one" style="float:right;" />
 </form>
 
 </div>
+<?php echo $this->element('layouts/lightbg_bottom'); ?>

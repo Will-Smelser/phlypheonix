@@ -28,7 +28,15 @@
 </head>
 <body>
 
-<img id="background" src="/img/schools/background/ohiostate_brutusrun.jpg" alt="ohiostatebackground" />
+<?php 
+if(isset($bgImg)){ 
+	echo "<img id=\"background\" src=\"$bgImg\" alt=\"ohiostatebackground\" />";
+} else {
+?>
+<img id="background" src="/img/schools/background/default.jpg" alt="ohiostatebackground" />
+<?php 
+}
+?>
 
 <div id="wrapper" > 
   <div id="mainHeader">

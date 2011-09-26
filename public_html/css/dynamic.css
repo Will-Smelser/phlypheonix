@@ -99,7 +99,7 @@ a.nav:hover{
 	margin-left: auto;
 	margin-right: auto;
 
-	top: 50px;
+	top: 90px;
 	
 	z-index: 5;
 }
@@ -135,7 +135,7 @@ a.nav:hover{
 	background-repeat:no-repeat;
 	
 	/*z-index:5;*/
-	top: 40px;
+	top: 80px;
 }
 
 #content{
@@ -214,7 +214,7 @@ p{
 	background-repeat:repeat-x;		
 }
 #tableContainer .bg-main{
-	padding:10px;
+	padding:0px;
 	background-image:url('/img/layout/back.png');	
 }
 
@@ -225,10 +225,10 @@ p{
 	height:30px;	
 }
 #tableContainer .left{
-	width:35px;
+	width:15px;
 } 
 #tableContainer .right{
-	width:40px;	
+	width:20px;	
 }
 
 /* LT GREY */
