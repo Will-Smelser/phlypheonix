@@ -30,6 +30,7 @@
   	<?php echo $this->element('layouts/header',array('school'=>$school,'myuser'=>$myuser)); ?>
   </div>
   
+  
 	<?php //echo $this->Session->flash(); ?>
 
 <!-- HEADER FOR PRODUCT MFG and SELECTOR -->
@@ -59,7 +60,18 @@
 </div><!-- End Body Header -->
 	
 	
+	
 	<div id="bodyContainerDark">
+		<?php  $flash = $this->Session->flash(); ?>
+		<?php if(strlen($flash) > 0){ ?>
+			<div style="position:absolute;top:2px;left:45px;">
+				<div id="error-console" class="border-rad-med error" style="width:558px;">
+					<span class='ename'>Message</span>
+					<span class='emsg'><?php  echo $flash; ?></span>
+				</div>
+			</div>
+		<?php } ?>
+	
 		<a href="#"><img id="gift" src="/img/upsell/flyfoenix_upsell_needgift.png" width="389" height="51" alt="gift" /></a>
 		<img id="earn5" src="/img/productpresentation/flyfoenix_product_presentation_earn5.png" width="214" height="33" alt="earn5" />
 
@@ -84,20 +96,7 @@
 		</div>
 		</div>
 </div>
-<?php 
-//some vars are set by the index file
-/*
-//get first color
-reset($colors);
-reset($swatches);
-$firstColor = current($colors);
-$colorId = $firstColor[0]['Color']['id'];
-*/
-	if(count($colors) > 0){
-		echo $this->element('swatches_wrapper',array('school'=>$school,'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images));
-		echo $this->element('accessories_wrapper',array('pdetails'=>$pdetails,'products'=>$colors,'images'=>$images)); 
-	}
-?>
+
 
 <?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/accessories/index/')); ?>
 
@@ -109,13 +108,8 @@ $colorId = $firstColor[0]['Color']['id'];
 
 <script type="text/javascript">
 
-//swatches
-window.swatches = <?php echo json_encode($swatches); ?>;
-window.products = <?php echo json_encode($colors); ?>;
-window.pdetails = <?php echo json_encode($pdetails); ?>;
-
 //show the tooltip for products
-<?php if(count($colors)>0) echo $this->element('prompts/accessories_product'); ?>
+<?php //if(count($colors)>0) echo $this->element('prompts/accessories_product'); ?>
 
 //search for schools
 <?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
@@ -138,5 +132,8 @@ $(document).ready(function(){
 
 //prompts
 <?php echo $this->element('layouts/prompts',array('cprompts'=>$cprompts,'cpdata'=>$cpdata)); ?>
+
+
+
 </script>
 </html>

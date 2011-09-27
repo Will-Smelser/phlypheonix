@@ -41,6 +41,9 @@ A{
 	color:#FFF;
 	font-size:12px;	
 }
+a, a:hover, a:active, a:focus {
+    outline:0;
+}
 .one{
 	color: #FBB040;
     font-family: Arial,Helvetica,sans-serif;
@@ -781,4 +784,8 @@ input.three {
 .border-rad-large{
 	border-radius:8px;
 	-moz-border-radius: 8px;
+}
+
+#cart, #favorite, #search{
+	cursor:pointer;	
 }

@@ -1,9 +1,10 @@
+$(document).ready(function(){
 	window.viewer = {
 		width : 935,
 		x : 0,
 		$wrapper : null,
 		$sliders : [],
-		products : <?php echo json_encode($products); ?>,
+		products : window.products,
 		current : 0,
 		$lnav : null,
 		$rnav : null,
@@ -141,7 +142,7 @@
 			
 			if(obj.inTrans) return;
 			if(obj.current == obj.$sliders.length-1){
-				document.location.href = '/accessories/index/'+window.schoolId+'/'+window.sex;
+				document.location.href = '/accessories/index/'+window.schoolId+'/'+window.sex+'/'+window.color;
 				return;
 			} 
 			
@@ -202,3 +203,4 @@
 	};
 
 	viewer.init();
+});

@@ -208,6 +208,10 @@ class ShopController extends AppController {
 		$mfgs = $this->Product->Manufacturer->find('list',array('fields'=>array('id','image')));
 		$products = array_merge(array($product['Product']), $productRight);
 		
+		//determine the color for the current school
+		$sql = 'SELECT school_id, color_id FROM `schools_colors` WHERE school_id = ' . $school['id'] . ' ORDER BY `id` ASC';
+		$schoolColors = $this->Product->query($sql);
+		
 		//build navigation links for no-javascript
 		$currentLink = "/shop/main/{$school['id']}/$sex/{$sale['Sale']['id']}/{$products[0]['id']}"; 
 		if(!$this->Session->check('shop.nav.sale') 
@@ -250,30 +254,58 @@ class ShopController extends AppController {
 		$schools = $this->School->find('all',array('recursive'=>0,'order'=>array('name ASC')));
 		$fbcommentId = "{$school['id']}-{$sex}-{$sale['Sale']['id']}-{$product['Product']['id']}";
 		
-		$this->set(compact('school','schools','sex','sale','product','products','productRight','imageIndex','fbcommentId'));
+		$this->set(compact('school','schools','sex','sale','product','products','productRight','imageIndex','fbcommentId','schoolColors'));
 		
-		//used for accessories portion
-		$data = $this->Accessory->getData($school['id'],$sex);
+		//accessories
+		$adata = $this->getAccessories($sex,$schoolColors[0]['schools_colors']['color_id']);
 		
-		//filter the products by color...look for the swatch
-		$colors = array();
-		$swatches = array();
-		$cids = array();
-		$pids = array();
-		$pdetails = array();
-		$images = array();
-		if(!empty($data)){
+		//set the data
+		$this->set(compact('adata','colors','swatches','images','pdetails'));
+	}	
+	
+	/**
+	 * Will return all products that are accessories.
+	 * in addition will return the swatches.
+	 */
+	private function getAccessories($sex,$color){
+		$data = $this->Product->find('list',
+			array(
+				'conditions'=>array('controller'=>'accessories','sex'=>$sex)
+			)
+		);
+		
+		if(empty($data)){
+			return null;
+		}
+		
+		$swatch = array();
+		foreach($data as $key=>$entry){
+			$info = $this->Accessory->getProduct($key,$color);
 			
-			$this->Accessory->aggregateData($data, $swatches, $colors, $pids, $cids);
-			$images = $this->Accessory->aggregateImages($pids, $cids);
-			$pdetails = $this->Accessory->getPdetails($this->Product->Pdetail,$pids);
-			
+			if(preg_match('/swatch/i',$info['Product']['name'])){
+				$swatch = $info;
+				unset($data[$key]);
+			} elseif(!empty($info)) {
+				$data[$key] = $info;
+			} else {
+				unset($data[$key]);
+			}
 			
 		}
 		
-		//set the data
-		$this->set(compact('data','colors','swatches','images','pdetails'));
-	}	
+		//add the image for the swatch
+		$sproducts = $this->Product->find('list',array(
+			'conditions'=>array(
+				'name LIKE '=>'%swatch%'
+			)
+		));
+		//get all the swatch images
+		$swatches = $this->Product->Pimage->find('all',array(
+			'conditions'=>array('product_id IN ('.implode(array_keys($sproducts),',').')')
+		));
+		
+		return array('swatches'=>$swatches,'swatch'=>$swatch,'products'=>$data);
+	}
 	
 	private function fixVars(&$product, &$school, &$sex, &$sale, &$expired){
 		

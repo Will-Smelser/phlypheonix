@@ -340,7 +340,11 @@ class UsersController extends AppController {
 					if(!empty($referer)){
 						$userid = $this->User->id;
 						$this->Referer->save(array('referer_user_id'=>$referer,'user_id'=>$userid));
+						$this->Session->delete('Referer.id');
 					}
+					
+					//add the first time user prompts
+					$this->User->Prompt->addFirstTimeUserPrompt($this->User->id);
 				}catch(Exception $e){
 					//do nothing
 				}

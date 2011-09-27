@@ -47,5 +47,10 @@ class Prompt extends AppModel {
 		}
 		return false;
 	}
+	
+	function addFirstTimeUserPrompt($userid){
+		$sql = "INSERT INTO `users_prompts` (`user_id`,`prompt_id`) VALUES ($userid, 1)";
+		return ($this->query($sql));
+	}
 
 }

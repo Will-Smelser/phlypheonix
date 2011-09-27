@@ -35,12 +35,17 @@ select{
 input[type="checkbox"]{
 	background-color:transparent;	
 }
-A{
+a{
 	text-decoration:none;
 	font-family:arial;	
 	color:#FFF;
-	font-size:12px;	
+	font-size:12px;
+	outline:0;	
 }
+a:hover, a:active, a:focus {
+    outline:0;
+}
+
 /* SELECTOR */
 #selector{
 	width:40px;
@@ -49,7 +54,7 @@ A{
 	right:12px;	
 }
 #selector TD{
-	padding:3px;	
+	padding:2px 0px;	
 }
 
 input.one{
@@ -60,6 +65,15 @@ input.one{
 	border: none;
 	padding: 5px;
 	border-radius: 5px;
+}
+
+.title{
+	color: #FBB040;
+	font-family: Arial,Helvetica,sans-serif;
+	font-weight: bold;
+	text-align: left;
+	font-size: 14px;
+	padding-left: 6px;
 }
 
 /* SCHOOL LIST */
@@ -214,4 +228,62 @@ p.checkout-pop-count {
 }
 .eline2{
 	padding-left:175px;	
+}
+#flashMessage{
+	display:inline-block;	
+}
+
+
+/* SCHOOL SELECTOR STUFF */
+#bodyHeader .bg-main{
+	text-align:center;	
+}
+#selector{
+	display: block;
+    right: 30px;
+    top:8px;
+    position: absolute;
+    width: 150px;
+}
+#selector td{
+	vertical-align:top;	
+}
+#gender{
+	float:right;
+	margin-top:-7px;
+}
+
+#logoschool{
+	float: right;
+    margin-top: 5px;
+    position: relative;
+}
+
+#cart{
+	float: right;
+	margin-top: 0px;
+	cursor:pointer;
+}
+
+#favorite{
+	display:block;
+	float: right;
+	margin-top: 7px;
+	background-repeat:no-repeat;
+	width:14px;
+	height:13px;
+	cursor:pointer;
+}
+
+#favorite.heart-no{
+	background-image:url('/img/ajax/heart_small.png');	
+}
+#favorite.heart{
+	background-image:url('/img/ajax/heart_small_red.png');	
+}
+
+#search{
+	float: right;
+	margin-top: 7px;
+	cursor:pointer;
 }

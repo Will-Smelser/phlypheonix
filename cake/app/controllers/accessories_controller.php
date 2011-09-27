@@ -2,7 +2,7 @@
 class AccessoriesController extends AppController {
 	
 	var $name = 'Accessories';
-	var $uses = array('School','Product','Color','Pimage','Accessory');
+	var $uses = array('School','Product','Pdetail','Color','Pimage','Accessory','Size');
 	var $helpers = array('Sizer');
 	
 	function beforeFilter() {
@@ -12,37 +12,93 @@ class AccessoriesController extends AppController {
 	}
 	
 	function index($school, $sex=null, $color = null){
-		$school = $school * 1;
-		$color = $color * 1;
+		$this->layout = 'dynamic_with_school';
+		$this->set('classWidth','width-xlarge');
 		
+		$school = intval($school);
+		$schoolId = $school;
+		$color = intval($color);
+		$colorId = $color;
+		$sex = (strtolower($sex) == 'm') ? 'M' : 'F';
+		
+		if(isset($_POST['swatch_color'])){
+			$color = intval($_POST['swatch_color']);
+			$this->redirect("/accessories/index/$school/$sex/$color");
+		}
+
 		if(empty($school)){
 			$this->redirect('no_school');
 		}
 		
-		$sex = (strtolower($sex) == 'm') ? 'M' : 'F';
-		
-		$data = $this->Accessory->getData($school,$sex,$color);
+		$data = $this->Product->find('list',
+			array(
+				'conditions'=>array('controller'=>'accessories','sex'=>$sex)
+			)
+		);
 		
 		if(empty($data)){
 			$this->redirect('no_products');
 		}
 		
+		$swatch = array();
+		foreach($data as $key=>$entry){
+			$info = $this->Accessory->getProduct($key,$color);
+			
+			if(preg_match('/swatch/i',$info['Product']['name'])){
+				$swatch = $info;
+				unset($data[$key]);
+			} elseif(!empty($info)) {
+				$data[$key] = $info;
+			} else {
+				unset($data[$key]);
+			}
+			
+		}
+		
+		//add the image for the swatch
+		$sproducts = $this->Product->find('list',array(
+			'conditions'=>array(
+				'name LIKE '=>'%swatch%'
+			)
+		));
+		//get all the swatch images
+		$swatches = $this->Pimage->find('all',array(
+			'conditions'=>array('product_id IN ('.implode(array_keys($sproducts),',').')')
+		));
+		
 		$school = $this->School->findById($school);
 		$schools = $this->School->find('all',array('recursive'=>0));
-		
-		//filter the products by color...look for the swatch
-		$colors = array();
-		$swatches = array();
-		$cids = array();
-		$pids = array();
-		
-		$this->Accessory->aggregateData($data, $swatches, $colors, $pids, $cids);
-		
-		$images = $this->Accessory->aggregateImages($pids, $cids);
-		$pdetails = $this->Accessory->getPdetails($this->Product->Pdetail,$pids);
+
 		
 		//set the data
-		$this->set(compact('data','school','schools','sex','colors','swatches','images','pdetails'));
+		$this->set(compact('colorId','schoolId','colorId','data','swatch','swatches','school','schoolId','schools','sex'));
+		
+		//prompt data
+		$pageElements = array(array(
+			'element'=>'prompts/accessory',
+			'data'=>array()
+		));
+		$this->set('pageElements',$pageElements);
+	}
+	
+	function product($productId, $colorId){
+		$this->layout = 'ajax';
+		$this->set('data',$this->Accessory->getProduct($productId,$colorId));
+		//debug($this->Accessory->getProduct($productId,$colorId));
+	}
+	
+	function detail($productId, $colorId){
+		$this->layout = 'ajax';
+		$data = $this->Accessory->getProduct($productId,$colorId);
+		
+		if(empty($data)){
+			$this->render('no_products');
+			return;
+		}
+		
+		$this->set('data',$data);
+		$this->set('sizes',$this->Size->find('list',array('fields'=>array('id','display'))));
+		
 		
 	}
 	

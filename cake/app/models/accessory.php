@@ -2,7 +2,63 @@
 class Accessory extends AppModel {
 	
 	var $useTable = false;
+
+	/**
+	 * Get the accessory product and information on that accessory
+	 * 
+	 * @param unknown_type $productId
+	 * @param unknown_type $colorId
+	 */
+	function getProduct($productId, $colorId){
+		$productId = $productId * 1;
+		$colorId = $colorId * 1;
+		$subquery = "SELECT `pattributes`.*, `t1`.product_id FROM `products_pattributes` AS `t1` " . 
+				"LEFT JOIN `pattributes` ON (t1.pattribute_id = `pattributes`.id) WHERE `product_id` = $productId";
 		
+		$sql = "SELECT * FROM `products` AS `Product` " .
+				"LEFT JOIN `pimages` AS `Pimage` ON (`Product`.`id` = `Pimage`.`product_id`) " . 
+				"LEFT JOIN `pdetails` AS `Pdetail` ON (`Pdetail`.product_id = `Product`.`id`) " . 
+				"LEFT JOIN `colors` AS `Color` ON (`Pdetail`.color_id = `Color`.`id`) " . 
+				"LEFT JOIN ($subquery) AS `Pattribute` ON (`Pattribute`.`product_id` = `Product`.id)" .
+				"WHERE `Product`.id = $productId AND `Pdetail`.color_id = $colorId AND `Color`.id = $colorId AND `Pimage`.color_id = $colorId"; 
+				//"LIMIT 1";
+		
+		$result = $this->query($sql);
+		
+		//need to aggregate the data
+		$temp = current($result);
+		$product = $temp['Product'];
+		$pimages = $pimageIds = array();
+		$pdetails = $pdetailIds = array();
+		$pattributes = $pattributeIds = array();
+		$colors = $colorIds = array();
+		foreach($result as $entry){
+			
+			if(!in_array($entry['Pimage']['id'], $pimageIds)) 
+				array_push($pimages,$entry['Pimage']);
+			
+			if(!in_array($entry['Pdetail']['id'], $pdetailIds)) 
+				array_push($pdetails, $entry['Pdetail']);
+				
+			if(!in_array($entry['Color']['id'], $colorIds))
+				array_push($colors, $entry['Color']);
+				
+			if(!in_array($entry['Pattribute']['id'], $pattributeIds))
+				array_push($pattributes, $entry['Pattribute']);
+				
+			array_push($colorIds,$entry['Color']['id']);
+			array_push($pdetailIds, $entry['Pdetail']['id']);
+			array_push($pimageIds, $entry['Pimage']['id']);
+			array_push($pattributeIds, $entry['Pattribute']['id']);
+		}
+		
+		if($result != false){
+			return array('Product'=>$product,'Color'=>$colors,'Pimage'=>$pimages,'Pdetail'=>$pdetails);
+		}
+		
+		return false;
+		
+	}
 	function getData($school,$sex,$color=null){
 		
 		

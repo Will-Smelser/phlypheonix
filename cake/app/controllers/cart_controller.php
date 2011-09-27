@@ -13,9 +13,9 @@ class CartController extends AppController {
 	}
 	
 	function addProduct($productId, $qty, $size, $color){
-		
+		$this->layout = 'default';
 		if(!$this->cleanInts($qty, $size, $color)) return;
-		
+		$this->layout = 'default';
 		//lookup the pdetail
 		$pdetail = $this->Pdetail->find('first',array(
 							'conditions'=>array(
@@ -26,7 +26,10 @@ class CartController extends AppController {
 							'recursive'=>0
 					)
 		);
-	
+		
+		if(empty($pdetail)){
+			return 0;
+		}
 		$entry = new ProductEntry(array('id'=>$productId,'color'=>$color,'size'=>$size,'pdetail'=>$pdetail['Pdetail']['id']),$qty);
 		
 		$this->Ccart->add($entry);
@@ -50,7 +53,7 @@ class CartController extends AppController {
 		$entry = new ProductEntry(array('id'=>$productId,'color'=>$color,'size'=>$size),$qty);
 		$this->Ccart->remove($entry);
 	}
-	function removeAll($id,$noajax){
+	function removeAll($id,$noajax=null){
 		$this->Ccart->removeAll($id);
 		if(!empty($noajax)){
 			$this->redirect('/cart/view');

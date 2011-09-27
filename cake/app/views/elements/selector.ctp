@@ -11,6 +11,7 @@
 
 	$heart_class = 'heart-no';
 	$heart_image = '/img/ajax/heart_small.png';
+	
 	foreach($myuser['School'] as $s){
 		if($s['id'] == $school['id']){
 			$heart_class = 'heart';

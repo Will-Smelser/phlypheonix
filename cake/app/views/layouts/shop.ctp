@@ -21,6 +21,9 @@
 	<!-- JQuery //-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
 	
+	<!-- The Viewer //-->
+	<script src="/js/viewer.js" type="text/javascript"></script>
+	
 </head>
 <body>
 
@@ -54,6 +57,9 @@
 	
 	<div id="accessories-wrapper" style="position:absolute;bottom:35px;right:25px;width:930px;height:30px;overflow:hidden">
 	
+	<!-- Accessories Popup -->
+	<div id="qtip-general-container" style="position:relative;top:200px;left:0px;"></div>
+
 	<div style="height:35px;">
 	<noscript><div style="display:none"></noscript>
 		<div style="text-align:right;">
@@ -67,45 +73,46 @@
 	<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/shop/main/')); ?>
 
 	<?php 
-	
-	$btn = 'buynow_';
-	$i=0;
-	
-	if(count($colors) > 0){
-	
-		//get first color
-		reset($colors);
-		reset($swatches);
-		$firstColor = current($colors);
-		$colorId = $firstColor[0]['Color']['id'];
+	if(!empty($adata)){
+		//show swatch
+		echo $this->element('product/accessories_swatch',
+			array(
+				'name'=>'Current Pattern',
+				'image'=>$adata['swatch']['Pimage'][0]['image'],
+				'price'=>'Swatches',
+				'DOMbtnId'=>'swatch_btn',
+				'btnText'=>'View Another Color',
+				'productClass'=>'swatch_image',
+				'productId'=>$adata['swatch']['Product']['id'],
+				'colorId'=>$adata['swatch']['Color'][0]['id'],
+				'sex'=>$adata['swatch']['Product']['sex'],
+				'swatches'=>$adata['swatches'],
+				'schoolId'=>$school['id']
+			)
+		);
 		
-		$firstSwatch = $swatches[$colorId][0];
-		
-		foreach($firstColor as $entry){
+		//show accessories
+		$i=0;
+		foreach($adata['products'] as $entry){
 			if(!preg_match('/swatch/i',$entry['Product']['name'])){
-				$pid = $entry['Product']['id'];
 				echo $this->element('product/accessories_product',
 					array(
 						'name'=>$entry['Product']['name'],
-						'image'=>$images[$pid][0]['image'],
+						'image'=>$entry['Pimage'][0]['image'],
 						'price'=>'Sale&nbsp;$'.$entry['Product']['price_buynow'],
-						'DOMbtnId'=>$btn . $i,
-						'btnText'=>'View Product',
+						'DOMbtnId'=>'btn_'.$i,
+						'btnText'=>'Add Item',
 						'productClass'=>'acc_image',
 						'productId'=>$entry['Product']['id'],
-						'colorId'=>$colorId,
-						'sex'=>$sex
+						'colorId'=>$entry['Color'][0]['id'],
+						'sex'=>$entry['Product']['sex'],
+						'pdetail'=>$entry['Pdetail']
 					)
 				);
-				$i++;
 			}
+			$i++;
 		}
-		
-		echo $this->element('swatches_wrapper',array('school'=>array('School'=>$school),'sex'=>$sex,'swatches'=>$swatches,'colors'=>$colors,'images'=>$images));
-		echo $this->element('accessories_wrapper');
 	} else{
-		//just gotta put the swatches wrapper
-		echo '<div id="swatches-wrapper" style="display:none;"></div>';
 		
 		//no accessories
 		echo '<div id="tooltip-product">';
@@ -126,6 +133,8 @@
 	
 </div>
 
+<!-- Accessories Popup -->
+<div id="qtip-general-container"></div>
 
 
 
@@ -144,21 +153,14 @@
 
 var schoolId = <?php echo $school['id']; ?>;
 var sex = '<?php echo $sex; ?>';
+var color = <?php echo $schoolColors[0]['schools_colors']['color_id']; ?>
 
 //product viewer
 $(document).ready(function(){
-	//swatches
-	window.swatches = <?php echo json_encode($swatches); ?>;
-	window.products = <?php echo json_encode($colors); ?>;
-	window.pdetails = <?php echo json_encode($pdetails); ?>;
-
-	//show the tooltip for products
-	<?php if(count($colors) > 0) echo $this->element('prompts/accessories_product'); ?>
 
 	<?php echo $this->element('prompts/accessories_for_shop'); ?>
-
 	
-	<?php echo $this->element('js/viewer'); ?>
+	<?php echo $this->element('prompts/accessory'); ?>
 
 	//reference to the current slider pane
 	var $main = $('#sliderpane').children().first();
@@ -194,6 +196,9 @@ $(document).ready(function(){
 	<?php echo $this->element('js/timer'); ?>
 	
 });
+
+//products
+window.products = <?php echo json_encode($products); ?>;
 
 //search for schools
 <?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>

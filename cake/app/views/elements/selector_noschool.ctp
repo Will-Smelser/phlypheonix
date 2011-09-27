@@ -13,7 +13,7 @@
             </tr>
             
             <tr>
-              <td><img src="/img/ajax/heart_small.png" /></td>
+              <td><img style="float:right;padding-top:5px" src="/img/ajax/heart_small.png" /></td>
             </tr>
             <tr>
               <td>
