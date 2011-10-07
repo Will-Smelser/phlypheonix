@@ -1,6 +1,6 @@
 
 <noscript><div style="display:none"></noscript>
-<a href="#"><img id="comments" src="/img/productpresentation/flyfoenix_product_presentation_comments.png" width="171" height="57" alt="comments" /></a>
+<a href="#" id="comment-wrapper"><img id="comments" src="/img/productpresentation/flyfoenix_product_presentation_comments.png" width="171" height="57" alt="comments" /></a>
 <noscript></div></noscript>
  
   <!-- NAVIGATION ARROWS -->
@@ -41,7 +41,7 @@
     
     <noscript>
     	<span>Copy this Link</span><br/>
-    	<input style="width:251px" type="text" value="http://wwwflyfoenix.com/referer/<?php echo $myuser['User']['id']; ?>" />
+    	<input style="width:251px" type="text" value="http://www.flyfoenix.com/referer/<?php echo $myuser['User']['id']; ?>" />
     </noscript>
     <div style="display:none" id="sharethis-wrap">
     <?php echo $this->element('sharthis'); ?>

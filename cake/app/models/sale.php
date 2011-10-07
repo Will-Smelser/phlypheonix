@@ -22,6 +22,6 @@ class Sale extends AppModel {
 		)
 	);
 	
-	var $hasMany = array('Saleuser');
+	//var $hasMany = array('Saleuser');
 
 }

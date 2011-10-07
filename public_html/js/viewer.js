@@ -12,6 +12,9 @@ $(document).ready(function(){
 		inTrans : false,
 		viewed : [0], //include the first page by default
 		checkoutUrl : '/accessories/index/'+window.schoolId+'/'+window.sex,
+		loaded : 0,
+		loadStart : 0,
+		loadTimeout : 5000,
 		
 		init : function() {
 			var obj = this;
@@ -23,68 +26,25 @@ $(document).ready(function(){
 				obj.$sliders.push($(this));
 			});
 			
+			
 			//load other pages
 			for(var i = 1; i < obj.$sliders.length; i++){
 				var temp = i;
 				
+				var d = new Date();
+				obj.loadStart = d.getTime();
+				
 				obj.$sliders[i].load(
-						obj.$sliders[i].attr('id'), //the id actually holds the url
+						obj.$sliders[i].attr('id'),//the id actually holds the url
 						function(){
-							
-							obj.$sliders[temp].find('.add-to-cart').show();
-							
-							obj.$sliders[temp].removeClass('product-loading');
-							
-							obj.$sliders[temp].find('.add-to-cart').click(function(){
-								obj.addToCart(temp);
-							});
-							
-							obj.$sliders[temp].find(".gallery-thumb").mioZoom(
-									{
-										'$target':obj.$sliders[temp].find('.mainphoto'),
-										'onEnterHook' : function(id){
-											//this should reference the zoom object
-											var $temp = obj.$sliders[temp].find('.product-detail-wrapper').children();
-											$temp.hide();
-											$($temp[id]).show();
-										}
-								
-									}
-							);
-							
-							obj.$sliders[temp].find(".feature-thumb").
-								mioZoom({
-								'$target':obj.$sliders[temp].find('.mainphoto'),
-								'zoom':false,
-								'hideOnExit':true,
-								'onEnterHook':function(id){
-									var $temp = obj.$sliders[temp].find('.feature-wrapper .attribute-info');
-									//padding is 20, so to get the correct widht, have to sebtract the padding
-									obj.$sliders[temp].find('.attribute-detail').
-										css({'z-index':this.zoomZindex+1,'width':this.wrapperWidth-20+'px'}).
-										html($($temp[id]).html()).slideDown();
-								},
-								'onExitHook':function(id){
-									obj.$sliders[temp].find('.attribute-detail').slideUp();
-								}
-							});
-							
-							//bind checkout for tooltip
-							if(temp < obj.$sliders.length - 1){
-								obj.$sliders[temp].find('.checkout').click(function(){
-									bindCheckout(temp);
-								});
-							} else {
-								obj.$sliders[temp].find('.checkout').click(function(){
-									document.location.href= obj.checkoutUrl;
-								});
-							}
-												
+							//track how many have been loaded
+							window.viewer.loaded++;
 						}
 				);
-				
-				
 			}
+			
+			//wait for all pages to be loaded
+			obj.attachViewer();
 
 			//set left/right nav
 			obj.$lnav = $('#leftarrow');
@@ -98,6 +58,69 @@ $(document).ready(function(){
 			obj.$sliders[0].find('.add-to-cart').click(function(){
 				obj.addToCart(0);
 			});
+		},
+		attachViewer : function(){
+			var obj = window.viewer;
+			
+			//keep calling self until all sliders have been loaded or timeout
+			var d = new Date();
+			if(obj.loaded < obj.$sliders.length-1 && d.getTime() < (obj.loadStart + obj.loadTimeout)){
+				setTimeout(obj.attachViewer,100);
+				return;
+			}
+			
+			for(var i=0; i< window.viewer.$sliders.length; i++){
+				var temp = i;
+			
+				obj.$sliders[temp].find('.add-to-cart').show();
+				
+				obj.$sliders[temp].removeClass('product-loading');
+				
+				obj.$sliders[temp].find('.add-to-cart').click(function(){
+					obj.addToCart(temp);
+				});
+				
+				obj.$sliders[temp].find(".gallery-thumb").mioZoom(
+						{
+							'$target':obj.$sliders[temp].find('.mainphoto'),
+							'onEnterHook' : function(id){
+								//this should reference the zoom object
+								var $temp = obj.$sliders[temp].find('.product-detail-wrapper').children();
+								$temp.hide();
+								$($temp[id]).show();
+							}
+					
+						}
+				);
+				
+				obj.$sliders[temp].find(".feature-thumb").
+					mioZoom({
+					'$target':obj.$sliders[temp].find('.mainphoto'),
+					'zoom':false,
+					'hideOnExit':true,
+					'onEnterHook':function(id){
+						var $temp = obj.$sliders[temp].find('.feature-wrapper .attribute-info');
+						//padding is 20, so to get the correct widht, have to sebtract the padding
+						obj.$sliders[temp].find('.attribute-detail').
+							css({'z-index':this.zoomZindex+1,'width':this.wrapperWidth-20+'px'}).
+							html($($temp[id]).html()).slideDown();
+					},
+					'onExitHook':function(id){
+						obj.$sliders[temp].find('.attribute-detail').slideUp();
+					}
+				});
+				
+				//bind checkout for tooltip
+				if(temp < obj.$sliders.length - 1){
+					obj.$sliders[temp].find('.checkout').click(function(){
+						bindCheckout(temp);
+					});
+				} else {
+					obj.$sliders[temp].find('.checkout').click(function(){
+						document.location.href= obj.checkoutUrl;
+					});
+				}
+			}
 		},
 		addToCart : function(index){
 			var obj = this;

@@ -96,6 +96,7 @@ class CartController extends AppController {
 	}
 	
 	function view(){
+		//$this->layout = 'default';
 		$this->layout = 'dynamic';
 		$this->set('title','/img/header/attention.png');
 		$this->set('classWidth','width-medium');

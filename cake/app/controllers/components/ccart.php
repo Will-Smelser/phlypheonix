@@ -43,7 +43,7 @@ class CcartComponent extends Object {
 			$this->content[$id] = $cartEntry;
 			
 			$this->updateSession();
-			
+
 			return $this->content[$id]->qty;
 		
 		//product exists already
@@ -59,7 +59,13 @@ class CcartComponent extends Object {
 		}
 	}
 	function updateQty($id, $qty){
-		$this->content[$id]->qty = $qty;
+		$entry = $this->content[$id];
+		if($entry->limit == 0){ 
+			$entry->qty = $qty;
+		} elseif($entry->limit <= $qty) {
+			$entry->qty = $entry->limit;
+		}
+		return $entry->qty;
 	}
 	function remove($cartEntry) {
 		
@@ -130,6 +136,7 @@ class CartEntry{
 	var $id;
 	var $qty;
 	var $desc;
+	var $limit = 0;
 	
 	var $uniques = array(
 		'id'=>null,
@@ -163,6 +170,7 @@ class CartEntry{
 		
 		//find the product
 		$condition = array('conditions'=>"{$this->modelName}.{$this->modelKey} = {$this->uniques['id']}");
+		
 		$this->info = $this->model->find('first',$condition);
 		
 		foreach($this->uniqueRoutes as $field => $route){
@@ -250,7 +258,28 @@ class AccessoryEntry extends cartEntry {
 	
 	var $modelName = 'Accessory';
 	var $modelKey = 'id';
-	var $priceRout = 'Accessory.price_retail';
+	var $priceRoute = 'Accessory.price_retail';
+	
+	public static function makeUniqueId($uniques){
+		$unique = array();
+		foreach($uniques as $val){
+			array_push($unique, $val);
+		}
+		return self::$type . self::$delimeter . implode(self::$delimeter,$unique);
+	}
+}
+class CouponEntry extends cartEntry {
+	public static $type = 'coupon';
+	
+	var $limit = 1;
+	
+	var $uniques = array('id'=>null);
+	
+	var $modelName = 'Coupon';
+	var $modelKey = 'id';
+	var $priceRoute = 'Coupon.amt';
+	var $descRoute = 'Coupon.name';
+	var $uniqueRoutes = array();
 	
 	public static function makeUniqueId($uniques){
 		$unique = array();

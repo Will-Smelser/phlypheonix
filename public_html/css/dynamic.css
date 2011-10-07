@@ -42,7 +42,7 @@ a.nav:hover{
 
 #background{
 	width:100%;
-	position:absolute;
+	position:fixed;
 	top: 0px;
 	left: 0px;
 }
@@ -219,16 +219,16 @@ p{
 }
 
 #tableContainer .top{
-	height:25px;
+	height:24px;
 } 	
 #tableContainer .bottom{
-	height:30px;	
+	height:29px;	
 }
 #tableContainer .left{
-	width:15px;
+	width:14px;
 } 
 #tableContainer .right{
-	width:20px;	
+	width:19px;	
 }
 
 /* LT GREY */

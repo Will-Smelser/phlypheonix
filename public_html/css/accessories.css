@@ -149,3 +149,7 @@ a #rightarrow:hover{
 .description-wrapper{
 	font-size:12px;	
 }
+
+.acc_prod_wrapper{
+	float:left;	
+}

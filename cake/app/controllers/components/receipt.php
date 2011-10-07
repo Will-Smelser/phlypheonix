@@ -278,7 +278,7 @@ class ReceiptEntry {
 }
 
 class Address{
-	var $id;
+	
 	var $name;
 	var $line1;
 	var $line2;
@@ -287,8 +287,8 @@ class Address{
 	var $zip;
 	var $country;
 	
-	function Address($id, $name, $line1, $line2, $city, $state, $zip, $country = 'USA') {
-		$this->id = $id;
+	function Address($name, $line1, $line2, $city, $state, $zip, $country = 'USA') {
+		
 		$this->name = $name;
 		$this->line1 = $line1;
 		$this->line2 = $line2;

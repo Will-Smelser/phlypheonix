@@ -2,6 +2,9 @@
 
 <html xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
+	<!-- Facebook Share Information -->
+	<?php echo $this->Hfacebook->shareMeta($shareImage); ?>
+	
 	<?php echo $this->Html->charset(); ?>
 	
 	<title><?php echo $title_for_layout; ?></title>
@@ -24,10 +27,22 @@
 	<!-- The Viewer //-->
 	<script src="/js/viewer.js" type="text/javascript"></script>
 	
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16246818-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	
 </head>
 <body>
-
-<img id="background" src="<?php echo $school['background']; ?>" alt="ohiostatebackground" />
 
 <div id="wrapper"> 
   <div id="mainHeader">
@@ -73,8 +88,9 @@
 	<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$sex,'link'=>'/shop/main/')); ?>
 
 	<?php 
-	if(!empty($adata)){
+	if(!empty($adata) && isset($adata['swatch']['Pimage'][0])){
 		//show swatch
+		echo "\n<div style='float:left'>\n\n";
 		echo $this->element('product/accessories_swatch',
 			array(
 				'name'=>'Current Pattern',
@@ -87,14 +103,17 @@
 				'colorId'=>$adata['swatch']['Color'][0]['id'],
 				'sex'=>$adata['swatch']['Product']['sex'],
 				'swatches'=>$adata['swatches'],
-				'schoolId'=>$school['id']
+				'schoolId'=>$school['id'],
+				'ajax'=>true,
 			)
 		);
+		echo "\n</div>\n\n";
 		
 		//show accessories
 		$i=0;
 		foreach($adata['products'] as $entry){
 			if(!preg_match('/swatch/i',$entry['Product']['name'])){
+				echo "\n<div class='acc_prod_wrapper'>\n";
 				echo $this->element('product/accessories_product',
 					array(
 						'name'=>$entry['Product']['name'],
@@ -109,6 +128,7 @@
 						'pdetail'=>$entry['Pdetail']
 					)
 				);
+				echo "\n</div>\n";
 			}
 			$i++;
 		}
@@ -141,6 +161,23 @@
 <!-- FB comments -->
 <div id="fb-comments" style="overflow:auto;height:350px;"><?php echo $this->Hfacebook->comments($fbcommentId,440,array()); ?></div>
 <div id="fb-root"></div>
+
+
+<div id="background-wrapper">
+	<?php if(strtolower($sex) == 'f') { ?>
+	<img id="background" src="/img/schools/background/default.jpg" alt="NCAA clothes School Background" style="width:100%" />
+	<?php }else{ ?>
+	<img id="background" src="<?php echo $school['background']; ?>" alt="NCAA clothes School Background" style="width:100%" />
+	<?php } ?>
+</div>
+
+
+<!-- SIZE CHART -->
+<div style="display:none;overflow:auto;height:500px;" id="size-chart">
+<?php echo $this->element('sizechart'); ?>
+</div>
+
+<?php echo $this->element('layouts/social'); ?>
 </body>
 
 <script type="text/javascript" src="/js/jquery.miozoom.js"></script>
@@ -153,7 +190,7 @@
 
 var schoolId = <?php echo $school['id']; ?>;
 var sex = '<?php echo $sex; ?>';
-var color = <?php echo $schoolColors[0]['schools_colors']['color_id']; ?>
+var color = "<?php echo isset($schoolColors[0]['schools_colors']['color_id']) ? $schoolColors[0]['schools_colors']['color_id'] : ''; ?>";
 
 //product viewer
 $(document).ready(function(){
@@ -238,12 +275,21 @@ $(document).ready(function(){
 //share this
 var switchTo5x=true;
 $(document).ready(function(){
-	$.getScript('<?php echo $protocal; ?>://w.sharethis.com/button/buttons.js',function(){
-		stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7'});
+	$.getScript('<?php echo $protocal; ?>://w<?php if($protocal == 'https') echo 's'; ?>.sharethis.com/button/buttons.js',function(){
+		stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7',
+    		st_url:'http%3A%2F%2Fflyfoenix.com%2Fusers%2Freferred%2F8'
+		});
 	});
 });
 
 //prompts
 <?php echo $this->element('layouts/prompts',array('cprompts'=>$cprompts,'cpdata'=>$cpdata)); ?>
+
+//size chart
+<?php echo $this->element('prompts/sizechart')?>
+
+//prompt for flash message
+<?php if(strlen($flash) > 0) echo $this->element('prompts/flash'); ?>
+
 </script>
 </html>

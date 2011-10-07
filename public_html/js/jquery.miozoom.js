@@ -116,6 +116,7 @@
 		  //make the movement happen
 	      if(settings.zoom){
 	      $el.bind('mousemove', function (e) {
+	    	  
 	    	  var x = -1*(e.pageX - $el.offset().left - 20);// + settings.wrapperWidth/2 ;
 	    	  var y = -1*(e.pageY - $el.offset().top - 30);// + settings.wrapperHeight/2;
 

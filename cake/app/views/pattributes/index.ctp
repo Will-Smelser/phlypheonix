@@ -19,7 +19,7 @@
 	<tr<?php echo $class;?>>
 		<td><?php echo $pattribute['Pattribute']['id']; ?>&nbsp;</td>
 		<td><?php echo $pattribute['Pattribute']['name']; ?>&nbsp;</td>
-		<td><?php echo $pattribute['Pattribute']['image']; ?>&nbsp;</td>
+		<td><img src="<?php echo $pattribute['Pattribute']['image']; ?>" width="100" />&nbsp;</td>
 		<td><?php echo $pattribute['Pattribute']['description']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $pattribute['Pattribute']['id'])); ?>

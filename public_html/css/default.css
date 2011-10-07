@@ -16,7 +16,7 @@ body{
 	font-size:12px;
 }
 
-input, select{
+input, select, textarea{
 	background-color:#CCC;	
 	color: #333;
 	font-family:Arial, Helvetica, sans-serif;
@@ -25,7 +25,7 @@ input, select{
 	
 	border-radius: 5px;
 }
-input{
+input, textarea{
 	padding: 5px;
 }
 select{
@@ -45,18 +45,13 @@ a{
 a:hover, a:active, a:focus {
     outline:0;
 }
-
-/* SELECTOR */
-#selector{
-	width:40px;
-	position:absolute;
-	top:12px;
-	right:12px;	
+th{
+	font-weight:bold;
+	padding:5px;
 }
-#selector TD{
-	padding:2px 0px;	
+td{
+	text-align:middle;	
 }
-
 input.one{
 	color: #333333;
 	font-family:Arial, Helvetica, sans-serif;
@@ -240,16 +235,14 @@ p.checkout-pop-count {
 }
 #selector{
 	display: block;
-    right: 30px;
-    top:8px;
-    position: absolute;
-    width: 150px;
+    float:right;
 }
 #selector td{
-	vertical-align:top;	
+	vertical-align:top;
+	padding:2px 0px;	
 }
+
 #gender{
-	float:right;
 	margin-top:-7px;
 }
 
@@ -286,4 +279,42 @@ p.checkout-pop-count {
 	float: right;
 	margin-top: 7px;
 	cursor:pointer;
+}
+
+/* BACKGROUND IMAGE */
+#background-wrapper{
+	min-width: 1024px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;	
+}
+#background-wrapper img{
+	width:100%;
+}
+
+/* VeriSign */
+#verisign-wrapper{
+	background-color:#CCC;
+	border:solid #CCC 2px;
+	margin:10px 0px 0px 0px;
+	display:inline-block;
+	float:right;
+}
+#verisign-inner{
+	background-color:#FFF;
+	text-align:right;
+	height:57px;
+	display:inline-block;
+}
+#verisign-inner a{
+	position:relative;
+	top:-8px;
+	display:inline-block;
+}
+#verisign-inner img{
+	/*width:100px;
+	height:72px;*/	
 }

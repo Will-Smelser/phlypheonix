@@ -2,7 +2,7 @@
 
 $config['config']['maintenance'] = false;
 $config['config']['coming_soon'] = false;
-$config['config']['testing'] = true;
+$config['config']['testing'] = false;
 
 //false = do not allow purchase when no inventory
 $config['config']['inventory']['allowpresale'] = false;
@@ -20,7 +20,12 @@ $config['config']['image']['school']['mascot'] = 'img' . DS . 'schools' . DS . '
 $config['config']['image']['school']['background'] = 'img' . DS . 'schools' . DS . 'background' . DS;
 
 
+/* coupon stuff */
+$config['config']['coupon']['referer'] = true;
+$config['config']['coupon']['refer_amt'] = -5.00;
+$config['config']['coupon']['prefix_len'] = 4; //the prefix length for coupons
+$config['config']['coupon']['name'] = 'Referal based coupon';
+
 //ignore
 $config['config']['sales']['length'] = $config['config']['sales']['length'] * 3600;
-
 ?>

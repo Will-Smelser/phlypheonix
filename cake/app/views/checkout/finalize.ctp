@@ -92,6 +92,15 @@ foreach($fields as $fname){
 	?>
 	</div>
 <?php } ?>
+<?php if(isset($good) && count($good) > 0){ ?>
+	<div id="good-console" class="border-rad-med good">
+	<?php 
+		foreach($good as $error){
+			echo "<div><span class='ename'>{$error->getDisplayName()}</span><span class='emsg'>{$error->getMsg()}</span></div>\n";
+		}
+	?>
+	</div>
+<?php } ?>
 
 <?php echo $this->element('layouts/lightbg_top'); ?>
 <table id="receipt-table">
@@ -151,9 +160,11 @@ echo "<tr class='no-hover'><td colspan='3' style='text-align:right' class='grand
 		</div>
 		<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="100%" height="2">
 		<div>
+			<form method="post" action="/checkout/addcoupon">
 			<span>Coupon Code</span><br/>
 			<input type="text" name="coupon" id="coupon" class="line" value="" />
 			<span style="padding-left:5px;"></span><input type="submit" class="btn" value="Add" /></span>
+			</form>
 		</div>
 	</div>
 <?php echo $this->element('layouts/lightbg_bottom'); ?>
@@ -302,7 +313,12 @@ echo "<tr class='no-hover'><td colspan='3' style='text-align:right' class='grand
 		<input style="float:right" type="submit" class="btn" value="Purchase" />
 	</div>
 	</form>
+	<div style="margin-top: 40px;">
+	<!-- VeriSign Trust Seal -->
+	<?php echo $this->element('trustseal',array('protocal'=>$protocal)); ?>
+	</div>
 </div>
+
 <div class="clear:both"></div>
 
 <script language="javascript">

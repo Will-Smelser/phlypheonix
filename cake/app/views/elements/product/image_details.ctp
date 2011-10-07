@@ -39,4 +39,4 @@ $bustText = (strtolower($sex) == 'f') ? 'Bust' : 'Chest';
 		</tr>
 	</table>
     </div>
-    <a href="#" class="whitelink chart">SIZING CHART</a>
+    <a href="#" class="whitelink chart" onclick="showSizeChart();">SIZING CHART</a>

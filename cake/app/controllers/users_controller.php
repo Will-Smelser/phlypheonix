@@ -8,12 +8,12 @@ class UsersController extends AppController {
 	
 	
 	function beforeFilter() {
-	    parent::beforeFilter(); 
-
-	    $this->Auth->allow(array('register','register_ajax','recover','recover_complete','captcha_image','login','logout','referred'));
+		parent::beforeFilter(); 
 		
 		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
-
+		
+		$this->Auth->allow(array('register','register_ajax','recover','recover_complete','captcha_image','login','logout','referred','contactus'));
+		
 		//set the lastposted data
 		$scriptData = array();
 		//this is a login attempt
@@ -135,10 +135,19 @@ class UsersController extends AppController {
 		$this->set('titleCSS','position:absolute;top:-30px;left:115px;z-index:100;');
 		$this->set('classWidth','width-custom');
 		$this->set('bgImg','/img/schools/background/flyfoenix_landingpage_background_03.jpg');
+		$this->set('shareImage','http://www.flyfoenix.com/img/referral.jpg');
 		
 		//force logged-in users to shop
 		if($this->Auth->user()){
 			$this->redirect(array('controller'=>'shop','action'=>'main'));
+		}
+		
+		//set whether or not user should see fb popup
+		if(!$this->Cookie->read('firsttime')){
+			$this->Cookie->write('firsttime','1',false);
+			$this->set('showFBprompt',true);
+		} else {
+			$this->set('showFBprompt',false);
 		}
 		
 		//if there was a login error from register or login
@@ -172,7 +181,6 @@ class UsersController extends AppController {
 				if (empty($this->data['User']['remember_me']))  
 		        {  
 		            $this->RememberMe->delete();
-		            return;  
 		        } else {
 		        	$this->RememberMe->remember(  
 		                    $this->data['User']['email'],  
@@ -203,18 +211,46 @@ class UsersController extends AppController {
 		$this->layout = 'dynamic';
 		$title = '/img/header/thankyou.png';
 		$classWidth = 'width-small';
+		$this->set(compact('title','classWidth'));        
+	}
+	
+	function accountinfo(){
+		//$this->layout = 'default';
+		$this->layout = 'dynamic';
+		$title = '/img/header/attention.png';
+		$classWidth = 'width-small';
 		$this->set(compact('title','classWidth'));
 		
-		$this->Auth->logout();
+		$this->loadModel('Coupon');
+		$this->loadModel('Order');
 		
-		$this->Session->delete('registerData');
-		$this->Session->setFlash('Good-Bye');
-		$this->RememberMe->delete();
 		
-		//lets make sure we are good
-		$this->Cookie->destroy();
-		$this->Session->destroy();
-		        
+		$coupons = $this->Coupon->find('all',array('conditions'=>array('user_id'=>$this->myuser['User']['id'])));
+		$orders = $this->Order->find('all',array('conditions'=>array('user_id'=>$this->myuser['User']['id'])));
+		
+		foreach($coupons as $key=>$c){
+			$prefix = $this->Coupon->createLeadingCode();
+			$coupons[$key]['Coupon']['key'] = $prefix . $coupons[$key]['Coupon']['id'];
+		}
+		
+		$this->set(compact('orders','coupons'));
+	}
+	
+	function contactus(){
+		//$this->layout = 'default';
+		$this->layout = 'dynamic';
+		$title = '/img/header/attention.png';
+		$classWidth = 'width-small';
+		$this->set(compact('title','classWidth'));
+		
+		if(isset($_POST['email'])){
+			$this->Email->from = 'Customer <customer@flyfoenix.com>';
+			$this->Email->to = 'Somebody Else <webmaster@flyfoenix.com>';
+			$this->Email->subject = 'Contact Us Form';
+			$this->Email->send($_POST['message']."\n\nUser's email: {$_POST['email']}");
+			
+			$this->redirect(array('controller'=>'pages','action'=>'messagesent'));
+		}
 	}
 	
 	function view($id = null) {

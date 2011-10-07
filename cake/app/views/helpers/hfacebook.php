@@ -14,6 +14,22 @@ class HfacebookHelper extends AppHelper {
 		$this->apiSecret = Configure::read('facebook.apiSecret');
 
 	}
+	
+	function shareMeta($img,$title=null,$desc=null){
+		if(empty($title)) $title='200+ schools - Upgrade Your College Gear - Save 20-40%';
+		if(empty($desc)) $desc = 'FlyFoenix.com finds the best officially licensed college apparel and serves it up at a discount! Exclusive unique apparel for over 200 colleges and universities.  New sales start weekly...Join Today!';
+
+		if(!preg_match("/flyfoenix.com/i",$img)) $img = 'http://www.flyfoenix.com' . $img;
+		
+	$str = "
+	<meta property=\"og:title\" content=\"$title\" /> 
+	<meta property=\"og:description\" content=\"$desc\" /> 
+	<meta property=\"og:image\" content=\"{$img}\" />
+";
+	
+		echo $str;
+	}
+	
 	function loginButton($title='',$showFaces='false'){
 		return '<fb:login-button show-faces="'.$showFaces.'" width="200" max-rows="1">'.$title.'</fb:login-button>';
 	}

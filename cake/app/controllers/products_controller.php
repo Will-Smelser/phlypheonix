@@ -18,6 +18,7 @@ class ProductsController extends AppController {
 
 	function add() {
 		if (!empty($this->data)) {
+			
 			$this->Product->create();
 			if ($this->Product->save($this->data)) {
 				$this->Session->setFlash(__('The product has been saved', true));

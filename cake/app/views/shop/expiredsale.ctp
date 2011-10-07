@@ -69,10 +69,11 @@
 
    <div id="imgcontainer" style="padding-top:5px;">
 
-
-
-  <div id="imgtxt" class="two" style="padding:5px;">Your sale includes these items, plus accessories...</div>
-	<?php 
+	<?php
+	if(count($images) > 0){
+		echo '<div id="imgtxt" class="two" style="padding:5px;">Your sale includes these items, plus accessories...</div>';
+	}
+	
 	reset($images);
 	$entry = current($images);
 	$i = 0;
@@ -127,12 +128,17 @@
 					document.location.href = '<?php echo $shopUrl; ?>';
 				});
 			}
+
+			var extentTimeNoHook = function(){
+				$.get('/shop/extendtime/<?php echo $sale; ?>');
+			} 
     		
     		
     		$('#sharing').click(function(){
         		if($('#sharing').attr('checked')){
         			$('#sharethis').css('opacity','1').css('alpha','100');
 					$('#hideShareThis').hide();
+					extentTimeNoHook();
         		} else {
 					$('#sharethis').css('opacity','.2').css('alpha','20');
 					$('#hideShareThis').show();

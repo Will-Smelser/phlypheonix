@@ -1,6 +1,13 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
-</IfModule>
+DirectoryIndex index.php
+
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+RewriteCond %{HTTP_HOST} ^flyfeonix\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^flyfoenix\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.flyfeonix\.com$
+RewriteRule ^(.*)$ "http\:\/\/www\.flyfoenix\.com\/$1" [R=301,L]

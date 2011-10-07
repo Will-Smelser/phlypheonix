@@ -51,5 +51,9 @@ class Color extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	function getSchoolColors($schoolId){
+		return $this->find('all',array('conditions'=>array('school_id'=>$schoolId)));
+	}
 
 }

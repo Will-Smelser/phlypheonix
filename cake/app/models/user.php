@@ -13,7 +13,7 @@ class User extends AppModel {
 		)
 	);*/
 	
-	var $hasMany = array('Saleuser','Credit','mfacebook');
+	var $hasMany = array('Saleuser','Credit','mfacebook','Coupon');
 	
 	var $hasAndBelongsToMany = array(
 		'School' => array(

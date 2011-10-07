@@ -15,9 +15,7 @@ $imgAbs = WWW_ROOT . ltrim(str_replace('/',DS,$img),DS);
 $sizes = $this->Sizer->resizeConstrain($imgAbs, 260, 290);
 
 ?>
-	<div>
-		<span class="title">Product Photo</span>
-	</div>
+	
 	
 	<div style="text-align:center">
 	<img style="margin-top:5px;margin-bottom:5px;" src="<?php echo $img; ?>" width="<?php echo $sizes[0]; ?>" height="<?php echo $sizes[1]?>" />

@@ -32,6 +32,11 @@ class Prompt extends AppModel {
 		return;
 	}
 	
+	function removeFirstTimePrompt($userid){
+		$sql = "DELETE FROM `users_prompts` WHERE `user_id` = $userid AND prompt_id = 1 LIMIT 1";
+		return $this->query($sql);
+	}
+	
 	function cleanUpPrompts(){
 		$time = time();
 		$sql = "DELETE FROM `users_prompts` WHERE `prompt_id` IN (SELECT `id` FROM `prompts` WHERE `ends` < $time)";

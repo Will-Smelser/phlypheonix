@@ -7,6 +7,11 @@
 		//echo $this->Form->input('image');
 		echo $this->Form->input('description');
 		echo $this->Form->input('Product');
+		
+		$dir = WWW_ROOT . Configure::read('config.image.attr');
+		echo $this->element('admin/recursive_dir_list',array('dir'=>$dir,'replace'=>$dir,'controller'=>'pattributes','action'=>'loaddir'));
+		
+		/*
 		echo $this->element('admin/choose_image',
 			array(
 				'title'=>'Choose Image',
@@ -14,7 +19,7 @@
 				'model'=>'Pattribute',
 				'field'=>'image'
 			)
-		);
+		);*/
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>

@@ -4,6 +4,7 @@ class Manufacturer extends AppModel {
 	var $displayField = 'name';
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
+	/*
 	var $hasMany = array(
 		'Product' => array(
 			'className' => 'Product',
@@ -18,6 +19,6 @@ class Manufacturer extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		)
-	);
+	);*/
 
 }

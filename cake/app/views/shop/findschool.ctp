@@ -9,10 +9,18 @@
   
 	
 		<div id="school">
-        <select id="school-list" class="fieldwidth" name="data[school][id]" size="1">
+		<form method="post" action="/shop/main/0/<?php echo $myuser['User']['sex']; ?>" >
+        <select id="school-list" class="fieldwidth" name="school-id" size="1">
         	<?php echo $this->element('school_select_box',array('schools'=>$schools)); ?>
         </select>
-        <input id="btnselect" class="btn space-left" name="select" type="submit" value="&nbsp;Select&nbsp;" />
+        <noscript>
+        	<input class="btn space-left" name="select" type="submit" value="&nbsp;Select&nbsp;" />
+        </noscript>
+        
+        	<input id="btnselect" style="display:none;" class="btn space-left" name="select" type="button" value="&nbsp;Select&nbsp;" />
+        
+        <script language="javascript">$('#btnselect').show();</script>
+        </form>
         </div>
 		
         

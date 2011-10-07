@@ -5,11 +5,20 @@ if(isset($scriptData['postsex'])) $postsex = $scriptData['postsex'];
 if(isset($scriptData['postschool'])) $postschool = $scriptData['postschool'];
 ?>
 
-//show facebook buttons
-$('#fb1,#fb2').show();
-
 $(document).ready(function(){
-
+	
+	<?php if($this->params['action'] == 'login'){ ?>
+	
+	<?php 
+	//the the facebook prompt
+	if($showFBprompt){
+		echo $this->element('prompts/fbook');
+	}
+	?>
+	
+	//show facebook buttons
+	$('#fb1,#fb2').show();
+	
 	<!-- FACEBOOK //-->
 	$.getScript("<?php echo $protocal; ?>://connect.facebook.net/en_US/all.js",function(){
 		<?php 
@@ -44,10 +53,7 @@ $(document).ready(function(){
 			});
 		}
 	});
-
-	$.getScript('<?php echo $protocal; ?>://w<?php if($protocal == 'https') echo 's'; ?>.sharethis.com/button/buttons.js',function(){
-		stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7'});
-	});
+	
 	
 	<!-- QTIP POPUP for errors //-->
 	var loginError = <?php echo $error; ?>;
@@ -190,5 +196,7 @@ $(document).ready(function(){
 		});
 	});
 	
+	//end of if logged in
+	<?php } ?>
 	
 });

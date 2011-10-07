@@ -5,8 +5,12 @@
  * $dir The absolute path to directory with images
  * $model The model name
  * $field The model field name
+ * $columns The number of columns
  */
 
+if(!isset($columns)){
+	$columns = 3;	
+}
 
 echo "<div class='input text'><label for'Image'>$title</label>";
 
@@ -28,7 +32,7 @@ foreach(scandir($dir) as $file){
 		$width = $factor * $info[0];
 		$height = $factor * $info[1];
 	
-		if( ($img % 3) == 0){ echo '<tr>';}
+		if( ($img % $columns) == 0){ echo '<tr>';}
 	
 		if( preg_match('/((jpe?g)|(gif)|(png))$/i',$rel) ) 
 		{
@@ -41,11 +45,10 @@ foreach(scandir($dir) as $file){
 		}
 	}
 }
-if( !( $img%3 == 0) ){ 
-	if($img%2 != 0) 
-	{echo '<td>&nbsp;</td><td>&nbsp;</td>';}
-	else
-	{echo "<td>&nbsp;</td><td style='border-right:solid #FFF 2px;'>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";}
+if( !( $img%$columns == 0) ){
+	for($i=0;$i<($columns-$img%$columns);$i++){
+		echo "<td colspan=\"2\">&nbsp;</td>";
+	} 
 }
 echo "</table></div>";
 ?>

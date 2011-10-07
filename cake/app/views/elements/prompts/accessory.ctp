@@ -107,4 +107,52 @@ var qtipSetting = {
 		$(this).parent().parent().parent().find('.acc_image').trigger('click');
 	});
 	
+	//support for dynamic loading of products
+	var resetAccessories = function(){
+		
+		
+		$('.acc_prod_wrapper').remove();
+		
+		
+		var color = $('#swatch_color').val();
+		var sex = $('#swatch_sex').val();
+		$.getJSON('/accessories/getProducts/'+sex+'/'+color,function(data){
+		
+			//change the swatch image
+			$("#swatch-image").fadeOut(function() { 
+			  $(this).load(function() { $(this).fadeIn(); }); 
+			  $(this).attr("src", data.swatch); 
+			});
+		
+			for(var x in data.products){
+				url = '/accessories/product/'+data.products[x]+'/'+color;
+				$div = $(document.createElement('div'));
+				$div.html('Loading...');
+				$div.attr('class','acc_prod_wrapper');
+				$('#accessories-wrapper').append($div);
+				
+				$div.load(url,function(){
+					
+					$('.acc_image').click(function(){
+		
+						var info = $(this).attr('id').split('_');
+						var url = '/accessories/detail/' + info[0].split('-')[1] + '/' + info[1].split('-')[1];
+						
+						$cont.qtip('api').elements.content.html('Loading...');
+						$cont.qtip('api').loadContent(url);
+						$cont.trigger('showDetail');
+						$cont.qtip('api').updatePosition();
+						
+					});
+					
+					$('.view_detail_btn').click(function(){
+						$(this).parent().parent().parent().find('.acc_image').trigger('click');
+					});
+				});
+				
+			}
+		});
+	};
+	
+	$('#swatch-btn-change').click(resetAccessories);
 });

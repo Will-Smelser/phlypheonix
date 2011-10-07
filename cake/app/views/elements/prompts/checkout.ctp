@@ -5,7 +5,7 @@
 $(document).ready(function(){
 	var qtipSetting = {
 	   content: {
-		  text: '<p>Are you sure you want to checkout?</p><input id="prompt-cancel-checkout" type="button" value="Cancel" class="cancel-checkout one"/>&nbsp;<input id="prompt-checkout" type="button" value="Yes" class="checkout one"/><p class="checkout-pop-count">Viewing <span class="pos">x</span> of <?php echo $count; ?> products</p>',
+		  text: '<div class="title">Still more products...</div><p>Are you sure you want to skip to checkout?</p><div  style="float:right;"><input id="prompt-cancel-checkout" type="button" value="Cancel" class="one"/>&nbsp;&nbsp;<input id="prompt-checkout" type="button" value="Yes" class="one"/></div><p style="float:left;" class="">Viewing <span class="pos">x</span> of <?php echo $count; ?> products</p>',
 		   prerender: true,
 		   title:{
 	   		   text:false,

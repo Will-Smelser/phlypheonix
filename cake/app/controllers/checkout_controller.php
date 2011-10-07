@@ -2,8 +2,8 @@
 
 class CheckoutController extends AppController {
 	var $name = 'Checkout';
-	var $components = array('Ccart','Receipt','Email','Session');
-	var $uses = array('Size', 'Color','School','Order','Pdetail');
+	var $components = array('Ccart','Receipt','Email','Session','Security');
+	var $uses = array('Size', 'Color','School','Order','Pdetail','Coupon','Referer');
 	var $helpers = array('Hfacebook','Sizer');
 	
 	var $receipt = null;
@@ -13,6 +13,14 @@ class CheckoutController extends AppController {
 		
 		$schools = $this->School->find('all',array('recursive'=>0,'order'=>array('name ASC')));
 		$this->set('schools',$schools);
+		
+		//make sure this is NOT the local version
+		if(!preg_match('/((ph)|(f))ly((ph)|(f))[eo]{2}nix.local/i',$_SERVER['SERVER_NAME']) &&
+			(!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on")
+		){
+			return $this->redirect('https://' . $_SERVER['SERVER_NAME'] . $this->here);
+		}
+		
 	}
 	
 	public function noproducts(){
@@ -26,7 +34,7 @@ class CheckoutController extends AppController {
 	public function index($errName=null){
 		
 		$this->layout = 'dynamic';
-		$this->set('title','/img/header/attention.png');
+		$this->set('title','/img/header/checkout.png');
 		$this->set('classWidth','width-xlarge');
 		
 		//first lest just fix the post data
@@ -95,16 +103,21 @@ class CheckoutController extends AppController {
 	}
 	function finalize($error=null,$msg=null){
 		$this->layout = 'dynamic';
-		$this->set('title','/img/header/attention.png');
+		$this->set('title','/img/header/checkout.png');
 		$this->set('classWidth','width-xlarge');
 		
-		$errors = array();
+		//handle errors, and messages
+		$errors = $good = array();
 		if(!empty($error)){
 			$error = new MyError($error);
 			if(!empty($msg)){
 				$error->setMsg(urldecode($msg));
 			}
-			array_push($errors,$error);
+			if($error->info['context'] == 'good'){
+				array_push($good,$error);
+			}else{
+				array_push($errors,$error);
+			}
 		}
 		
 		//coming from this page
@@ -165,7 +178,7 @@ class CheckoutController extends AppController {
 		$sizes = $this->Size->find('list',array('fields' => array('display')));
 		$colors = $this->Color->find('list');
 		
-		$this->set(compact('info','before','subtotal','after','taxes','total','sizes','colors','errors'));
+		$this->set(compact('info','before','subtotal','after','taxes','total','sizes','colors','errors','good'));
 		$this->set('ccart',$this->Ccart);
 		
 		$this->render('index');
@@ -222,13 +235,23 @@ class CheckoutController extends AppController {
 		//clear the credit card data from session
 		$this->Session->delete('Checkout.ccinfo');
 		
+		//add the shipping info for receipt
+		$shipto = new Address($this->data['ship_name'], $this->data['ship_line_1'], $this->data['ship_line_2'], 
+			$this->data['ship_city'], $this->data['ship_state'], $this->data['ship_zip']);
+		$billto = new Address($this->data['bill_name'], $this->data['bill_line_1'], $this->data['bill_line_2'], 
+			$this->data['bill_city'], $this->data['bill_state'], $this->data['bill_zip']);
+			
+		$this->receipt->shipTo = $shipto;
+		$this->receipt->billTo = $billto;
+			
+		
 		//success
 		if($response['RESULT']==0){
 			//save the receipt to the db
 			//$this->index() should have been called during the processCard() call
 			//this builds the receipt
 			
-			$this->Ccart->emptyCart();
+			
 			
 			$data['Order'] = array(
 				'user_id'=>$this->myuser['User']['id'],
@@ -242,9 +265,12 @@ class CheckoutController extends AppController {
 			//success on the save
 			if($this->Order->save($data)){
 				//build the products data
-				$sql = 'INSERT INTO `oinfos` (`order_id`,`pdetail_id`,`quantity`,`unitprice`) VALUES ';
+				$sql = 'INSERT INTO `oinfos` (`coupon_id`,`order_id`,`pdetail_id`,`quantity`,`unitprice`) VALUES ';
 				foreach($this->receipt->getContentsByType(array('product')) as $p){
-					$sql .= "({$this->Order->id},{$p->pdetail},{$p->qty},{$p->priceUnit}),";
+					$sql .= "(0,{$this->Order->id},{$p->pdetail},{$p->qty},{$p->priceUnit}),";
+				}
+				foreach($this->receipt->getContentsByType(array('coupon')) as $c){
+					$sql .= "({$c->productId},{$this->Order->id},0,{$c->qty},0),";
 				}
 				$sql = rtrim($sql,',');
 				
@@ -263,6 +289,35 @@ class CheckoutController extends AppController {
 					}
 				}
 				
+				//if there was a coupon in cart, update it
+				foreach($this->receipt->getContentsByType(array('coupon')) as $c){
+					$entry = $this->Ccart->getProduct($c->id);
+					if($entry->info['Coupon']['open'] == 1){
+						$this->Coupon->id = $entry->uniques['id'];
+						$this->Coupon->save(array('open'=>0));
+					}
+				}
+				
+				//add the referer coupon
+				if(Configure::read('config.coupon.referer')){
+					//lookup refere to see if we need to add coupon for referer
+					$row = $this->Referer->find('first',array('conditions'=>array('user_id'=>$this->myuser['User']['id'])));
+					
+					//we need to add coupon for the referer
+					if($row['Referer']['open'] == 1 && !empty($row['Referer']['referer_user_id'])){
+				
+						//close the referer having ability to add coupon
+						$this->Referer->id = $row['Referer']['id'];
+						$this->Referer->save(array('open'=>0));
+						
+						//add the coupon
+						$this->Coupon->saveCoupon($row['Referer']['referer_user_id'],
+							Configure::read('config.coupon.refer_amt'),
+							Configure::read('config.coupon.name'),$this->myuser['User']['id'],'fixed');
+					}
+				
+				}
+				$this->Ccart->emptyCart();
 				$this->redirect('/checkout/complete/'.$this->Order->id);
 			
 			//failure
@@ -281,7 +336,7 @@ class CheckoutController extends AppController {
 	}
 	public function complete($orderId){
 		$this->layout = 'dynamic';
-		$this->set('title','/img/header/attention.png');
+		$this->set('title','/img/header/thankyou.png');
 		$this->set('classWidth','width-xlarge');
 		
 		$this->set('orderId',$orderId);
@@ -345,6 +400,38 @@ class CheckoutController extends AppController {
 		}
 				
 		$this->set(compact('tax','before','after','total','details'));
+		$this->set('receipt',$this->receipt);
+	}
+	
+	function addcoupon(){
+		if(!isset($_POST['coupon'])){
+			$this->redirect('finalize/bad_coupon');
+		}
+		$coupon = $this->Coupon->parseCouponCode($_POST['coupon']);
+		
+		//check coupon code and user id
+		$info = $this->Coupon->find('first',array('conditions'=>array('id'=>$coupon)));
+		
+		//coupon requires this user be associated with it
+		if(!empty($info['Coupon']['user_id']) && $info['Coupon']['user_id'] != $this->myuser['User']['id']){
+			$this->redirect('finalize/coupon_permissions');
+		} elseif(!$info['Coupon']['open']){
+			$this->redirect('finalize/coupon_used');
+		
+		} elseif($info['Coupon']['expires'] !=0 && $info['Coupon']['expires'] < time()){
+			$this->redirect('finalize/coupon_expired');
+		}
+		
+		$entry = new CouponEntry(array('id'=>$coupon),1);
+		
+		//good coupon, add it to the cart
+		if(!$this->Ccart->checkProductInCart($entry->id)){
+			$this->Ccart->add($entry);
+			
+			$this->redirect('finalize/good_coupon');
+		} else {
+			$this->redirect('finalize/coupon_exists');
+		}
 	}
 	
 	private function getShipping(){
@@ -356,12 +443,23 @@ class CheckoutController extends AppController {
 		
 		//cycle the cart entries
 		foreach($entries as $e){
-			$info = $e->getInfo();
-			$name = $info['Product']['name'];
-			$desc = $info['Product']['desc'];
-			$pdetail = $e->uniques['pdetail'];
-			$this->receipt->addEntry('product', $e->uniques['id'], $e->getUniqueId(),$pdetail, $e->qty, $name, $e->getUnitPrice(), $desc,null);
+			if($e->getType() == 'product'){
+				$info = $e->getInfo();
+				$name = $info['Product']['name'];
+				$desc = $info['Product']['desc'];
+				$pdetail = $e->uniques['pdetail'];
+				$this->receipt->addEntry('product', $e->uniques['id'], $e->getUniqueId(),$pdetail, $e->qty, $name, $e->getUnitPrice(), $desc,null);
+			} elseif($e->getType() == 'coupon'){
+				$info = $e->getInfo();
+				$desc = 'Coupon';
+				$name = $info['Coupon']['name'];
+				$pdetail = array();
+				$this->receipt->addEntry('coupon', $e->uniques['id'], $e->getUniqueId(),$pdetail, $e->qty, $name, $e->getUnitPrice(), $desc,null);
+				
+			}
 		}
+		
+		
 	}
 	
 	private function checkFormBasic(){
@@ -425,24 +523,26 @@ class CheckoutController extends AppController {
 			));
 			
 			foreach($entries as $e){
-				//dont have enough product
-				$color = 'Unknown';
-				$size  = 'Unknown';
-				$count = 'Unknown';
-				foreach($info as $entry){
-					//debug($entry);
-					if($e->uniques['pdetail'] == $entry['Pdetail']['id']){
-						$color = $entry['Color']['name'];
-						$size  = $entry['Size']['display'];
-						$count = $entry['Pdetail']['inventory'];
+				if($e->getType() == 'product'){
+					//dont have enough product
+					$color = 'Unknown';
+					$size  = 'Unknown';
+					$count = 'Unknown';
+					foreach($info as $entry){
+						//debug($entry);
+						if($e->uniques['pdetail'] == $entry['Pdetail']['id']){
+							$color = $entry['Color']['name'];
+							$size  = $entry['Size']['display'];
+							$count = $entry['Pdetail']['inventory'];
+						}
 					}
-				}
-				if($count < $e->qty){	
-					$error = new MyError('inventory_level');
-					$error->setMsg('Sorry, Inventory too low for "'.$entry['Product']['name'].
-							'".<br/><span class="eline2">Available inventory (size: '.$size.', color: '.$color.') is <b>'.
-							$count.'</b>.</span>');
-					array_push($errors, $error);
+					if($count < $e->qty){	
+						$error = new MyError('inventory_level');
+						$error->setMsg('Sorry, Inventory too low for "'.$entry['Product']['name'].
+								'".<br/><span class="eline2">Available inventory (size: '.$size.', color: '.$color.') is <b>'.
+								$count.'</b>.</span>');
+						array_push($errors, $error);
+					}
 				}
 			}
 		} else {
@@ -477,7 +577,7 @@ class CheckoutController extends AppController {
 			//NEW METHOD USING CURL
 			$txn = new PayflowTransaction();
 					
-			$txn->environment = 'test'; //test or live
+			$txn->environment = 'live'; //test or live
 			
 			//set up user/pass etc...
 			$txn->PARTNER = 'verisign';
@@ -657,6 +757,48 @@ class errorTypes {
 					'msg'=>'Error processing card.  Credit gateway failure.',
 					'id'=>$name,
 					'context'=>'receipt',
+					'name'=>ucwords($temp)
+				);
+			case 'bad_coupon':
+				return array(
+					'msg'=>'Invalid coupon code.  Either coupon has been used or does not exist.',
+					'id'=>$name,
+					'context'=>'receipt',
+					'name'=>ucwords($temp)
+				);
+			case 'coupon_permissions':
+				return array(
+					'msg'=>'Invalid coupon code.  This coupon cannot be redeemed by you.',
+					'id'=>$name,
+					'context'=>'receipt',
+					'name'=>ucwords($temp)
+				);
+			case 'coupon_exists':
+				return array(
+					'msg'=>'The coupon has already been added.',
+					'id'=>$name,
+					'context'=>'receipt',
+					'name'=>ucwords($temp)
+				);
+			case 'coupon_used':
+				return array(
+					'msg'=>'The coupon has already been used.',
+					'id'=>$name,
+					'context'=>'receipt',
+					'name'=>ucwords($temp)
+				);
+			case 'coupon_expired':
+				return array(
+					'msg'=>'The coupon has expired.',
+					'id'=>$name,
+					'context'=>'receipt',
+					'name'=>ucwords($temp)
+				);
+			case 'good_coupon':
+				return array(
+					'msg'=>'Coupon successfully added!',
+					'id'=>$name,
+					'context'=>'good',
 					'name'=>ucwords($temp)
 				);
 			default:

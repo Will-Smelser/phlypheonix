@@ -19,10 +19,13 @@ class Accessory extends AppModel {
 				"LEFT JOIN `pimages` AS `Pimage` ON (`Product`.`id` = `Pimage`.`product_id`) " . 
 				"LEFT JOIN `pdetails` AS `Pdetail` ON (`Pdetail`.product_id = `Product`.`id`) " . 
 				"LEFT JOIN `colors` AS `Color` ON (`Pdetail`.color_id = `Color`.`id`) " . 
-				"LEFT JOIN ($subquery) AS `Pattribute` ON (`Pattribute`.`product_id` = `Product`.id)" .
-				"WHERE `Product`.id = $productId AND `Pdetail`.color_id = $colorId AND `Color`.id = $colorId AND `Pimage`.color_id = $colorId"; 
+				"LEFT JOIN ($subquery) AS `Pattribute` ON (`Pattribute`.`product_id` = `Product`.id) " .
+				"WHERE `Product`.id = $productId " .
+				"AND `Pdetail`.color_id = $colorId " .
+				"AND `Color`.id = $colorId " . 
+				"AND `Pimage`.color_id = $colorId"; 
 				//"LIMIT 1";
-		
+		//debug($sql);
 		$result = $this->query($sql);
 		
 		//need to aggregate the data

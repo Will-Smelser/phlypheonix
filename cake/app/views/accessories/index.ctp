@@ -1,8 +1,9 @@
 <?php 
-
+if(isset($swatch['Pimage'][0])){
 ob_start();
-
+echo '<div id="accessories-wrapper">';
 //show swatch
+echo "\n<div style='float:left'>\n\n";
 echo $this->element('product/accessories_swatch',
 	array(
 		'name'=>'Current Pattern',
@@ -15,15 +16,18 @@ echo $this->element('product/accessories_swatch',
 		'colorId'=>$swatch['Color'][0]['id'],
 		'sex'=>$swatch['Product']['sex'],
 		'swatches'=>$swatches,
-		'schoolId'=>$schoolId
+		'schoolId'=>$schoolId,
+		'ajax'=>true
 	)
 );
+echo "\n</div>\n\n";
 
 
 //show accessories
 $i=0;
 foreach($data as $entry){
 	if(!preg_match('/swatch/i',$entry['Product']['name'])){
+		echo "\n<div class='acc_prod_wrapper'>\n";
 		echo $this->element('product/accessories_product',
 			array(
 				'name'=>$entry['Product']['name'],
@@ -35,18 +39,25 @@ foreach($data as $entry){
 				'productId'=>$entry['Product']['id'],
 				'colorId'=>$entry['Color'][0]['id'],
 				'sex'=>$entry['Product']['sex'],
-				'pdetail'=>$entry['Pdetail']
+				'pdetail'=>$entry['Pdetail'],
+				
 			)
 		);
+		echo "\n</div>\n\n";
 	}
 	$i++;
 }
-
+echo '</div>';
 
 $content = ob_get_contents();
-
 ob_end_clean();
 
+} else {
+	$content = "<div style='height:400px'><div class='title'>No Products</div><p>
+		There are no accessories available for this sale for the current gender.  Try another school or toggle the gender.<br/><br/>
+		<a style='z-index:100;display:block;position:relative;' href='/checkout/index'> <input class='btn' type='button' value='Checkout' /></a>
+	</p>";
+}
 ?>
 
 	<!-- HEADER FOR PRODUCT MFG and SELECTOR -->
@@ -119,7 +130,12 @@ ob_end_clean();
 					</div>
 				
 				<?php } ?>
+				
+				<!-- Accessories Popup -->
+				<div id="qtip-general-container" style="position:relative;top:200px;left:0px;"></div>
+	
 				<?php echo $this->element('layouts/lightbg_top'); ?>
+				
 				<?php echo $content; ?>
 				<?php echo $this->element('layouts/lightbg_bottom'); ?>
 				</div>
@@ -141,4 +157,4 @@ ob_end_clean();
 	</table>
 	
 	</div>
-	<div id="qtip-general-container"></div>
+	

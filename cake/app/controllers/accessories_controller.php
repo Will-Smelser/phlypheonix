@@ -15,8 +15,20 @@ class AccessoriesController extends AppController {
 		$this->layout = 'dynamic_with_school';
 		$this->set('classWidth','width-xlarge');
 		
+		//$this->layout = 'default';
+				
 		$school = intval($school);
 		$schoolId = $school;
+		
+		//fix color if null
+		if(empty($color)){
+			$temp = $this->School->find('first',array('conditions'=>array('id'=>$schoolId)));
+			//debug($school);exit;
+			if(!empty($temp['Color'])){
+				$color = $temp['Color'][0]['id'];
+			}
+		}
+		
 		$color = intval($color);
 		$colorId = $color;
 		$sex = (strtolower($sex) == 'm') ? 'M' : 'F';
@@ -30,6 +42,42 @@ class AccessoriesController extends AppController {
 			$this->redirect('no_school');
 		}
 		
+		$data = $this->getAccessories($sex,$color);
+		
+		if(empty($data['products'])){
+			$school = $this->School->findById($school);
+			$schools = $this->School->find('all',array('recursive'=>0));
+			//$this->redirect('no_products');
+			$this->set(compact('colorId','schoolId','colorId','data','swatch','swatches','school','schoolId','schools','sex'));
+		}else{
+		
+			$swatch = $data['swatch'];
+			$swatches = $data['swatches'];
+			$data = $data['products'];
+			
+			$school = $this->School->findById($school);
+			$schools = $this->School->find('all',array('recursive'=>0));
+	
+			
+			//set the data
+			$this->set(compact('colorId','schoolId','colorId','data','swatch','swatches','school','schoolId','schools','sex'));
+			
+			//prompt data
+			$pageElements = array(
+				array(
+				'element'=>'prompts/accessory',
+				'data'=>array()
+				)
+			);
+			$this->set('pageElements',$pageElements);
+		}
+	}
+	
+	/**
+	 * Will return all products that are accessories.
+	 * in addition will return the swatches.
+	 */
+	private function getAccessories($sex,$color){
 		$data = $this->Product->find('list',
 			array(
 				'conditions'=>array('controller'=>'accessories','sex'=>$sex)
@@ -37,13 +85,13 @@ class AccessoriesController extends AppController {
 		);
 		
 		if(empty($data)){
-			$this->redirect('no_products');
+			return null;
 		}
 		
 		$swatch = array();
 		foreach($data as $key=>$entry){
 			$info = $this->Accessory->getProduct($key,$color);
-			
+			//debug(compact('key','color'));
 			if(preg_match('/swatch/i',$info['Product']['name'])){
 				$swatch = $info;
 				unset($data[$key]);
@@ -62,23 +110,24 @@ class AccessoriesController extends AppController {
 			)
 		));
 		//get all the swatch images
-		$swatches = $this->Pimage->find('all',array(
+		$swatches = $this->Product->Pimage->find('all',array(
 			'conditions'=>array('product_id IN ('.implode(array_keys($sproducts),',').')')
 		));
 		
-		$school = $this->School->findById($school);
-		$schools = $this->School->find('all',array('recursive'=>0));
-
+		return array('swatches'=>$swatches,'swatch'=>$swatch,'products'=>$data);
+	}
+	
+	function getProducts($sex,$color){
+		$this->layout = 'ajax';
+		$temp = $this->getAccessories($sex,$color);
 		
-		//set the data
-		$this->set(compact('colorId','schoolId','colorId','data','swatch','swatches','school','schoolId','schools','sex'));
-		
-		//prompt data
-		$pageElements = array(array(
-			'element'=>'prompts/accessory',
-			'data'=>array()
-		));
-		$this->set('pageElements',$pageElements);
+		$return = array();
+		foreach($temp['products'] as $p){
+			array_push($return, intval($p['Product']['id']));
+		}
+		//debug($temp['swatch']);
+		echo json_encode(array('products'=>$return,'swatch'=>$temp['swatch']['Pimage'][0]['image']));
+		$this->render('ajax');
 	}
 	
 	function product($productId, $colorId){
@@ -103,6 +152,10 @@ class AccessoriesController extends AppController {
 	}
 	
 	function no_school(){
+		$this->layout = 'dynamic';
+		$this->set('title','/img/header/attention.png');
+		$this->set('classWidth','width-xlarge');
+		
 		$sex = $this->myuser['User']['sex'];
 		$school = $this->myuser['User']['school_id'];
 		
@@ -124,6 +177,9 @@ class AccessoriesController extends AppController {
 	}
 	
 	function no_products(){
+		$this->layout = 'dynamic';
+		$this->set('title','/img/header/attention.png');
+		$this->set('classWidth','width-xlarge');
 		
 		$sex = $this->myuser['User']['sex'];
 		$school = $this->School->findById($this->myuser['User']['school_id']);

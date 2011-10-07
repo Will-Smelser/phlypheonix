@@ -1,0 +1,37 @@
+@charset "utf-8";
+/* CSS Document */
+
+.mainphoto{
+    width: 351px;
+	height:401px;
+	display:block;
+	
+	position:absolute;
+	top:25px;
+	left:122px;
+}
+
+#thumbnails{
+	position:absolute;
+	right:20px;
+	top:25px;
+
+	width:88px;
+}
+.feature-wrapper{
+	margin-left:-9px;
+	margin-top:2px;
+}
+.gallery-thumb, .feature-thumb{
+	display:block;
+}
+.thumb-wrapper, .feature-wrapper{
+	padding-bottom:10px;
+	width:88px;
+	height:90px;
+	overflow:hidden;	
+}
+#thumbtext{
+	text-align:center;
+	display:block;
+}

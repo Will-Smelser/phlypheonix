@@ -6,81 +6,7 @@ class AppController extends Controller {
 	
 	function beforeFilter() {
 		
-		if($this->params['action'] == 'logout'){
-			session_set_cookie_params(0); 
-			@session_start();
-			session_regenerate_id(true);
-		} else {
-	    	//have to manually start session for things to work properly
-			@session_start();
-		}
-		
-    	
-		//protocal
-		$protocal = (isset($_SERVER['HTTPS'])) ? 'https' : 'http';
-		$this->set('protocal',$protocal);
-    	
-    	//override the Auth component
-    	$this->Auth->fields = array(
-    		'username'=>'email',
-    		'password'=>'password'
-    	);
-    	
-    	//Configure AuthComponent
-    	$this->Auth->autoRedirect = false;
-        $this->Auth->authorize = 'actions';
-        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
-        //$this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->loginRedirect = array('controller' => 'shop', 'action' => 'main');
-		
-		//login by cookie
-		$this->RememberMe->check();
-    	
-		//user data
-		$auth = $this->Auth->user();
-		$user = array();
-		if(ClassRegistry::isKeySet('User') && $auth != false){
-			$Model =& ClassRegistry::getObject('User');
-			$user = $Model->read(null, $auth['User']['id']);
-		}
-		$this->myuser = $user;
-		$this->set('myuser',$this->myuser);
-		
-    	$loggedin = ($auth != false);
-		$this->set('loggedin',$loggedin);
-    	
-		if(!$loggedin && 
-				!(
-					strtolower($this->params['action']) == 'login' &&
-					strtolower($this->params['controller']) == 'users'
-				)
-				&&
-				!(
-					strtolower($this->params['action']) == 'register' &&
-					strtolower($this->params['controller']) == 'users'
-				)
-				&&
-				!(
-					strtolower($this->params['action']) == 'register_ajax' &&
-					strtolower($this->params['controller']) == 'users'
-				)&&
-				!(Configure::read('config.testing')
-				)
-		){
-			$this->redirect(array('controller'=>'users','action'=>'login'));
-			return;
-		}
-		
-		//setup the prompts
-		$this->Cprompt->addDbPrompts();
-		$this->Cprompt->setPrompt();
-		
-    	//just temp for site setup
-    	if($this->params['controller'] == 'pages') {
-    		$this->layout = 'basic' . DS . 'basic';
-    	}
-    	
-    	if (Configure::read('config.testing')) {
+		if (Configure::read('config.testing')) {
     		$this->Auth->allow('*');	
     	}
 		    	
@@ -98,16 +24,17 @@ class AppController extends Controller {
     			($this->params['controller'] == 'users' && $this->params['action'] == 'login')
     			|| ($this->params['controller'] == 'users' && $this->params['action'] == 'logout')
     		);
-    		
+ 
 	    	if(    !$loggingin
 	    		&& Configure::read('config.maintenance') 
 	    		&& $this->Session->read('Auth.User.group_id') != 1
 	    		&& !(
-	    			$this->params['controller'] == 'customer'
+	    			$this->params['controller'] == 'pages'
 	    			&& $this->params['action'] == 'maintenance'
 	    			)
 	    	)
 	    	{
+	    		
 	    		$this->redirect(array('controller' => 'pages', 'action' => 'maintenance'));
 	    		
 	    	} else if (
@@ -125,6 +52,106 @@ class AppController extends Controller {
 	    	}
 	    	
     	}
+    	
+		
+		
+		if($this->params['action'] == 'logout'){
+			session_set_cookie_params(0); 
+			@session_start();
+			session_regenerate_id(true);
+		} else {
+	    	//have to manually start session for things to work properly
+			@session_start();
+		}
+		
+    	
+		//protocal
+		$protocal = (isset($_SERVER['HTTPS'])) ? 'https' : 'http';
+		$this->set('protocal',$protocal);
+		
+    	//override the Auth component
+    	$this->Auth->fields = array(
+    		'username'=>'email',
+    		'password'=>'password'
+    	);
+    	
+    	//Configure AuthComponent
+    	$this->Auth->autoRedirect = false;
+        $this->Auth->authorize = 'actions';
+        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+        //$this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'logout');
+        $this->Auth->loginRedirect = array('controller' => 'shop', 'action' => 'main');
+		
+		
+		//logout the user
+		if( $this->params['controller'] == 'users' && $this->params['action'] == 'logout'){
+			$this->Auth->logout();
+			$this->Session->delete('registerData');
+			$this->Session->setFlash('Good-Bye');
+			$this->RememberMe->delete();
+
+			//lets make sure we are good
+			$this->Cookie->destroy();
+			$this->Session->destroy();
+
+		} else {
+			//login by cookie
+			$this->RememberMe->check();
+		}
+		
+		
+		//user data
+		$auth = $this->Auth->user();
+		$user = array();
+		if(ClassRegistry::isKeySet('User') && $auth != false){
+			$Model =& ClassRegistry::getObject('User');
+			$user = $Model->read(null, $auth['User']['id']);
+		}
+		
+		
+		$this->myuser = $user;
+		$this->set('myuser',$this->myuser);
+		
+    	$loggedin = ($auth != false);
+		$this->set('loggedin',$loggedin);
+		
+		/*
+		if(!$loggedin &&
+				!(
+					strtolower($this->params['action']) == 'login' &&
+					strtolower($this->params['controller']) == 'users'
+				)
+				&&
+				!(
+					strtolower($this->params['action']) == 'register' &&
+					strtolower($this->params['controller']) == 'users'
+				)
+				&&
+				!(
+					strtolower($this->params['action']) == 'register_ajax' &&
+					strtolower($this->params['controller']) == 'users'
+				)&&
+				!(Configure::read('config.testing')
+				)&&
+				!(
+					strtolower($this->params['action']) == 'logout' &&
+					strtolower($this->params['controller']) == 'users'
+				)&&
+				strtolower($this->params['controller']) != 'pages'
+		){
+			$this->redirect(array('controller'=>'users','action'=>'login'));
+			return;
+		}*/
+		
+		//setup the prompts
+		$this->Cprompt->addDbPrompts();
+		$this->Cprompt->setPrompt();
+		
+    	//just temp for site setup
+    	if($this->params['controller'] == 'pages') {
+    		$this->layout = 'basic' . DS . 'basic';
+    	}
+    	
     	
         //$this->secureUserSession();
 	}

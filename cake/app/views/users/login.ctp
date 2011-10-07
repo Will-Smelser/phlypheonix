@@ -131,11 +131,18 @@ foreach($fields as $fname){
             	<input name="data[User][remember_me]" type="checkbox" value="1" checked id="remember-me" /></label>
             </div>
         </form>
+        
+        <!-- VeriSign Trust Seal -->
+        <?php echo $this->element('trustseal',array('protocal'=>$protocal)); ?>
    </div>
    <?php echo $this->element('layouts/lightbg_bottom'); ?>
 </div>
 <div id="fb-root"></div>
 <div class="clear:both;" ></div>
+<div style="text-align:left;padding-left:18px;">
+<a href="/pages/terms">Terms of Use</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="/pages/privacy">Privacy Policy</a>
+</div>
 <script language="javascript">
 $('#btnregister').show();
 $('#btnlogin').show();

@@ -58,13 +58,16 @@ foreach($before as $entry){
 	
 	echo "<tr><td>$name<td class='qty'>$qty<td class='unit'>$unit<td class='total'>$tot\n";
 	
-	$cartEntry = $ccart->getProduct($entry->id);
-	$colorId = $cartEntry->uniques['color'];
-	$sizeId  = $cartEntry->uniques['size'];
-	$color = $colors[$colorId];
-	$size  = $sizes[$sizeId];
 	
-	echo "<tr class='no-hover'><td class='product-details' colspan='2' align='left'><span class='color'><b>color:</b> $color</span><span class='size'><b>size:</b> $size</span><td><td>&nbsp;";
+	$cartEntry = $ccart->getProduct($entry->id);
+	if($cartEntry->getType() == 'product'){
+		$colorId = isset($cartEntry->uniques['color']) ? $cartEntry->uniques['color'] : '';
+		$sizeId  = isset($cartEntry->uniques['size']) ? $cartEntry->uniques['color'] : '';
+		$color = isset($colors[$colorId]) ? $colors[$colorId] : '';
+		$size  = isset($sizes[$sizeId]) ? $sizes[$sizeId] : '';
+		
+		echo "<tr class='no-hover'><td class='product-details' colspan='2' align='left'><span class='color'><b>color:</b> $color</span><span class='size'><b>size:</b> $size</span><td><td>&nbsp;";
+	}
 }
 
 $subtotal = cartUtils::formatMoneyUS($subtotal);
@@ -99,9 +102,11 @@ echo "<tr class='no-hover'><td colspan='3' style='text-align:right' class='grand
 		</div>
 		<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="100%" height="2">
 		<div>
+			<form method="post" action="/checkout/addcoupon">
 			<span>Coupon Code</span><br/>
 			<input type="text" name="coupon" id="coupon" class="line" value="" />
 			<span style="padding-left:5px;"></span><input type="submit" class="btn" value="Add" /></span>
+			</form>
 		</div>
 	</div>
 <?php echo $this->element('layouts/lightbg_bottom'); ?>
@@ -116,7 +121,13 @@ echo "<tr class='no-hover'><td colspan='3' style='text-align:right' class='grand
 		echo $this->element('checkout/finalize',array('errorClass'=>$errorClass,'fieldData'=>$fieldData));
 	} 
 	?>
+	
+	<div style="margin-top: 40px;">
+	<!-- VeriSign Trust Seal -->
+	<?php echo $this->element('trustseal',array('protocal'=>$protocal)); ?>
+	</div>
 </div>
+
 <div class="clear:both"></div>
 
 <script language="javascript">

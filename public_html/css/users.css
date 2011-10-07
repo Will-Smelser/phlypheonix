@@ -8,12 +8,14 @@
 	float:right;
 }
 .inner{
-	padding:0px;	
-	height:312px;
+	padding:0px;
+	margin:-15px 0px 0px 0px;
+		
+	height:340px;
 	width:200px;
 	
-	position:relative;
-	top:-15px;
+	
+	overflow:hidden;
 }
 #loginimg{
 	padding-top:5px;

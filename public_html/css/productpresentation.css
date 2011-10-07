@@ -20,7 +20,7 @@ input, select{
 	background-color:#CCC;	
 	color: #333;
 	font-family:Arial, Helvetica, sans-serif;
-	font-size: 16px;
+	font-size: 12px;
 	border: none;
 	
 	border-radius: 5px;
@@ -35,6 +35,9 @@ select{
 input[type="checkbox"]{
 	background-color:transparent;	
 }
+.pdetails select {
+    margin: 5px;
+}
 A{
 	text-decoration:none;
 	font-family:arial;	
@@ -43,6 +46,10 @@ A{
 }
 a, a:hover, a:active, a:focus {
     outline:0;
+}
+p{
+	font-size:12px;
+	padding:5px 0px;	
 }
 .one{
 	color: #FBB040;
@@ -111,13 +118,22 @@ input, select{
 input.one{
 	color: #333333;
 	font-family:Arial, Helvetica, sans-serif;
-	font-size: 18px;
+	font-size: 12px;
+	font-weight:normal;
 	background-color: #FBB040;
 	border: none;
 	padding: 5px;
 	border-radius: 5px;
+	cursor:pointer;
 }
-
+.qtip-content .title{
+	padding:5px 0px;	
+}
+.qtipSpan{
+	font-size:12px;
+	font-weight:bold;
+	float:left;	
+}
 img.one{
 	display: block;
     margin-left: auto;
@@ -132,14 +148,20 @@ body{
 	background-repeat:no-repeat;
 	margin: 0px;
 	padding: 0px;
-	overflow:hidden;
 }
 
-#background{
+/* BACKGROUND IMAGE */
+#background-wrapper{
+	min-width: 1024px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;	
+}
+#background-wrapper img{
 	width:100%;
-	position:absolute;
-	top: 0px;
-	left: 0px;
 }
 
 #wrapper{
@@ -210,7 +232,6 @@ body{
 	float: right;
     position: relative;
     right: 30px;
-    width: 150px
 }
 
 #gender{
@@ -443,7 +464,7 @@ a #rightarrow:hover, a #rightarrow2:hover{
 	display:block;
 }
 .thumb-wrapper, .feature-wrapper{
-	padding-top:10px;
+	padding-bottom:10px;
 	width:88px;
 	height:90px;
 	overflow:hidden;	
@@ -505,7 +526,7 @@ a #rightarrow:hover, a #rightarrow2:hover{
 	margin-left:20px;
 }
 .quantity input{
-	width:100px;
+	width:80px;
 	border:none;
 	text-align:right;	
 }
@@ -514,6 +535,10 @@ a #rightarrow:hover, a #rightarrow2:hover{
 	margin-left:5px;
 	font-weight:normal;
 	cursor:pointer;
+}
+input.add-to-cart.one, input.checkout.one{
+	font-size:16px;
+	font-weight:bold;	
 }
 .cancel-checkout{
 	margin-left:30px;	
@@ -788,4 +813,29 @@ input.three {
 
 #cart, #favorite, #search{
 	cursor:pointer;	
+}
+
+
+.acc_prod_wrapper{
+	float:left;	
+}
+
+#tooltip-product h2{
+	padding-left:15px;	
+}
+
+#size-chart{
+	padding-right:20px;	
+}
+.size-table{
+	width:100%;
+	border:solid #666 2px;	
+}
+.size-table TD{
+	padding:5px;	
+}
+.size-title{
+	font-weight:bold;
+	background-color:#CCC;
+	text-align:right;
 }

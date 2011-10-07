@@ -47,6 +47,13 @@ foreach($content as $cartEntry){
 		echo "<tr><td class='cart-details' colspan='3' align='right'><span><b>color:</b> $color</span><span><b>size:</b> $size</span><td><td>&nbsp;";
 	} elseif($cartEntry->getType() == 'accessory'){
 		
+	} elseif($cartEntry->getType() == 'coupon'){
+		$name = shortName($cartEntry->info['Coupon']['name']);
+		$price = cartUtils::formatMoneyUS($cartEntry->getUnitPrice());
+		
+		echo "<td>$name<td align='right'>$price";
+		
+		$total += $cartEntry->getTotal();
 	}
 }
 $total = cartUtils::formatMoneyUS($total);
@@ -55,6 +62,6 @@ echo "\n<tr><td colspan='4' class='cart-total' align='right' class='cart-total'>
 ?>
 </table>
 </form>
-
+<a href="/checkout/index" style="float:left;display:block;"><input type="button" value="Checkout" class="checkout one" /></a>
 <input id="cart-update" type="button" value="Update" class="checkout one" onclick="window.cart.update()" />
 </div>

@@ -14,6 +14,7 @@
 		echo $this->Form->input('price_retail');
 		echo $this->Form->input('price_member');
 		echo $this->Form->input('price_buynow');
+		
 		echo $this->element('admin/choose_image',
 			array(
 				'title'=>'Choose Price Tag Image',

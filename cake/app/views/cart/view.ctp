@@ -46,9 +46,16 @@ foreach($content as $cartEntry){
 		echo "<td>$name<td align='right'>$price";
 		
 		//must always have this additional row
-		echo "<tr><td class='cart-details' colspan='3' align='right'><span><b>color:</b> $color</span><span><b>size:</b> $size</span><td><td>&nbsp;";
+		echo "<tr><td class='cart-details' colspan='3' align='right'><span><b>color:</b> $color</span><span><b>size:</b> $size</span><td>";
 	} elseif($cartEntry->getType() == 'accessory'){
 		
+	} elseif($cartEntry->getType() == 'coupon'){
+		$name = shortName($cartEntry->info['Coupon']['name']);
+		$price = cartUtils::formatMoneyUS($cartEntry->getUnitPrice());
+		
+		echo "<td>$name<td align='right'>$price";
+		
+		$total += $cartEntry->getTotal();
 	}
 }
 $total = cartUtils::formatMoneyUS($total);
