@@ -29,7 +29,7 @@ foreach($fields as $fname){
 //debug($errorClass);
 //debug($errors);
 ?>
-<div id="receipt-wrapper">
+<div id="receipt-wrapper" style="margin-bottom:10px;">
 
 <?php if(isset($errors) && count($errors) > 0){ ?>
 	<div id="error-console" class="border-rad-med error">
@@ -110,6 +110,10 @@ echo "<tr class='no-hover'><td colspan='3' style='text-align:right' class='grand
 		</div>
 	</div>
 <?php echo $this->element('layouts/lightbg_bottom'); ?>
+	<div style="padding-left:20px;position:absolute;bottom:20px;">
+		<a href="/pages/shipping">Shipping Policy</a>&nbsp;&nbsp;&nbsp;
+		<a href="/pages/return">Return Policy</a>&nbsp;&nbsp;&nbsp;
+	</div>
 </div>
 
 

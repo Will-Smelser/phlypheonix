@@ -14,14 +14,18 @@
 <select style="margin-top:5px" id="school-list" class="fieldwidth" name="product" >
 <?php
 	foreach($schools as $s){
-		echo "<option value='{$s['Product']['id']}'>{$s['School']['display']} &nbsp;&nbsp;&nbsp;{$s['School']['long']}</option>\n";
+		echo "<option value='{$s['Product']['id']}'>{$s['School']['long']}</option>\n";
 	}
 ?>
 </select>
+<a href="/users/login">
+	<input type="button" value="Sign Up!" class="btn" style="background-color:#689C2D;color:#FFF;font-size:20px;padding:8px;font-weight:bolder;margin:10px 10% 0px 0px;float:right;" />
+</a>
 &nbsp;
 <input type="submit" value="Check it Out!" class="btn" />
 </form>
-<br/><br/>
+
+<div style="clear:both"></div>
 <!-- Create thumbnails of all products associated with sale -->
 <div class="title">All items associated with this sale...</div>
 <img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="90%" height="2">

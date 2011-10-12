@@ -34,6 +34,7 @@
   <img id="buynowtag" class="qtip" src="<?php echo $product['Product']['pricetag']; ?>" alt="Member only price <?php echo $product['Product']['price_member']; ?>" />
   <span id="counter" class="one"><?php echo "{$days}d {$hours}h {$minutes}m"; ?></span>
   
-  <?php echo $this->element('selector',array('glink'=>$glink,'gender'=>$gender,'myuser'=>$myuser,'school'=>$school,'schoolName'=>$product['School']['long'],'schoolLogo'=>$product['School']['logo_small'])); ?>
+  <?php echo $this->element('selector',array('glink'=>$glink,'gender'=>$gender,'myuser'=>$myuser,'school'=>$school,
+  	'schoolName'=>$product['School']['long'],'schoolLogo'=>$product['School']['logo_small'])); ?>
  
 </div><!-- End Body Header -->

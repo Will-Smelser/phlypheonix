@@ -66,3 +66,27 @@ div.width-custom{
 	display:inline-block;
 	height:22px;	
 }
+
+.carousel-prev, .carousel-next{
+	cursor:pointer;	
+}
+
+.carousel-inner{
+	text-align:center;
+	font-weight:bold;
+	padding:3px;
+	
+	overflow:hidden;
+	width:175px;
+	height:345px;
+}
+.carousel-inner li{
+	padding:3px 0px;	
+}
+.carousel-inner .loading{
+	background-image:url('/img/ajax/loading.gif');
+	background-repeat:no-repeat;
+	background-position:center center;
+	width:154px;
+	height:176px;	
+}

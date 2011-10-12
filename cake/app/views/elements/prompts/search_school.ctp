@@ -26,7 +26,7 @@ $(document).ready(function(){
  	      color: '#DDD',
  	      padding: 15,
  	      tip:true,
- 	      width:520,
+ 	      width:320,
  	      height:400,
 	   },
 	   position: {

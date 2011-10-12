@@ -68,6 +68,8 @@
 	</noscript>
 	<?php } ?>
 	
+	<a id="shipping-tag" style="position:absolute;top:7px;right:20px;display:block;z-index:2;" href="/pages/shipping"><img src="/img/header/shipping_tag.png" /></a>
+	
 	<?php echo $content_for_layout; ?>
 	
 	<div id="accessories-wrapper" style="position:absolute;bottom:35px;right:25px;width:930px;height:30px;overflow:hidden">

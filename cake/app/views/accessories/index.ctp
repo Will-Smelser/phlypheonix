@@ -67,7 +67,7 @@ ob_end_clean();
 			<td class="left"></td>
 			<td class="bg-main">
 			
-	 	  	<img id="additem" src="/img/upsell/flyfoenix_upsell_additem.png" width="335" height="56" alt="additem" />
+	 	  	<img id="additem" src="/img/header/accessories.png" alt="Accessories" />
 	   		
  			
   			<?php

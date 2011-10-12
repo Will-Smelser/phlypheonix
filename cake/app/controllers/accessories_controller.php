@@ -46,7 +46,7 @@ class AccessoriesController extends AppController {
 		
 		if(empty($data['products'])){
 			$school = $this->School->findById($school);
-			$schools = $this->School->find('all',array('recursive'=>0));
+			$schools = $this->School->getSchoolsWithSale();
 			//$this->redirect('no_products');
 			$this->set(compact('colorId','schoolId','colorId','data','swatch','swatches','school','schoolId','schools','sex'));
 		}else{
@@ -56,7 +56,7 @@ class AccessoriesController extends AppController {
 			$data = $data['products'];
 			
 			$school = $this->School->findById($school);
-			$schools = $this->School->find('all',array('recursive'=>0));
+			$schools = $this->School->getSchoolsWithSale();
 	
 			
 			//set the data
@@ -162,7 +162,7 @@ class AccessoriesController extends AppController {
 		if($school == 0){
 			$this->redirect(array('action'=>'shop','controller'=>'noschool'));
 		}
-		$schools = $this->School->find('all',array('recursive'=>0));
+		$schools = $this->School->getSchoolsWithSale();
 		$school = $this->School->findById($school);
 		
 		if(empty($school)){
@@ -183,7 +183,7 @@ class AccessoriesController extends AppController {
 		
 		$sex = $this->myuser['User']['sex'];
 		$school = $this->School->findById($this->myuser['User']['school_id']);
-		$schools = $this->School->find('all',array('recursive'=>0));
+		$schools = $this->School->getSchoolsWithSale();
 		$swatches = array();
 		$products = array();
 		$colors = array();

@@ -32,7 +32,7 @@ $(document).ready(function(){
 	         tooltip: 'center'
 	      },
 	      adjust: {
-		      x: 0, y: 0
+		      x: 0, y: -80
 		  }   
 	   },
 	   show:'showFlash',

@@ -1,11 +1,11 @@
-	<img id="canwe" src="/img/noschool/flyfoenix_noschool_canwe.png" width="380" height="55" alt="canwe" />
-  
-	<div id="content" style="padding-bottom:10px">
-		<span class="eight">
+	<div class="title">Choose Your School</div>
+  	<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="100%" height="2" /><br/>
+	<p>
+		
 		Select a school from the list below.  If you do not see your school in the list below; 
 		be patient we are constantly adding new schools.  So, check back soon!
-		</span>
-	</div><!-- End content -->
+		
+	</p><!-- End content -->
   
 	
 		<div id="school">

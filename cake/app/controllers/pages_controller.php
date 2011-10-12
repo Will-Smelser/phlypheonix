@@ -67,11 +67,12 @@ class PagesController extends AppController {
  */
 	function display() {
 		$this->layout = 'dynamic';
-		$title = '/img/header/attention.png';
 		$classWidth = 'width-large';
+		$title = $this->getHeading();
 		$this->set(compact('title','classWidth'));
 		
-		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
+		
+		$this->set('schools',$this->School->getSchoolsWithSale());
 		
 		$path = func_get_args();
 
@@ -94,5 +95,39 @@ class PagesController extends AppController {
 		$this->render(implode('/', $path));
 		
 		
+	}
+	
+	private function getHeading(){
+		$img = '/img/header/';
+		switch($this->params['pass'][0]){
+			case 'shipping':
+				$img .= 'shipping.png';
+				break;
+			case 'messagesent':
+				$img .= 'messagesent.png';
+				break;
+			case 'privacy':
+				$img .= 'privacy.png';
+				break;
+			case 'return':
+				$img .= 'attention.png';
+				break;
+			case 'aboutus':
+			case 'about':
+				$img .= 'about.png';
+				break;
+			case 'terms':
+				$img .= 'terms.png';
+				break;
+			case 'contactus':
+			case 'contact':
+				$img .= 'contact.png';
+				break;
+			default:
+				$img .= 'attention.png';
+				break;
+		}
+		
+		return $img;
 	}
 }

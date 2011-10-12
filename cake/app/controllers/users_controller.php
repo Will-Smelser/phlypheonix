@@ -3,7 +3,7 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $components = array('Captcha','Email','Cfacebook','Session');
-	var $uses = array('User','School','Prompt','Mfacebook','Referer');
+	var $uses = array('User','School','Prompt','Mfacebook','Referer','Pimage');
 	var $helpers = array('Session','Form', 'Html','Javascript','Hfacebook');
 	
 	
@@ -12,7 +12,7 @@ class UsersController extends AppController {
 		
 		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
 		
-		$this->Auth->allow(array('register','register_ajax','recover','recover_complete','captcha_image','login','logout','referred','contactus'));
+		$this->Auth->allow(array('register','register_ajax','recover','recover_complete','captcha_image','login','logout','referred','contactus','getimage','referer'));
 		
 		//set the lastposted data
 		$scriptData = array();
@@ -50,14 +50,30 @@ class UsersController extends AppController {
 		$this->set('scriptData',$scriptData);
 	}
 	
-	function referred($userid){
+	
+	
+	function referred($userid,$product=null){
 		
 		if(!$this->User->findById($userid)){
 			$this->redirect('/users/login/bad_referer');
 		} else {
 			$this->Session->write('Referer.id',$userid);
-			$this->redirect('/users/login');
+			
+			if(!empty($product)){
+				$this->redirect('/shop/view/'.$product);
+			} else {
+				$this->redirect('/users/login');
+			}
 		}
+	}
+	
+	function referer($userid, $product=null){
+		
+		$url = '/users/referred/' . $userid;
+		if($product != null) $url .= '/'.$product;
+		
+		$this->redirect($url);
+		
 	}
 	
 	function add_school($id){
@@ -136,6 +152,7 @@ class UsersController extends AppController {
 		$this->set('classWidth','width-custom');
 		$this->set('bgImg','/img/schools/background/flyfoenix_landingpage_background_03.jpg');
 		$this->set('shareImage','http://www.flyfoenix.com/img/referral.jpg');
+		$this->set('jsFilesBottom',array('/js/miocarousel.js'));
 		
 		//force logged-in users to shop
 		if($this->Auth->user()){
@@ -149,6 +166,9 @@ class UsersController extends AppController {
 		} else {
 			$this->set('showFBprompt',false);
 		}
+		
+		//add the carousel images
+		$this->addCarouselImages();
 		
 		//if there was a login error from register or login
 		if(!empty($err)) {
@@ -203,8 +223,74 @@ class UsersController extends AppController {
 		$error = new MyError('no_error');
         $this->set('error',$error->getJson());
         
-        
         //$this->redirect($this->Auth->redirect());
+	}
+	private function addCarouselImages(){
+		//get 50 random images out of last 200 entries
+        $pimages = $this->Pimage->find('list',array('limit'=>200,'conditions'=>array('name'=>'front'),'fields'=>array('image'),'order'=>array('id DESC')));
+        $temp = array();
+        $temp2= array();
+        foreach($pimages as $key=>$entry){
+        	array_push($temp, urlencode($entry));
+        }
+        //filter only 50
+        $i = 0;
+        while($i < 500 && count($temp2) < 50){
+        	$rand = rand(0, count($temp));
+        	array_push($temp2,array_slice($temp, $rand, 1));
+        	$i++;
+        }
+        $this->set('pimages',$temp2);
+	}
+	function getimage(){
+		
+		$this->layout='ajax';
+		
+		$encodedFile = $_GET['image'];
+		$file = WWW_ROOT . ltrim(urldecode($encodedFile),'/');
+		
+		$fileInfo = pathinfo($file);
+		
+		//This will set our output to 45% of the original size 
+		 $size = 0.21; 
+		 
+		 // This sets it to a .jpg, but you can change this to png or gif 
+		 header('Content-type: image/jpeg'); 
+		 
+		 //if the files does not exist or cannot be read
+		 if(!file_exists($file)){
+		 	//enter a random osu product
+		 	$prodDir = WWW_ROOT . 'img' . DS . 'products' . DS . 'OSU' . DS . 'F';
+		 	$dirList = scandir($prodDir);
+		 	$rand = rand(2,count($dirList)-1);
+		 	$i = 0;
+		 	
+		 	foreach($dirList as $newFile){
+		 		if($i >= $rand){
+		 			if(preg_match('/front/i',$newFile)){
+			 			$file = $prodDir . DS . $newFile;
+			 			//debug($file);
+			 			break;
+		 			}
+		 		}
+		 		$i++;
+		 	}
+		 }
+		 
+		 // Setting the resize parameters
+		 list($width, $height) = getimagesize($file); 
+		 $modwidth = $width * $size; 
+		 $modheight = $height * $size; 
+		 
+		 // Creating the Canvas 
+		 $tn= imagecreatetruecolor($modwidth, $modheight); 
+		 $source = imagecreatefromjpeg($file); 
+		 
+		 // Resizing our image to fit the canvas 
+		 imagecopyresized($tn, $source, 0, 0, 0, 0, $modwidth, $modheight, $width, $height); 
+		 
+		 imagejpeg($tn);
+		return;
 	}
 	
 	function logout(){

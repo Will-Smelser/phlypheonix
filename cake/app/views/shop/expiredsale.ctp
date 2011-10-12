@@ -26,7 +26,7 @@
 	  	<div id="hideShareThis" style="position:absolute;top:185px;left:50px;height:40px;width:300px;z-index:1000"></div>
 		<div style="padding-top:10px;height:30px;">
 		    
-		    <div id="sharethis" style="height:30px; display:inline;">
+		    <div id="sharethis" style="position:relative;">
 		
 		      <span st_url='<?php echo $st_url; ?>'  class='st_twitter_large' ></span>
 		
@@ -39,10 +39,12 @@
 		      <span st_url='<?php echo $st_url; ?>'  class='st_email_large' ></span>
 		
 		      <span st_url='<?php echo $st_url; ?>'  class='st_sharethis_large' ></span>
-		
+			
+			<a href="<?php echo "/shop/extendtime2/$sale/$school"?>" >
+		     	<input type="button" class="btn" value="Done Sharing" style="position:absolute;top:3px;margin-left:7px" />
+		     </a>
 		    </div>
-		
-		    
+			     
 		</div>
 	</div>
 	<div id="default">
@@ -119,7 +121,7 @@
 				if($('#stwrapper').css('visibility') == 'hidden' && shared){
 					extendTime();
 				} else {
-					setTimeout(checkShareThisComplete,250);
+					setTimeout(checkShareThisComplete,500);
 				}
 			}
 			

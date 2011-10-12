@@ -16,15 +16,25 @@ class HfacebookHelper extends AppHelper {
 	}
 	
 	function shareMeta($img,$title=null,$desc=null){
+		$str = "";
+		if(is_array($img)){
+			foreach($img as $file){
+				if(!preg_match("/flyfoenix.com/i",$file)) $file = 'http://www.flyfoenix.com' . $file;
+				$str .= "<meta property=\"og:image\" content=\"{$file}\" />\n";
+			}
+		} else {
+			if(!preg_match("/flyfoenix.com/i",$img)) $img = 'http://www.flyfoenix.com' . $img;
+			$str .= "<meta property=\"og:image\" content=\"{$img}\" />\n";
+		}
 		if(empty($title)) $title='200+ schools - Upgrade Your College Gear - Save 20-40%';
 		if(empty($desc)) $desc = 'FlyFoenix.com finds the best officially licensed college apparel and serves it up at a discount! Exclusive unique apparel for over 200 colleges and universities.  New sales start weekly...Join Today!';
-
-		if(!preg_match("/flyfoenix.com/i",$img)) $img = 'http://www.flyfoenix.com' . $img;
 		
-	$str = "
+	$str .= "
 	<meta property=\"og:title\" content=\"$title\" /> 
 	<meta property=\"og:description\" content=\"$desc\" /> 
-	<meta property=\"og:image\" content=\"{$img}\" />
+	
+	<meta property=\"og:site_name\" content=\"FlyFoenix.com\" />
+	<meta property=\"fb:admins\" content=\"679415429\" />
 ";
 	
 		echo $str;
@@ -42,7 +52,7 @@ class HfacebookHelper extends AppHelper {
 	 * @param $height integer height, Frame only
 	 * @return unknown_type
 	 */
-	function likeButton($url,$layout='standard',$faces='true',$width=450,$height=80){
+	function likeButton($url,$layout='standard',$faces='false',$width=450,$height=80){
 		$raw = $url;
 		
 		//encode url
@@ -72,7 +82,15 @@ STR;
 		
 		return array('frame'=>$frame,'fbml'=>$fbml);
 	}
-	
+	function likeButtonHTML5($url){
+		$script = <<<STR
+		<div class="fb-like" data-href="$url" data-send="true" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+STR;
+		return $script;
+	}
+	function likeButtonFBML($url){
+		echo "<fb:like href=\"$url\" send=\"true\" layout=\"button_count\" width=\"450\" show_faces=\"false\"></fb:like>";
+	}
 	/**
 	 * 
 	 * @param $id string Unique identifier for this set of comments

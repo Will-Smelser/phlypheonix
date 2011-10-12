@@ -220,13 +220,16 @@ class CfacebookComponent extends Object  {
                         	$this->sendNewUserEmail();
                         }
                         
+                        //add the first time user prompts
+						$this->controller->User->Prompt->addFirstTimeUserPrompt($this->controller->User->id);
+                        
                         //save facebook
                         if($saveToFacebookModel){
                         	$this->saveMeData($this->fbuser['id'], $this->controller->User->id, $this->getMe());
                         }
                         
                         //forward to correct url
-                        $this->controller->redirect(Configure::read('facebook.afterlogin.forward'));
+                        $this->controller->redirect(Configure::read('facebook.afterregister.forward'));
                     }else{
                     	array_push($this->error,'Failed to create user');
                     }

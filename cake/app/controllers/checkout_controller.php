@@ -2,7 +2,7 @@
 
 class CheckoutController extends AppController {
 	var $name = 'Checkout';
-	var $components = array('Ccart','Receipt','Email','Session','Security');
+	var $components = array('Ccart','Receipt','Email','Session','Security','AuthorizeNet');
 	var $uses = array('Size', 'Color','School','Order','Pdetail','Coupon','Referer');
 	var $helpers = array('Hfacebook','Sizer');
 	
@@ -11,7 +11,7 @@ class CheckoutController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
-		$schools = $this->School->find('all',array('recursive'=>0,'order'=>array('name ASC')));
+		$schools = $this->School->getSchoolsWithSale();
 		$this->set('schools',$schools);
 		
 		//make sure this is NOT the local version
@@ -230,7 +230,7 @@ class CheckoutController extends AppController {
 		}
 		
 		//attempt to process the card
-		$response = $this->processCard();
+		$response = $this->processCardAIM();
 		
 		//clear the credit card data from session
 		$this->Session->delete('Checkout.ccinfo');
@@ -558,6 +558,69 @@ class CheckoutController extends AppController {
 		
 		$errors = array(new MyError($error));
 		$this->set('errors',$errors);
+	}
+	private function processCardAIM(){
+		$this->AuthorizeNet->AIMcreate();
+		$this->AuthorizeNet->AIMsetField('country','US');
+		
+		$amount = $this->receipt->getTotal() * 1.00;
+		$card = $this->data['card_number'];
+		$exp = $this->data['card_exp_mm'] . $this->data['card_exp_yy'];
+		$title = 'Transaction - ' . date('m/d/Y'); 
+		$name = explode(' ',$this->data['bill_name']);
+		$address = $this->data['bill_line_1'] . '  ' . $this->data['bill_line_2'];
+		$city = $this->data['bill_city'];
+		$state = $this->data['bill_state'];
+		$zip = $this->data['bill_zip'];
+		
+		//set the shipping data
+		$name2 = explode(' ',$this->data['ship_name']);
+		$this->AuthorizeNet->AIM->setField('ship_to_first_name',$name2[0]);
+		$this->AuthorizeNet->AIM->setField('ship_to_last_name',$name2[1]);
+		$this->AuthorizeNet->AIM->setField('ship_to_address',$this->data['ship_line_1'] . '  ' . $this->data['ship_line_2']);
+		$this->AuthorizeNet->AIM->setField('ship_to_city',$this->data['ship_city']);
+		$this->AuthorizeNet->AIM->setField('ship_to_state',$this->data['ship_state']);
+		$this->AuthorizeNet->AIM->setField('ship_to_zip',$this->data['ship_zip']);
+		
+		//set some other items
+		$this->AuthorizeNet->AIM->setField('cust_id',$this->myuser['User']['id']);
+		$products = '';
+		$del = '';
+		foreach($this->receipt->getContentsByType(array('product')) as $entry){
+			$products .= $del . $entry->id;
+			$del = '-*-';
+		}
+		$this->AuthorizeNet->AIM->setField('description',$products);
+		
+		$result = $this->AuthorizeNet->AIMprocess(
+			$amount,
+			$card,
+			$exp,
+			$title,
+			array(
+				'first_name' => $name[0],
+	    		'last_name'  => $name[1],
+	    		'address' => $address,
+				'city' => $city,
+	    		'state'   => $state,
+	    		'zip'     => $zip
+			)
+		);
+		
+		if($result['result']) {
+			return $result['result'];
+		} else {
+			$prepend = '';
+			if($result['declined']){
+				$prepend = 'Card was declined - ';
+			}elseif($result['held']){
+				$prepend = 'Transaction held for review - ';
+			}elseif($result['error']){
+				$prepend = 'An error occurred - ';
+			}
+			$msg = $prepend . $result['msg'];
+			$this->redirect('/checkout/finalize/credit_processing_error/'.urlencode($msg));
+		}
 	}
 	private function processCard(){
 		//build the receipt

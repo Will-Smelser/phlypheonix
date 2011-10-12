@@ -39,7 +39,7 @@ class ShopController extends AppController {
 		$title = '/img/noschool/flyfoenix_noschool_comingsoon.png';
 
 		$this->set(compact('title','classWidth'));
-		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
+		$this->set('schools',$this->School->find('all'));
 
 		//no school for current user
 		if($info == 'user'){
@@ -60,7 +60,7 @@ class ShopController extends AppController {
 		$title = '/img/header/selectschool.png';
 
 		$this->set(compact('title','classWidth'));
-		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
+		$this->set('schools',$this->School->find('all'));
 	}
 
 	//there was no sale for schools
@@ -103,7 +103,8 @@ class ShopController extends AppController {
 
 		$this->set(compact('sale','school','sex','extendToken','shopUrl'));
 
-		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
+		//$this->set('schools',$this->School->find('all'));
+		$this->set('schools',$this->School->getSchoolsWithSale());
 
 		//sex
 		if(empty($sex)) $sex = $this->myuser['User']['sex'];
@@ -207,13 +208,22 @@ class ShopController extends AppController {
 		$products = $this->getProductsDetails($sale);
 		$this->getPagination($products,$product,$productRight, $index);
 		
-		$this->set(compact('school','sex','sale','product','imageIndex'));
+		$shareImage = null;
+		foreach($product['Pimage'] as $entry){
+			if(preg_match('/front/i',$entry['name'])){
+				$shareImage = $entry['image'];
+				//$shareImage = 'http://www.flyfoenix.com/img/referral.jpg';
+				break;
+			}
+		}
+		
+		$this->set(compact('school','sex','sale','product','imageIndex','shareImage'));
 	}
 
 	function view($product=null){
 		//$this->layout = 'default';
 		$this->layout = 'dynamic';
-		$title = '/img/header/attention.png';
+		$title = '/img/header/memberpricing.png';
 		$classWidth = 'width-medium';
 		$this->set(compact('title','classWidth'));
 		
@@ -264,11 +274,11 @@ class ShopController extends AppController {
 				'LEFT JOIN `products` AS `Product` ON `sales_products`.`product_id` = `Product`.`id` '.
 				'LEFT JOIN `schools` AS `School` ON `Product`.school_id = `School`.id ' .
 
-				'WHERE `Sale`.`starts` <= ' . time() . ' ' .
-				'AND `Sale`.`ends` >= ' . time() . ' ' . 
+				'WHERE `Sale`.`starts` <= UNIX_TIMESTAMP() ' .
+				'AND `Sale`.`ends` >= UNIX_TIMESTAMP() ' . 
 				'AND `Sale`.`active` = 1 ' .
 				'GROUP BY `School`.id ' .
-				'ORDER BY `School`.`name` ASC';
+				'ORDER BY `School`.`long` ASC';
 
 		$schools = $this->Sale->query($sql);
 		
@@ -281,7 +291,16 @@ class ShopController extends AppController {
 		//bottom js scripts
 		$jsFilesBottom = array('/js/jquery.miozoom.js','/js/viewsingle.js');
 		
-		$this->set(compact('product','imageIndex','jsFilesBottom','cssFiles','saleData','images','accessories','schools'));
+		$shareImage = null;
+		foreach($product['Pimage'] as $entry){
+			if(preg_match('/front/i',$entry['name'])){
+				$shareImage = $entry['image'];
+				//$shareImage = 'http://www.flyfoenix.com/img/referral.jpg';
+				break;
+			}
+		}
+		
+		$this->set(compact('product','imageIndex','jsFilesBottom','cssFiles','saleData','images','accessories','schools','shareImage'));
 		
 		$this->set('loggedin',false);
 	}
@@ -368,14 +387,15 @@ class ShopController extends AppController {
 			}
 		}
 
-		$schools = $this->School->find('all',array('recursive'=>0,'order'=>array('name ASC')));
+		//$schools = $this->School->find('all',array('recursive'=>0));
+		$schools = $this->School->getSchoolsWithSale();
 		$fbcommentId = "{$school['id']}-{$sex}-{$sale['Sale']['id']}-{$product['Product']['id']}";
 
 		$shareImage = null;
 		foreach($product['Pimage'] as $entry){
 			if(preg_match('/front/i',$entry['name'])){
-				//$shareImage = $entry['image'];
-				$shareImage = 'http://www.flyfoenix.com/img/referral.jpg';
+				$shareImage = $entry['image'];
+				//$shareImage = 'http://www.flyfoenix.com/img/referral.jpg';
 				break;
 			}
 		}

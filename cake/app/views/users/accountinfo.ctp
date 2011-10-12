@@ -43,7 +43,8 @@
 <img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="100%" height="2">
 <a style='display:inline-block;padding:3px 0px;' href="/pages/terms">Terms of Use</a><br/>
 <a style='display:inline-block;padding:3px 0px;' href="/pages/privacy">Privacy Policy</a><br/>
-<a style='display:inline-block;padding:3px 0px;' href="/pages/return">Return Policy</a>
-
+<a style='display:inline-block;padding:3px 0px;' href="/pages/return">Return Policy</a><br/>
+<a style='display:inline-block;padding:3px 0px;' href="/pages/shipping">Shipping Policy</a><br/>
+<a style='display:inline-block;padding:3px 0px;' href="/pages/about">About Us</a>
 
 <?php echo $this->element('layouts/lightbg_bottom'); ?>

@@ -36,6 +36,24 @@ foreach($fields as $fname){
 	</div>
 <?php } ?>
 
+<div id="carousel" style="float:left;width:175px;overflow:hidden;display:none;margin-top:20px;margin-left:5px;">
+	<img src="/img/header/paper.png" style="position:absolute;top:-40px;left:-40px;z-index:100;" />
+	<!-- carousel of images will be loaded here -->
+	<div id="carousel-inner" style="height:350px;margin:0px">
+		<ul>
+		
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+<!--
+$('.width-custom').css({'width':'750px'});
+$('#title-image').css({'left':'245px'});
+$('#error-console').css({'margin-left':'195px'});
+$('#carousel').show();
+//-->
+</script>
+
 <div id="register">
 	<?php echo $this->element('layouts/lightbg_top'); ?>
 	<div class="inner">       
@@ -88,9 +106,11 @@ foreach($fields as $fname){
 	        </div>
 	        
 	        <div class="f-spacer"></div>
-			<noscript><input type="submit" class="btn" value="&nbsp;Register&nbsp;" style="float:right" /></noscript>
+			<input type="submit" class="btn" onclick="window.formClick=true;" value="&nbsp;Register&nbsp;" style="float:right" />
         	<input id="btnregister" class="btn" name="register" type="button" style="display:none;" value="&nbsp;Register&nbsp;" />
         </form>
+        <div style="clear:both"></div>
+        
       </div>
       <?php echo $this->element('layouts/lightbg_bottom'); ?>
 </div><!-- End Register --> 
@@ -123,7 +143,7 @@ foreach($fields as $fname){
        		<div class="f-spacer"></div>
        		
        		<noscript><input type="submit" class="btn" value="&nbsp;Login&nbsp;"  style="float:right"/></noscript>
-            <input id="btnlogin"  class="btn" style="display:none;" name="login" type="submit" value="&nbsp;Login&nbsp;" />
+            <input id="btnlogin" onclick="window.formClick=true;"  class="btn" style="display:none;" name="login" type="submit" value="&nbsp;Login&nbsp;" />
     
             
             <div id="rememberme">
@@ -140,10 +160,46 @@ foreach($fields as $fname){
 <div id="fb-root"></div>
 <div class="clear:both;" ></div>
 <div style="text-align:left;padding-left:18px;">
-<a href="/pages/terms">Terms of Use</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/pages/privacy">Privacy Policy</a>
+<a href="/pages/terms" onclick="window.formClick=true;">Terms of Use</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="/pages/privacy" onclick="window.formClick=true;">Privacy Policy</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="/pages/about" onclick="window.formClick=true;">About Us</a>&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 <script language="javascript">
-$('#btnregister').show();
+window.formClick = false;
+
+//$('#btnregister').show();
 $('#btnlogin').show();
+
+var pimages = <?php echo json_encode($pimages);?>;
+var ppos = 0;
+$(document).ready(function(){
+	var $obj = $('#carousel-inner');
+	
+	function addImages(){
+		
+		for(var i=0; i<10; i++){
+			if(ppos > pimages.length) return;
+			$obj.mioCarousel('push','/users/getimage?image='+pimages[ppos]);
+			ppos++;
+		}
+	}
+
+	$obj.mioCarousel({nearEnd:addImages});
+	
+	for(var x in pimages){
+		$obj.mioCarousel('push','/users/getimage?image='+pimages[x]);
+		ppos++;
+		if(ppos >=10) break;
+	}
+
+	window.onbeforeunload = function(){
+		if(!window.formClick){
+			setTimeout(function(){
+				window.formClick=true;
+				document.location.href='/shop/view';
+			},100);
+			return 'Wait!\n\nDon\'t leave, preview the latest apparel for your favorite team. No registration required!';
+		}
+	}
+});
 </script>

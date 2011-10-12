@@ -36,6 +36,7 @@ $(document).ready(function(){
 		$('#rightarrow').hide();
 		$('#buytwo').hide();
 		$('#sliderwrapper').hide();
+		$('#shipping-tag').hide();
 	};
 	
 	var toggleDown = function(){
@@ -44,7 +45,7 @@ $(document).ready(function(){
 			animated = false;
 			$('#buytwo').show();
 			$('#sliderwrapper').show();
-			
+			$('#shipping-tag').show();
 			$('#rightarrow').show();
 			if(leftBtn) $('#leftarrow').show();
 		});

@@ -34,15 +34,18 @@ $(document).ready(function(){
 	    
 		//bind to the button
 		$('#fb-auth').click(function(){
-			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history,publish_stream'); ?>
+			window.formClick=true;
+			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
 		});
 	
 		$('#fb-reg').click(function(){
-			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history,publish_stream'); ?>
+			window.formClick=true;
+			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
 		})
 	
 		//logged in function
 		function fbloggedin(){
+			window.formClick=true;
 			window.location.href = '<?php echo $protocal; ?>://flyfoenix.com/users/login';
 		}
 	
@@ -172,6 +175,7 @@ $(document).ready(function(){
 	
 	//overwrite the form submit
 	$('#btnregister').click(function(){
+		window.formClick=true;
 
 		//hide all elements
 		$('#registerForm').find('input, select, option').trigger('qtipHide');
@@ -198,5 +202,4 @@ $(document).ready(function(){
 	
 	//end of if logged in
 	<?php } ?>
-	
 });

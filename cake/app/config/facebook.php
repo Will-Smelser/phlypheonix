@@ -122,5 +122,6 @@ $config['facebook.AuthMapping'] = array('username' => 'email', 'password' => 'pa
 /**
  * If the Auth->login->redirect is not set, then component will forward to this url
  */
-$config['facebook.afterlogin.forward'] = '/shop/main';
+$config['facebook.afterlogin.forward'] = 'http://www.flyfoenix.com/shop/findschool';
+$config['facebook.afterregister.forward'] = 'http://www.flyfoenix.com/shop/main';
 ?>

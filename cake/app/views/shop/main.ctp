@@ -1,7 +1,19 @@
 
-<noscript><div style="display:none"></noscript>
-<a href="#" id="comment-wrapper"><img id="comments" src="/img/productpresentation/flyfoenix_product_presentation_comments.png" width="171" height="57" alt="comments" /></a>
-<noscript></div></noscript>
+<div id="comment-wrap" style="display:none;position:absolute;">
+<a href="#" id="comment-wrapper"><img id="comments" src="/img/header/comments.png" alt="comments" /></a>
+</div>
+
+<div id="fb-like-wrap" style="display:none;position:absolute;left:285px;top:25px;z-index:10;">
+<?php echo $this->Hfacebook->likeButtonHTML5('https://www.facebook.com/pages/FlyFoenixcom/228147000574828'); ?>
+</div>
+
+<script type="text/javascript">
+<!--
+$('#comment-wrap').show();
+$('#fb-like-wrap').show();
+//-->
+</script>
+
  
   <!-- NAVIGATION ARROWS -->
   <?php if($prevLink != '#'){ ?>
@@ -41,7 +53,7 @@
     
     <noscript>
     	<span>Copy this Link</span><br/>
-    	<input style="width:251px" type="text" value="http://www.flyfoenix.com/referer/<?php echo $myuser['User']['id']; ?>" />
+    	<input style="width:251px" type="text" value="http://www.flyfoenix.com/users/referer/<?php echo $myuser['User']['id']; ?>/<?php echo $product['Product']['id']?>" />
     </noscript>
     <div style="display:none" id="sharethis-wrap">
     <?php echo $this->element('sharthis'); ?>

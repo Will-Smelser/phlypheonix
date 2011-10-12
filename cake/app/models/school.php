@@ -2,6 +2,8 @@
 class School extends AppModel {
 	var $name = 'School';
 	var $displayField = 'name';
+	var $order = 'long ASC';
+	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $hasMany = array(
@@ -38,5 +40,21 @@ class School extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	function getSchoolsWithSale(){
+		$sql = "SELECT `School`.* FROM `sales` 
+			LEFT JOIN `sales_products` 
+				ON sales.id = sales_products.sale_id 
+			LEFT JOIN `products`
+				ON `products`.id = sales_products.product_id
+			LEFT JOIN `schools` AS `School`
+				ON products.school_id = `School`.id 
+			WHERE 
+				sales.starts <= UNIX_TIMESTAMP() AND 
+				sales.ends >= UNIX_TIMESTAMP() AND 
+				sales.active = 1 
+			GROUP BY `School`.id ORDER BY `School`.".$this->order;
+		return $this->query($sql);
+	}
 
 }

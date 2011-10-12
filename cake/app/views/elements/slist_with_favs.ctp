@@ -21,7 +21,7 @@
 					?>
 					<li class="<?php echo $class; ?> heart">
 						<a href="<?php echo $link.$s['id']; ?>/<?php echo $sex; ?>" >
-						<span style="padding-left:10px;width:50px;display:inline-block"><?php echo $s['name']; ?></span>
+						
 						<?php echo $s['long']; ?>	
 						</a>
 					</li>
@@ -40,7 +40,7 @@
 					?>
 					<li class="<?php echo $class; ?>">
 						<a href="<?php echo $link.$s['School']['id']; ?>/<?php echo $sex ?>" >
-						<span style="padding-left:10px;width:50px;display:inline-block"><?php echo $s['School']['name']; ?></span>
+						
 						<?php echo $s['School']['long']; ?>	
 						</a>
 					</li>
