@@ -193,13 +193,14 @@ $(document).ready(function(){
 	}
 
 	window.onbeforeunload = function(){
+		return;/*
 		if(!window.formClick){
 			setTimeout(function(){
 				window.formClick=true;
 				document.location.href='/shop/view';
 			},100);
 			return 'Wait!\n\nDon\'t leave, preview the latest apparel for your favorite team. No registration required!';
-		}
+		}*/
 	}
 });
 </script>

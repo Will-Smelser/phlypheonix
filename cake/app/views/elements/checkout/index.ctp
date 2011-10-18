@@ -56,11 +56,39 @@ $states = array(
 ?>
 
 	<form method="POST" action="/checkout/index">
+	
 	<div class="title">
-		Billing Information
+		Account Information
 	</div>
 	<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="261" height="2">
+	<?php if(!$loggedin) { ?>
 	<div>
+		<span>Email</span><br/>
+		<input type="text" id="email" name="email" class="line <?php echo $errorClass['email']; ?>" value="<?php echo $fieldData['email']; ?>" />
+	<div>
+	<div>
+		<span>Gender</span><br/>
+		<?php 
+		
+		?>
+		<label for="male"><input name="sex" id="male" type="radio" value="M" />&nbsp;&nbsp;Male</label>&nbsp;&nbsp;&nbsp;&nbsp; 
+		<label for="female"><input name="sex" id="female" type="radio" value="F" checked />&nbsp;&nbsp;Female</label>
+	</div>
+	<div>
+		<span>Preferred School</span><br/>
+		<select name="school" style="width:265px">
+		<?php echo $this->element('school_select_box',array('schools'=>$schools,'selected'=>$school['id'])); ?>
+		</select>
+	</div>
+	<?php } else { ?>
+	<span>Logged In as <i><?php echo $myuser['User']['email']; ?></i></span><br/>
+	<p><a href='/checkout/index/logout'>Switch User</a></p>
+	<?php } ?>
+	<div class="title" style="padding-top:10px;">
+		Billing Information
+	</div>
+	<div>
+	<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="261" height="2">
 		<span>Name</span><br/>
 		<input type="text" name="bill_name" id="bill_name" class="line <?php echo $errorClass['bill_name']; ?>" value="<?php echo $fieldData['bill_name']; ?>" />
 	</div>

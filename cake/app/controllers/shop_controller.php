@@ -16,6 +16,7 @@ class ShopController extends AppController {
 	var $name = 'Shop';
 	var $uses = array('User','Product', 'Pdetail', 'Sale', 'Saleuser', 'School','Accessory');
 	//var $components = array('AuthorizeNet');
+	//var $components = array('Cfacebook');
 	var $helpers = array('Hfacebook','Sizer');
 
 	function beforeFilter() {
@@ -23,13 +24,32 @@ class ShopController extends AppController {
 
 	    $this->layout = 'shop';
 	    
-	    $this->Auth->allow('view');
+	    $this->Auth->allow('*');
 	}
 
 	function index() {
-		$this->redirect(array('controller' => 'shop', 'action' => 'main'));
+		$this->redirect(array('controller' => 'shop', 'action' => 'landing'));
 	}
 
+
+	private function addCarouselImages(){
+		$this->loadModel('Pimage');
+		//get 50 random images out of last 200 entries
+        $pimages = $this->Pimage->find('list',array('limit'=>200,'conditions'=>array('name'=>'front'),'fields'=>array('image'),'order'=>array('id DESC')));
+        $temp = array();
+        $temp2= array();
+        foreach($pimages as $key=>$entry){
+        	array_push($temp, urlencode($entry));
+        }
+        //filter only 50
+        $i = 0;
+        while($i < 500 && count($temp2) < 50){
+        	$rand = rand(0, count($temp));
+        	array_push($temp2,array_slice($temp, $rand, 1));
+        	$i++;
+        }
+        $this->set('pimages',$temp2);
+	}
 	//no school for user or could not find the school
 	function noschool($info='user'){
 
@@ -310,11 +330,16 @@ class ShopController extends AppController {
 	//imageIndex is the product image to show
 	function main ($school=null, $sex=null, $sale = null, $product = null, $expired=false) {
 		
-		//can be submitted from no javascript find school form
+		//can be submitted from no javascript find school form or landing form
 		if(isset($_POST['school-id'])){
 			$school = $_POST['school-id'];
+			$this->Session->write('Anonymous.school',$school);
 		}
 		
+		if(isset($_POST['sex'])){
+			$sex = $_POST['sex'];
+			$this->Session->write('Anonymous.sex',$sex);
+		}
 		
 		//$this->layout = 'default';
 		$imageIndex = 0;
@@ -405,10 +430,117 @@ class ShopController extends AppController {
 		//accessories
 		$adata = (!empty($schoolColors)) ? $this->getAccessories($sex,$schoolColors[0]['schools_colors']['color_id']) : array();
 
+		//add any flash messages
 		$flash = (strlen($this->Session->read('Message.flash.message')) > 0) ? $this->Session->read('Message.flash.message') : '';
 		
+		//delete the flash message
+		$this->Session->delete('Message.flash');
+		
+		//if the user is not logged in, then prompt them with the login
+		$showFirstTime = false;
+		if(!$this->Auth->user() && !$this->Session->check('Anonymous.firstpage')){
+			App::import('Component','Cfacebook');
+			$Cfacebook = new CfacebookComponent();
+			$this->Cfacebook = $Cfacebook->initialize(&$this);
+			
+			
+			$showFirstTime = true;
+			$this->Session->write('Anonymous.firstpage',true);
+			
+			$email = '';
+			$registering = false;
+			if($this->Session->check('registerData')){
+				$registering = true;
+				$postdata = $this->Session->read('registerData');
+				$email = (isset($postdata['User']['email'])) ? $postdata['User']['email'] : '';
+				$sex = (isset($postdata['User']['sex'])) ? $postdata['User']['sex'] : $sex;
+				$school['id'] = (isset($postdata['School']['School']['id'])) ? $postdata['School']['School']['id'] : $school['id']; 	
+			}
+			
+			$register = "
+			
+			<div class='big title' style='color:#333'>Pernsonalized Shopping</div>
+			<p>FlyFoenix can remember your preferences for when your return.
+			</p>
+			
+			<form id='register-pop' method='post' action='/users/register'>
+				
+				
+				<div id='fb1' style='float:right;text-align:right;'>
+          			<span style='font-size:12px;padding-right:4px'>Save w/ Facebook</span><br />
+          			
+			        <input id='fb-reg' style='padding-left:45px;background-position: left -60px;' type='button' value='Save ' class='big green btn fb_button' />
+			        
+          		</div><!-- End fb1 -->
+				
+          		 <div style='float:right;font-size:12px;padding:25px 10px 0px 10px'><i>- OR -</i></div>
+          		
+          		<div style='float:right'>
+				<span style='font-size:12px'>&nbsp;</span><br />
+				<input type='submit' class='big green btn' value='Save' />
+				</div>
+          		
+				<input id='reg-sale' type='hidden' value='$sale' name='data[Sale][Sale][id]' />
+				<input id='reg-school' type='hidden' value='{$school['id']}' name='data[School][School][id]' />
+				<input id='reg-sex' type='hidden' value='$sex' name='data[User][sex]' />
+				
+				<div style='display:inline-block;position:relative;top:5px'>
+				<span style='font-size:12px;'>Email</span><br/>
+				<input id='email' type='text' style='width:150px;background-color:#FFF' class='input' name='data[User][email]' value='$email' />
+				</div>
+				
+			</form>
+			
+			";
+			
+			if(!$this->Session->check('Anonymous.school')){
+				$mselected = (strtolower($sex) == 'm') ? 'checked' : '';
+				$fselected = (strtolower($sex) != 'm') ? 'checked' : '';
+				
+				$html = "
+				<div id='reg-wrapper' style='position:relative;width:400px;height:140px;overflow:hidden;'>
+					<div id='reg-inner-wrapper' style='position:relative;left:0px;width:900px'>
+						<div id='reg-school-wrapper' style='width:400px;position:absolute;left:0px;top:0px;'>
+						<div class='big title' style='color:#333'>Your preferred School and Gender?</div>
+						<p>
+						<span class='six'>Gender&nbsp;&nbsp;</span><br />
+						<label for='reg-male'><input name='sex' id='reg-male' type='radio' value='M' $mselected />&nbsp;&nbsp;Male</label>&nbsp;&nbsp;&nbsp;&nbsp; 
+						<label for='reg-female'><input name='sex' id='reg-female' type='radio' value='F' $fselected />&nbsp;&nbsp;Female</label>
+						</p>
+						<!-- The onclick is set in shop layout //-->
+						<input id='reg-cont' type='button' value='Continue' class='big green btn' style='float:right;margin-top:10px' />
+						<p>
+							<span class='six'>School&nbsp;&nbsp;</span><br />
+			        		<select class='' name='school-id'  style='width:200px;background-color:#FFF'>
+								";
+				//make school select options
+				foreach($schools as $s){
+					$selected = ($s['School']['id'] == $school['id']) ? 'selected' : '';
+					$html .= "<option value='{$s['School']['id']}' $selected >{$s['School']['long']}</option>";
+				}
+				$html .= "</select>
+						</p>
+						</div>
+						
+						<div id='reg-user-wrapper' style='width:400px;position:absolute;left:410px;top:0px;padding:0px;'>
+						$register
+						</div>
+					</div>
+				</div>
+				";
+				$flash .= $html;
+			} else {
+				$flash .= $register;
+			}
+			
+		}
+		$breaks = array("\r\n", "\n", "\r", "\t");
+		$flash = str_replace($breaks,'',$flash);
+		$flash = str_replace('\'','\\\'',$flash);
+		
+		
 		//set the data
-		$this->set(compact('adata','colors','swatches','images','pdetails','flash'));
+		$this->set(compact('adata','colors','swatches','images','pdetails','flash','showFirstTime'));
 		
 	}	
 
@@ -649,7 +781,7 @@ class ShopController extends AppController {
 			if(!empty($saleData)){
 				if(strtolower($saleData[0]['Product']['sex']) != strtolower($sex)){
 					$temp = (strtolower($sex) == 'm') ? 'men.' : 'women.';
-					$this->Session->setFlash('Could not locate a sale for '.$temp);
+					$this->Session->setFlash('<img src="/img/icons/error.png" />&nbsp;Could not locate a sale for '.$temp);
 				}
 				$this->redirect("/shop/main/{$school['id']}/{$saleData[0]['Product']['sex']}/{$saleData[0]['Sale']['id']}");
 			}

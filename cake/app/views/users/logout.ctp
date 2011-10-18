@@ -1,4 +1,7 @@
-<div id="content" style="padding-bottom:10px">
+<?php echo $this->element('layouts/lightbg_top'); ?>
+<div class="big title">Checkout Complete</div>
+<hr>
+<div id="content" >
 		<span class="eight">
 		<?php echo $session->flash(); ?>
 		
@@ -6,3 +9,4 @@
 		for new products.
 		</span>
 </div><!-- End content -->
+<?php echo $this->element('layouts/lightbg_bottom'); ?>

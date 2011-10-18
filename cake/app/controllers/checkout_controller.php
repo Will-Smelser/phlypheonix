@@ -14,6 +14,8 @@ class CheckoutController extends AppController {
 		$schools = $this->School->getSchoolsWithSale();
 		$this->set('schools',$schools);
 		
+		$this->Auth->allow('index');
+		
 		//make sure this is NOT the local version
 		if(!preg_match('/((ph)|(f))ly((ph)|(f))[eo]{2}nix.local/i',$_SERVER['SERVER_NAME']) &&
 			(!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on")
@@ -37,6 +39,18 @@ class CheckoutController extends AppController {
 		$this->set('title','/img/header/checkout.png');
 		$this->set('classWidth','width-xlarge');
 		
+		//potentially we need to switch user
+		if($errName == 'logout'){
+			$this->Auth->logout();
+			$this->redirect('/checkout/index/logged_out');
+		}
+		
+		//loggedout
+		if($errName== 'logged_out'  && $this->Auth->user() != false){
+			//var_dump($this->Auth->logout());
+			
+		}
+		
 		//first lest just fix the post data
 		if(isset($_POST['billing-cbox'])){
 			$_POST['ship_name'] = $_POST['bill_name'];
@@ -48,6 +62,7 @@ class CheckoutController extends AppController {
 		}
 		
 		$post = array();
+		
 		//coming from finalize page or first time here
 		if(count($_POST) == 0){
 			$post = $this->Session->read('Checkout.info');
@@ -64,6 +79,68 @@ class CheckoutController extends AppController {
 			
 			$errors = $this->checkFormBasic();
 			$errors = array_merge($errors,$this->checkInventoryLevels());
+			
+			//gotta check if this is a user registration/login
+			//only create the account/login if no other errors
+			if(isset($_POST['email']) && count($errors) == 0){
+				$data = array();
+				$data['User']['email'] = $_POST['email'];
+				
+				//check email is valid
+				if(!$this->User->checkEmail($data)){
+					$errors['email'] = new MyError('bad_email');
+					
+				//create an account or login
+				} else {
+					$parts = explode(' ',$_POST['bill_name']);
+					$data['User']['fname'] = array_shift($parts);
+					$data['User']['lname'] = implode(' ',$parts);
+					$data['User']['password'] = AuthComponent::password($data['User']['email']);
+					$data['User']['sex'] = (isset($_POST['sex']) && strtolower($_POST['sex']) == 'm') ? 'M' : 'F';
+					$data['User']['school_id'] = (isset($POST['school'])) ? $_POST['school'] : 0; 
+					
+					//set birthdate to unix timestamp
+					$this->data['User']['birthdate'] = 0;//strtotime($this->data['User']['birthdate']);
+					
+					//setup some other data
+					$data['User']['facebook_id'] = 0;
+					$data['User']['active'] = 1;
+					$data['User']['group_id'] = Configure::read('userconfig.default.group'); //2 is a customer
+					
+					//create the account
+					if(!$this->User->checkEmailExists($data)){
+						
+						$this->User->create();
+			
+						if ($this->User->save($data,array('validate'=>false))) {
+							//remove post data
+							$this->Session->delete('registerData');
+							
+							//save the referal
+							try{  //using mysql db information to prevent duplicates, so errors on input are possible
+								$referer = $this->Session->read('Referer.id');
+								if(!empty($referer)){
+									$userid = $this->User->id;
+									$this->Referer->save(array('referer_user_id'=>$referer,'user_id'=>$userid));
+									$this->Session->delete('Referer.id');
+								}
+							
+							}catch(Exception $e){
+								//do nothing
+							}
+						}
+					}
+					
+					//logint the user
+					$this->Auth->logout();
+					if(!$this->Auth->login($data)){
+						$errors['login'] = new MyError('login');
+					}
+				}
+				
+			}
+			
+			
 			if(count($errors) == 0 ){
 				$this->redirect('/checkout/finalize');
 			}
@@ -592,6 +669,7 @@ class CheckoutController extends AppController {
 		}
 		$this->AuthorizeNet->AIM->setField('description',$products);
 		
+		
 		$result = $this->AuthorizeNet->AIMprocess(
 			$amount,
 			$card,
@@ -731,6 +809,9 @@ class MyError {
 	public function getJson() {
 		return json_encode($this->info);
 	}
+	public function getContext(){
+		return $this->info['context'];
+	}
 	
 }
 class errorTypes {
@@ -822,6 +903,13 @@ class errorTypes {
 					'context'=>'receipt',
 					'name'=>ucwords($temp)
 				);
+			case 'bad_email':
+				return array(
+					'msg'=>'Invalid email.',
+					'id'=>'email',
+					'context'=>'checkout',
+					'name'=>ucwords($temp)
+				);
 			case 'bad_coupon':
 				return array(
 					'msg'=>'Invalid coupon code.  Either coupon has been used or does not exist.',
@@ -862,6 +950,20 @@ class errorTypes {
 					'msg'=>'Coupon successfully added!',
 					'id'=>$name,
 					'context'=>'good',
+					'name'=>ucwords($temp)
+				);
+			case 'logged_out':
+				return array(
+					'msg'=>'User sucessfully logged out.',
+					'id'=>$name,
+					'context'=>'good',
+					'name'=>ucwords($temp)
+				);
+			case 'login':
+				return array(
+					'msg'=>'Failed to login user. Please try again.',
+					'id'=>$name,
+					'context'=>'checkout',
 					'name'=>ucwords($temp)
 				);
 			default:

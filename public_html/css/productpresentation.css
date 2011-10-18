@@ -574,13 +574,18 @@ input.add-to-cart.one, input.checkout.one{
 	text-align:center;
 	padding:2px 5px 0px 5px;
 }
-.title {
+
+.title{
 	color: #FBB040;
-    font-family: Arial,Helvetica,sans-serif;
-    font-weight: bold;
-	text-align:left;
-	font-size:14px;
-	padding-left:6px;
+	font-family: Arial,Helvetica,sans-serif;
+	font-weight: bold;
+	text-align: left;
+	font-size: 14px;
+	padding-left: 6px;
+}
+.title.big{
+	font-size:20px;
+	font-style:italic;	
 }
 h2{
 	font-size:18px;
@@ -838,4 +843,68 @@ input.three {
 	font-weight:bold;
 	background-color:#CCC;
 	text-align:right;
+}
+
+#register-pop .input{
+	background-color:#FFF;
+	padding:7px;
+}
+#register-pop p{
+	padding:0px;
+	font-size:12px;	
+}
+
+/* BUTTONS */
+.btn{
+	font-weight:bold;
+	background-color:#FBB040;
+	cursor:pointer;	
+	
+	border:solid transparent 1px;
+}
+
+.btn.space-left{
+	margin-left:10px;	
+	display:inline-block;
+}
+.btn.space-right{
+	margin-right:10px;
+	display:inline-block;	
+}
+.btn.big{
+	font-size:20px;
+	font-weight:bolder;
+	
+	padding:6px;
+		
+}
+.btn.green{
+	border:solid #FFF 1px;
+	background-color:#689C2D;
+	color:#FFF;
+}
+
+.btn:hover{
+	border-bottom:solid #222 1px;
+	border-right:solid #222 1px;	
+}
+.btn:active{
+	border:solid #222 1px;	
+}
+
+
+#black-out{
+	display:none;
+	
+	position:fixed;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	
+	background-color:#888;
+	opacity:.6;
+	filter:alpha(opacity=.6);
+	
+	z-index:0;
 }

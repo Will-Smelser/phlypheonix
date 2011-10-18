@@ -8,8 +8,14 @@ $fields = array(
 	'ship_name', 'ship_line_1', 'ship_line_2','ship_city', 'ship_state', 'ship_zip',
 	'card_number', 'card_exp_mm', 'card_exp_yy', 'card_cvv'
 );
+$notLoggedInFields = array('email','school','sex');
+if(!$loggedin){
+	$fields = array_merge($notLoggedInFields,$fields);
+}
+
 $fieldData = array();
 $errorClass = array();
+
 foreach($fields as $fname){
 	//for form values
 	switch($fname){
@@ -24,17 +30,35 @@ foreach($fields as $fname){
 	}
 	//for error
 	$errorClass[$fname] = (isset($errors[$fname])) ? 'error' : '';
-	
 }
 //debug($errorClass);
 //debug($errors);
+
+//gotta split up errors into good and bad
+$bad = $good = array();
+foreach($errors as $error){
+	if($error->getContext() == 'good'){
+		array_push($good, $error);
+	} else {
+		array_push($bad, $error);
+	}
+}
 ?>
 <div id="receipt-wrapper" style="margin-bottom:10px;">
 
-<?php if(isset($errors) && count($errors) > 0){ ?>
+<?php if(count($bad) > 0){ ?>
 	<div id="error-console" class="border-rad-med error">
 	<?php 
-		foreach($errors as $error){
+		foreach($bad as $error){
+			echo "<div><span class='ename'>{$error->getDisplayName()}</span><span class='emsg'>{$error->getMsg()}</span></div>\n";
+		}
+	?>
+	</div>
+<?php } ?>
+<?php if(count($good) > 0){ ?>
+	<div id="good-console" class="border-rad-med good">
+	<?php 
+		foreach($good as $error){
 			echo "<div><span class='ename'>{$error->getDisplayName()}</span><span class='emsg'>{$error->getMsg()}</span></div>\n";
 		}
 	?>

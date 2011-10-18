@@ -23,11 +23,8 @@ $(document).ready(function(){
 	$('#btnselect').click(function(){
 		var schoolid = $('#school-list').val();
 		$.getJSON('/users/add_school/'+schoolid,function(data){
-			if(data.result){ 
-				document.location.href = '/shop/main/'+schoolid+'/<?php echo $myuser['User']['sex']; ?>';
-			} else {
-
-			}
+			//if(data.result){ }
+			document.location.href = '/shop/main/'+schoolid+'/<?php echo $myuser['User']['sex']; ?>';
 		});
 	});
 });

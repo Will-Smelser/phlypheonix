@@ -12,14 +12,16 @@ class UsersController extends AppController {
 		
 		$this->set('schools',$this->School->find('all',array('order'=>'name ASC')));
 		
-		$this->Auth->allow(array('register','register_ajax','recover','recover_complete','captcha_image','login','logout','referred','contactus','getimage','referer'));
+		$this->Auth->allow(array('register','register_ajax','recover',
+			'recover_complete','captcha_image','login','logout','referred','contactus','getimage',
+			'add_school','landing'));
 		
 		//set the lastposted data
 		$scriptData = array();
 		//this is a login attempt
 		if(isset($this->data) && isset($this->data['User']['email'])) {
 			$postemail = $this->data['User']['email'];
-			$postbirthdate = $this->data['User']['birthdate'];
+			$postbirthdate = isset($this->data['User']['birthdate']) ? $this->data['User']['birthdate'] : '';
 			$scriptData['postemail'] = $postemail;
 			$scriptData['postbirthdate'] = $postbirthdate;
 		
@@ -34,7 +36,7 @@ class UsersController extends AppController {
 		} else if($this->Session->read('registerData')) {
 			$data = $this->Session->read('registerData');
 			$regpostemail = $data['User']['email'];
-			$regpostbirthdate = $data['User']['birthdate'];
+			$regpostbirthdate = isset($data['User']['birthdate']) ? $data['User']['birthdate'] : '';
 			$regscriptData['postemail'] = $regpostemail;
 			$scriptData['postbirthdate'] = $regpostbirthdate;
 			
@@ -60,26 +62,31 @@ class UsersController extends AppController {
 			$this->Session->write('Referer.id',$userid);
 			
 			if(!empty($product)){
-				$this->redirect('/shop/view/'.$product);
+				$this->loadModel('Product');
+				$p = $this->Product->findById($product);
+				
+				//can be multiple sales for a product, so lets make sure its not expired
+				$sale = 0;
+				foreach($p['Sale'] as $s){
+					
+					if($s['ends'] > time() && $s['starts'] < time() && $s['active'] == 1){
+						$sale = $s['id'];
+						break;
+					}
+				}
+				$this->redirect("/shop/main/{$p['School']['id']}/{$p['Product']['sex']}/{$sale}/{$product}");
 			} else {
 				$this->redirect('/users/login');
 			}
 		}
 	}
-	
-	function referer($userid, $product=null){
 		
-		$url = '/users/referred/' . $userid;
-		if($product != null) $url .= '/'.$product;
-		
-		$this->redirect($url);
-		
-	}
-	
 	function add_school($id){
 		$this->layout = 'ajax';
-		if(!isset($this->myuser['School'])){
-			echo "{'result':false}";
+		
+		//if no user data or not logged in
+		if(!isset($this->myuser['School']) || !$this->Auth->user()){
+			echo "{\"result\":false}";
 			exit;
 		}
 		
@@ -115,7 +122,7 @@ class UsersController extends AppController {
 		
 		$this->layout = 'ajax';
 		if(!isset($this->myuser['School'])){
-			echo "{'result':false}";
+			echo "{\"result\":false}";
 			exit;
 		}
 		
@@ -143,9 +150,78 @@ class UsersController extends AppController {
 		$this->User->recursive = 0;
 		$this->set('users', $this->paginate());
 	}
+	
+	function landing($sex=null,$err=null){
+		//force logged-in users to shop
+		if($this->Auth->user()){
+			$this->redirect(array('controller'=>'shop','action'=>'main'));
+		}
+		
+		$this->layout = 'dynamic_with_school';
+		//$this->layout = 'default';
+		$this->set('classWidth','width-custom');
+		$this->set('bgImg','/img/schools/background/flyfoenix_landingpage_background_03.jpg');
+		$this->set('shareImage','http://www.flyfoenix.com/img/referral.jpg');
+		$this->set('jsFilesBottom',array('/js/miocarousel.js'));
+		$this->set('cssFiles',array('/css/landing.css'));
+		
+		App::import('Component','Cfacebook');
+		$Cfacebook = new CfacebookComponent();
+		$this->Cfacebook = $Cfacebook->initialize(&$this);
+		
+		//template needs some vars at a minimum
+		$sex = (empty($sex) || !preg_match('/MF/i',$sex)) ? 'F' : $sex;
+		$schools = $this->School->find('all');
+		
+		$this->set(compact('sex','schools'));
+		
+		$this->addCarouselImages();
+		
+		//if there was a login error from register or login
+		if(!empty($err)) {
+			$error = new MyError($err);
+			$this->set('error',$error->getJson());
+			$errors[$error->getDOMid()] = $error;
+			$this->set('errors',$errors);
+			return;
+		}
+		
+		//AuthComponent does not encrypt password by default if the you are not
+		//using "username" as the identifier.
+		if(!empty($this->data)) {
+			//look for user
+			if(!$this->User->checkEmailExists($this->data)){
+				$error = new MyError('no_user');
+				$this->set('error',$error->getJson());
+				$errors[$error->getDOMid()] = $error;
+				$this->set('errors',$errors);
+				return;
+			}
+			
+			//encrypt password
+			$this->data['User']['password'] = AuthComponent::password($this->data['User']['email']);
+			
+			//login the user
+			if($this->Auth->login($this->data)){	
+				//user is logged in, forward to the shop
+				$this->redirect('/shop/main');
+				return;
+			} else {
+				$error = new MyError('emailerror');
+				$this->set('error',$error->getJson());
+				$errors[$error->getDOMid()] = $error;
+				$this->set('errors',$errors);
+				return;
+			}
+		} 
+		
+		$error = new MyError('no_error');
+        $this->set('error',$error->getJson());
+		
+	}
 
 	function login($err=null){
-		
+		$this->redirect('/users/landing');
 		$this->layout = 'dynamic';
 		$this->set('title','/img/landing/flyfoenix_landingpage_joinshopsave.png');
 		$this->set('titleCSS','position:absolute;top:-30px;left:115px;z-index:100;');
@@ -426,7 +502,10 @@ class UsersController extends AppController {
 	function register() {
 		$this->Auth->logout();
 		
+		$defaultReturnUrl = '/shop/main';
 		if (!empty($this->data)) {
+			
+			$defaultReturnUrl .= "/{$this->data['Sale']['Sale']['id']}/{$this->data['User']['sex']}";
 			
 			//make register data available in session for the login page
 			$this->Session->write('registerData',$this->data);
@@ -435,15 +514,16 @@ class UsersController extends AppController {
 			
 			//there was an error
 			if($error !== true){
-				$action = 'login/'.$error->getName();
-				$this->redirect(array('action'=>$action));
+				$this->Session->delete('Anonymous.firstpage');
+				$this->Session->setFlash('<img src="/img/icons/error.png" /> '.$error->getMsg());
+				$this->redirect($this->referer($defaultReturnUrl));
 			}
 			
 			//set the password
-			$this->data['User']['password'] = AuthComponent::password($this->data['User']['birthdate']);
+			$this->data['User']['password'] = AuthComponent::password($this->data['User']['email']);
 			
 			//set birthdate to unix timestamp
-			$this->data['User']['birthdate'] = strtotime($this->data['User']['birthdate']);
+			$this->data['User']['birthdate'] = 0;//strtotime($this->data['User']['birthdate']);
 			
 			//setup some other data
 			$this->data['User']['facebook_id'] = 0;
@@ -454,7 +534,11 @@ class UsersController extends AppController {
 			$this->User->create();
 			
 			if ($this->User->save($this->data,array('validate'=>false))) {
-				$this->Auth->login($this->data); // autologin
+				//remove post data
+				$this->Session->delete('registerData');
+				
+				//autologin
+				$this->Auth->login($this->data);
 				
 				//save the referal
 				try{  //using mysql db information to prevent duplicates, so errors on input are possible
@@ -466,7 +550,7 @@ class UsersController extends AppController {
 					}
 					
 					//add the first time user prompts
-					$this->User->Prompt->addFirstTimeUserPrompt($this->User->id);
+					//$this->User->Prompt->addFirstTimeUserPrompt($this->User->id);
 				}catch(Exception $e){
 					//do nothing
 				}
@@ -479,15 +563,20 @@ class UsersController extends AppController {
 	                    $this->data['User']['password']  
 	                ); 
 				}
-				
-				$this->redirect(array('controller'=>'shop','action'=>'main'));
+				$this->Session->setFlash('Account setup was successful.');
+				$this->redirect($this->referer($defaultReturnUrl));
 			} else {
-				$this->redirect(array('action'=>'login/user_failed'));
+				$this->Session->delete('Anonymous.firstpage');
+				$this->Session->setFlash('Account setup failed.  Please try again.');
+				$this->redirect($this->referer($defaultReturnUrl));
 			}
 			
-		} else {
-			$this->redirect(array('action'=>'login/nodata'));
 		}
+		
+		$this->Session->delete('Anonymous.firstpage');
+		$this->Session->setFlash('No data was sent.  Account creation failed.');
+		$this->redirect($this->referer($defaultReturnUrl));
+		
 	}
 	
 	function register_ajax() {
@@ -573,14 +662,14 @@ class UsersController extends AppController {
     	}
     	
     	//check birthdate
-    	if(!$this->User->checkBirthdate($data)){
-    		return ($registering) ? new MyError('reg_bad_birthdate') : new MyError('bad_birthdate');
-    	}
+    	//if(!$this->User->checkBirthdate($data)){
+    		//return ($registering) ? new MyError('reg_bad_birthdate') : new MyError('bad_birthdate');
+    	//}
     	
     	//check sex
-    	if(!$this->User->checkSex($data)){
-    		return new MyError('bad_sex');
-    	}
+    	//if(!$this->User->checkSex($data)){
+    		//return new MyError('bad_sex');
+    	//}
 
     	return true;
     }
@@ -611,6 +700,9 @@ class MyError {
 	public function getDisplayName(){
 		return $this->info['name'];
 	}
+	public function getContext(){
+		return $this->info['context'];
+	}
 }
 class errorTypes {
 	public static function getType($name) {
@@ -638,6 +730,13 @@ class errorTypes {
 					'id'=>'email',
 					'context'=>'register',
 					'name'=>'Register Email'
+				);
+			case 'emailerror':
+				return array(
+					'msg'=>'Email exists, but failed to login.  <span class="eline2">Please try again.</span>',
+					'id'=>'email2',
+					'context'=>'login',
+					'name'=>'Login Email'
 				);
 			case 'no_user':
 				return array(

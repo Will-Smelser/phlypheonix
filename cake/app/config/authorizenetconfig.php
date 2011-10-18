@@ -10,7 +10,7 @@ $config['authorizenetconfig']['lib'] = APP_PATH . 'libs' . DS . 'authnet'; //the
 
 //actual data
 $config['authorizenetconfig']['login'] = '3H6y29cAx';
-$config['authorizenetconfig']['key'] = '9puRNN76qCM42g4n';
+$config['authorizenetconfig']['key'] = '2z343Rb5bL92wFF3';
 $config['authorizenetconfig']['server'] = 'https://test.authorize.net/gateway/transact.dll';
 
 $config['authorizenetconfig']['sandbox'] = false; //set to true for testing mode

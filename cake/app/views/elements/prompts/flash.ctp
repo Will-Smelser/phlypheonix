@@ -42,6 +42,13 @@ $(document).ready(function(){
 	   	  }
 	   },
 	   api:{
+	   	onHide : function(){
+	   		$('#black-out').hide();
+	   	},
+	   	onFocus : function(){
+	   		var z = $('body').qtip('api').elements.tooltip.css('z-index');
+	   		$('#black-out').show().css('z-index',z);
+	   	},
 	   	onRender : function(){
 				
 			},
@@ -54,5 +61,9 @@ $(document).ready(function(){
 	
 	$('body').qtip(qtipSetting).trigger('showFlash');
 	
-	
+	//multiple popups can occurr, make sure this is on top
+	setTimeout(function(){$('body').qtip('api').focus();},500);
+	setTimeout(function(){$('body').qtip('api').focus();},1000);
+	setTimeout(function(){$('body').qtip('api').focus();},1500);
+	setTimeout(function(){$('body').qtip('api').focus();},2000);
 });

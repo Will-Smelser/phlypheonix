@@ -1,22 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
 
-
-
-.btn{
-	font-weight:bold;
-	background-color:#FBB040;
-	cursor:pointer;	
-}
-
-.btn.space-left{
-	margin-left:10px;	
-	display:inline-block;
-}
-.btn.space-right{
-	margin-right:10px;
-	display:inline-block;	
-}
 #navigate{
 	font-weight:bold;
 	font-size:12px;	

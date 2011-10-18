@@ -14,6 +14,18 @@
 		if(file_exists(WWW_ROOT . 'css' . DS . $this->params['controller'] . '.css')){
 			echo $this->Html->css($this->params['controller'] . '.css');
 		}
+		
+		if(isset($cssFiles)){
+			foreach($cssFiles as $file){
+				echo "\t<link rel=\"stylesheet\" type=\"text/css\" href=\"$file\" />\n";
+			}
+		}
+		
+		if(isset($jsFilesTop)){
+			foreach($jsFilesTop as $file){
+				echo "\t<script type\"text/javascript\" language=\"javascript\" src=\"$file\"></script>";
+			}
+		}
 
 		echo $scripts_for_layout;
 		
@@ -52,10 +64,12 @@
 </div>
 
 <?php
-	if($loggedin){ 
+	//if($loggedin){ 
 		echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$myuser['User']['sex'],'link'=>'/shop/main/'));
-	}
+	//}
 ?>
+
+
 
 <div id="background-wrapper">
 	<?php 
@@ -71,6 +85,14 @@
 
 </body>
 
+<?php
+//controller set scripts
+if(isset($jsFilesBottom)){
+	foreach($jsFilesBottom as $file){
+		echo "<script type=\"text/javascript\" language=\"javascript\" src=\"$file\"></script>\n";
+	}
+}
+?>
 
 <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
 
@@ -78,13 +100,13 @@
 <script type="text/javascript">
 
 //search for schools
-<?php if($loggedin) echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
+<?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
 
 //show cart
-<?php if($loggedin) echo $this->element('prompts/cart'); ?>
+<?php echo $this->element('prompts/cart'); ?>
 
 //heart toggle...add school to favorites
-<?php echo $this->element('js/heart_toggle',array('school_id'=>$school['School']['id'])); ?>
+<?php if($loggedin) echo $this->element('js/heart_toggle',array('school_id'=>$school['School']['id'])); ?>
 
 //prompts
 <?php echo $this->element('layouts/prompts',array('cprompts'=>$cprompts,'cpdata'=>$cpdata)); ?>

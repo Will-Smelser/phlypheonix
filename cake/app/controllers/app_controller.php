@@ -2,6 +2,8 @@
 class AppController extends Controller {
 	var $components = array('Ccart','Session','Acl', 'Auth','Cookie','RememberMe','Cprompt');
 	
+	//var $uses = array('Tracking');
+	
 	var $myuser; //logged in users data
 	
 	function beforeFilter() {
@@ -78,7 +80,7 @@ class AppController extends Controller {
     	//Configure AuthComponent
     	$this->Auth->autoRedirect = false;
         $this->Auth->authorize = 'actions';
-        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'landing');
         //$this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'logout');
         $this->Auth->loginRedirect = array('controller' => 'shop', 'action' => 'main');
 		
@@ -103,9 +105,25 @@ class AppController extends Controller {
 		//user data
 		$auth = $this->Auth->user();
 		$user = array();
-		if(ClassRegistry::isKeySet('User') && $auth != false){
-			$Model =& ClassRegistry::getObject('User');
-			$user = $Model->read(null, $auth['User']['id']);
+		if(!ClassRegistry::isKeySet('User')){
+			$this->loadModel('User');
+		} else {
+			$this->User = ClassRegistry::init('User');
+		}
+		
+		if($auth != false){
+			$user = $this->User->read(null, $auth['User']['id']);	
+		//not logged in, use anonymous user
+		} else {
+			$user = $this->User->findByEmail('anonymous@flyfoenix.com');
+			
+			//add session info
+			if($this->Session->check('Anonymous.sex')){
+				$user['User']['sex'] = $this->Session->read('Anonymous.sex');
+			}
+			if($this->Session->check('Anonymous.school')){
+				$user['User']['school_id'] = $this->Session->read('Anonymous.school');
+			}
 		}
 		
 		
@@ -114,34 +132,6 @@ class AppController extends Controller {
 		
     	$loggedin = ($auth != false);
 		$this->set('loggedin',$loggedin);
-		
-		/*
-		if(!$loggedin &&
-				!(
-					strtolower($this->params['action']) == 'login' &&
-					strtolower($this->params['controller']) == 'users'
-				)
-				&&
-				!(
-					strtolower($this->params['action']) == 'register' &&
-					strtolower($this->params['controller']) == 'users'
-				)
-				&&
-				!(
-					strtolower($this->params['action']) == 'register_ajax' &&
-					strtolower($this->params['controller']) == 'users'
-				)&&
-				!(Configure::read('config.testing')
-				)&&
-				!(
-					strtolower($this->params['action']) == 'logout' &&
-					strtolower($this->params['controller']) == 'users'
-				)&&
-				strtolower($this->params['controller']) != 'pages'
-		){
-			$this->redirect(array('controller'=>'users','action'=>'login'));
-			return;
-		}*/
 		
 		//setup the prompts
 		$this->Cprompt->addDbPrompts();
@@ -152,6 +142,9 @@ class AppController extends Controller {
     		$this->layout = 'basic' . DS . 'basic';
     	}
     	
+    	//store data
+    	$userid = ($loggedin) ? $this->myuser['User']['id'] : null;
+    	//$this->Tracking->addEntry(&$this->Session, &$this->params, &$this->Ccart, $userid);
     	
         //$this->secureUserSession();
 	}

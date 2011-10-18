@@ -58,7 +58,9 @@ $(document).ready(function(){
 	$rightArrow.qtip(qtipSetting);
 	$rightArrow.click(function(){$(this).qtip('hide');});
 	
-	$rightArrow.qtip('api').elements.content.find('#prompt-cancel-checkout').click(function(){$rightArrow.qtip('hide');});
+	$rightArrow.qtip('api').elements.content.find('#prompt-cancel-checkout').click(function(){
+		$rightArrow.qtip('interfaces')[0].hide();
+	});
 	$rightArrow.qtip('api').elements.content.find('#prompt-checkout').click(function(){document.location.href = window.viewer.checkoutUrl;});
 	
 	window.bindCheckout = function(pos){

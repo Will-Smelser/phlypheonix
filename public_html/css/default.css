@@ -45,6 +45,14 @@ a{
 a:hover, a:active, a:focus {
     outline:0;
 }
+hr{
+	width:100%;
+	height:2px;
+	border:none;
+	background-color:#999;
+	opacity:.5;
+	filter:alpha(opacity=50);	
+}
 th{
 	font-weight:bold;
 	padding:5px;
@@ -62,6 +70,44 @@ input.one{
 	border-radius: 5px;
 }
 
+/* BUTTONS */
+.btn{
+	font-weight:bold;
+	background-color:#FBB040;
+	cursor:pointer;	
+	
+	border:solid transparent 1px;
+}
+
+.btn.space-left{
+	margin-left:10px;	
+	display:inline-block;
+}
+.btn.space-right{
+	margin-right:10px;
+	display:inline-block;	
+}
+.btn.big{
+	font-size:20px;
+	font-weight:bolder;
+	
+	padding:6px;
+		
+}
+.btn.green{
+	border:solid #FFF 1px;
+	background-color:#689C2D;
+	color:#FFF;
+}
+
+.btn:hover{
+	border-bottom:solid #222 1px;
+	border-right:solid #222 1px;	
+}
+.btn:active{
+	border:solid #222 1px;	
+}
+
 .title{
 	color: #FBB040;
 	font-family: Arial,Helvetica,sans-serif;
@@ -70,7 +116,10 @@ input.one{
 	font-size: 14px;
 	padding-left: 6px;
 }
-
+.title.big{
+	font-size:20px;
+	font-style:italic;	
+}
 /* SCHOOL LIST */
 #list-schools{
 	height:390px;
@@ -201,7 +250,12 @@ p.checkout-pop-count {
 	-moz-border-radius: 8px;
 }
 
-/* ERRORS */
+/* CONSOLE and ERRORS */
+#good-console{
+	background-color: #44AF5F;
+	padding:8px;
+	margin: 15px 15px 0px 15px;	
+}
 #error-console{
 	background-color: #C96A61;
 	padding:8px;
@@ -317,4 +371,20 @@ p.checkout-pop-count {
 #verisign-inner img{
 	/*width:100px;
 	height:72px;*/	
+}
+
+#black-out{
+	display:none;
+	
+	position:fixed;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	
+	background-color:#000;
+	opacity:.8;
+	filter:alpha(opacity=.8);
+	
+	z-index:0;
 }

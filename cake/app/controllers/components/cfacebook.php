@@ -81,7 +81,7 @@ class CfacebookComponent extends Object  {
 		 */
 		function initialize(&$controller){
 			
-			if($controller->params['action'] != 'login') {
+			if(!in_array($controller->params['action'],array('login','landing','main') )) {
 				return;
 			}
 			

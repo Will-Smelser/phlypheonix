@@ -4,7 +4,12 @@ $(document).ready(function(){
 	var qtipSetting = {
 	   content: {
 		   text: 'Loading...',
-		   prerender: true
+		   prerender: true,
+		   title:{
+	   		   text:'Using FlyFoenix',
+	   		   button:'close'
+	   		   
+	   	   }
 	   },
 	   style: { 
 	      name: 'dark', // Inherit from preset style
@@ -128,21 +133,21 @@ $(document).ready(function(){
 
 		switch(id){
 		case 'mfg-logo':
-			qtipSetting.content = '<div class="title">Brand</div><p>Brand of the item you\'re viewing.</p>'; 
+			qtipSetting.content.text = '<div class="title">Brand</div><p>Brand of the item you\'re viewing.</p>'; 
 			qtipSetting.position.corner.target = 'rightMiddle';
 			qtipSetting.position.corner.tooltip = 'leftTop';
 			qtipSetting.position.adjust.x = 0;
 			qtipSetting.position.adjust.y = 0;
 			break;
 		case 'buynowtag':
-			qtipSetting.content = '<div class="title">Buy Now Time</div><p>Your member-only price and the amount of time left to get the deal.</p>'; 
+			qtipSetting.content.text = '<div class="title">Buy Now Time</div><p>Your member-only price and the amount of time left to get the deal.</p>'; 
 			qtipSetting.position.corner.target = 'leftMiddle';
 			qtipSetting.position.corner.tooltip = 'rightTop';
 			qtipSetting.position.adjust.x = 10;
 			qtipSetting.position.adjust.y = -10;
 			break;
 		case 'selector':
-			qtipSetting.content = '<div class="title">Navigation / Selector</div>' +
+			qtipSetting.content.text = '<div class="title">Navigation / Selector</div>' +
 			'<p><table>'+
 			'	<tr><td valign="top"><img src="/img/productpresentation/flyfoenix_product_presentation_female.png" /><td><p>Click on this icon to switch between male and female products for the current team.</p>'+
 			'	<tr><td valign="top"><img src="/img/productpresentation/flyfoenix_product_presentation_cart.png" /><td><p>See what\'s in your shopping cart.</p>'+
@@ -155,28 +160,28 @@ $(document).ready(function(){
 			qtipSetting.position.adjust.y = -15;
 			break;
 		case 'sharethis':
-			qtipSetting.content = '<div class="title">Share &amp; Earn</div><p>Share a sale and get a $5 credit anytime a referral makes a purchase.</p>';
+			qtipSetting.content.text = '<div class="title">Share &amp; Earn</div><p>Share a sale and get a $5 credit anytime a referral makes a purchase.</p>';
 			qtipSetting.position.corner.target = 'leftMiddle';
 			qtipSetting.position.corner.tooltip = 'rightTop';
 			qtipSetting.position.adjust.x = 0;
 			qtipSetting.position.adjust.y = 0;
 			break;
 		case 'inventory':
-			qtipSetting.content = '<div class="title">Inventory</div><p>Real-time count of how many items we have left...when it\'s gone, it\'s gone.</p>';
+			qtipSetting.content.text = '<div class="title">Inventory</div><p>Real-time count of how many items we have left...when it\'s gone, it\'s gone.</p>';
 			qtipSetting.position.corner.target = 'leftMiddle';
 			qtipSetting.position.corner.tooltip = 'rightTop';
 			qtipSetting.position.adjust.x = 0;
 			qtipSetting.position.adjust.y = 0;
 			break;
 		case 'rightarrow':
-			qtipSetting.content = '<div class="title">Navigation</div><p>Move on to view the next product.</p>';
+			qtipSetting.content.text = '<div class="title">Navigation</div><p>Move on to view the next product.</p>';
 			qtipSetting.position.corner.target = 'leftMiddle';
 			qtipSetting.position.corner.tooltip = 'rightMiddle';
 			qtipSetting.position.adjust.x = 0;
 			qtipSetting.position.adjust.y = -10;
 			break;
 		case 'comment-wrapper':
-			qtipSetting.content = '<div class="title">Comments</div><p>Leave us some feedback about the sale or the product.</p>';
+			qtipSetting.content.text = '<div class="title">Comments</div><p>Leave us some feedback about the sale or the product.</p>';
 			qtipSetting.position.corner.target = 'rightMiddle';
 			qtipSetting.position.corner.tooltip = 'leftMiddle';
 			qtipSetting.position.adjust.x = 160;
@@ -184,7 +189,7 @@ $(document).ready(function(){
 			break;
 		//hopefully never here
 		default:
-			qtipSetting.content = '<p>No Content Given.</p>p>';
+			qtipSetting.content.text = '<p>No Content Given.</p>p>';
 			qtipSetting.position.adjust.x = 0;
 			qtipSetting.position.adjust.y = 0;
 			break;

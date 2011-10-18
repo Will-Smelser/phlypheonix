@@ -9,6 +9,8 @@ class AccessoriesController extends AppController {
 		parent::beforeFilter();
 		$this->layout = 'accessories';
 		//$this->layout = 'default';
+		
+		$this->Auth->allow('*');
 	}
 	
 	function index($school, $sex=null, $color = null){

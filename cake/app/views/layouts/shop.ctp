@@ -56,7 +56,6 @@
 	<!-- MAIN PRODUCT VIEWER -->
 	<div id="bodyContainerDark">
 	
-	<?php  $flash = $this->Session->flash(); ?>
 	<?php if(strlen($flash) > 0){ ?>
 	<noscript>
 		<div style="position:absolute;top:2px;left:45px;">
@@ -180,6 +179,8 @@
 </div>
 
 <?php echo $this->element('layouts/social'); ?>
+
+<div id="black-out"></div>
 </body>
 
 <script type="text/javascript" src="/js/jquery.miozoom.js"></script>
@@ -290,8 +291,70 @@ $(document).ready(function(){
 //size chart
 <?php echo $this->element('prompts/sizechart')?>
 
+//first time user prompt
+<?php 
+	if($showFirstTime){
+		echo $this->element('prompts/first_time_user');
+?>
+
+		$('#fb1').css('display','inline-block');
+	
+	<!-- FACEBOOK //-->
+	$.getScript("<?php echo $protocal; ?>://connect.facebook.net/en_US/all.js",function(){
+		<?php 
+		
+		echo $this->Hfacebook->initLogin(
+				$FACEBOOK_APP_ID,
+				$FACEBOOK_APP_SESSION,
+				false,
+				array('auth.login'=>'fbloggedin')
+		); 
+		
+		?>
+	    
+		
+		$('#fb-reg').click(function(){
+			window.formClick=true;
+			<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+		})
+	
+		//logged in function
+		function fbloggedin(){
+			window.location.href = '<?php echo $protocal; ?>://flyfoenix.com/users/landing';
+		}
+	
+		//logout function
+		var fblogout = function(){
+			FB.logout(function(response) {
+				document.location.href = '/users/logout';	
+			});
+		}
+		
+	});
+<?php
+	}
+?>
+
 //prompt for flash message
 <?php if(strlen($flash) > 0) echo $this->element('prompts/flash'); ?>
 
+<?php if($showFirstTime){
+//scripts for flash prompt
+?>
+$(document).ready(function(){
+	//bind the move function
+	$('#reg-cont').click(function(){
+		$('#reg-inner-wrapper').animate({'left':'-410px'});
+
+		var sex = $('#reg-wrapper input:radio:checked').val();
+		var school = $('#reg-wrapper select').val();
+		$('#reg-school').val(school);
+		$('#reg-sex').val(sex);
+
+	});
+});
+<?php
+}
+?>
 </script>
 </html>

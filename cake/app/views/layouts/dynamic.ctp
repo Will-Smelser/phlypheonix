@@ -23,7 +23,7 @@
 		
 		if(isset($jsFilesTop)){
 			foreach($jsFilesTop as $file){
-				echo "\t<script type\"text/javascript\" language=\"javascript\"></script>";
+				echo "\t<script type\"text/javascript\" language=\"javascript\" src=\"$file\"></script>";
 			}
 		}
 		
@@ -69,10 +69,10 @@
 			<img src="<?php echo $title; ?>" alt="title" id="title-image" style="<?php if(isset($titleCSS)) echo $titleCSS; ?>" />
  			
   			<?php
-  				if($loggedin){
+  				//if($loggedin){
 	 				echo "<!-- HEADER FOR PRODUCT MFG and SELECTOR -->\n";
 	  				echo $this->element('selector_noschool',array());
-  				}
+  				//}
 			?>
 			
 			</td>
@@ -128,6 +128,8 @@
 
 <?php echo $this->element('layouts/social'); ?>
 
+<?php echo $this->element('slist_with_favs',array('schools'=>$schools,'userSchools'=>$myuser['School'],'sex'=>$myuser['User']['sex'],'link'=>'/shop/main/')); ?>
+
 </body>
 
 <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
@@ -144,10 +146,10 @@ if(isset($jsFilesBottom)){
 <script type="text/javascript">
 
 //search for schools
-<?php if($loggedin) echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
+<?php echo $this->element('prompts/search_school',array('DOMtarget'=>'#search')); ?>
 
 //show cart
-<?php if($loggedin) echo $this->element('prompts/cart'); ?>
+<?php echo $this->element('prompts/cart'); ?>
 
 //prompts
 <?php echo $this->element('layouts/prompts',array('cprompts'=>$cprompts,'cpdata'=>$cpdata)); ?>

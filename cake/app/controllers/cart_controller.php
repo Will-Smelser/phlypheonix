@@ -9,7 +9,7 @@ class CartController extends AppController {
 		$this->layout = 'ajax';
 		$this->render('ajax');
 		
-		//$this->Auth->allow('*');
+		$this->Auth->allow('*');
 	}
 	
 	function addProduct($productId, $qty, $size, $color){
@@ -96,6 +96,7 @@ class CartController extends AppController {
 	}
 	
 	function view(){
+		
 		//$this->layout = 'default';
 		$this->layout = 'dynamic';
 		$this->set('title','/img/header/attention.png');

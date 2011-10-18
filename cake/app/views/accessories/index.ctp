@@ -71,15 +71,15 @@ ob_end_clean();
 	   		
  			
   			<?php
-  				if($loggedin){
+  				//if($loggedin){
 	 				echo "<!-- HEADER FOR PRODUCT MFG and SELECTOR -->\n";
 	  				//echo $this->element('selector_noschool',array());
 	  				$gsex = (strtolower($sex) == 'f') ? 'M' : 'F';
 	  				$sexlong = ($gsex=='M') ? 'female' : 'male';
 	  				$glink = '/accessories/index/'.$schoolId.'/'.$gsex.'/'.$colorId;
 	  				
-	  				echo $this->element('selector',array('glink'=>$glink,'gender'=>$sexlong,'myuser'=>$myuser,'school'=>$school['School'],'schoolName'=>$school['School']['long'],'schoolLogo'=>$school['School']['logo_small']));
-  				}
+	  				echo $this->element('selector_noschool',array('glink'=>$glink,'gender'=>$sexlong,'myuser'=>$myuser,'school'=>$school['School'],'schoolName'=>$school['School']['long'],'schoolLogo'=>$school['School']['logo_small']));
+  				//}
 			?>
 			
 			</td>
@@ -119,7 +119,7 @@ ob_end_clean();
 				<div style="width:850px;margin-left:auto;margin-right:auto">
 				<?php
 				$flash = $this->Session->flash();
-				if(strlen($flash) > 0){
+				if(strlen($flash) > 1){
 				?>
 				
 					<div>
