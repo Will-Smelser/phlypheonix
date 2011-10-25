@@ -97,6 +97,15 @@ class CcartComponent extends Object {
 		return $this->content;
 	}
 	
+	function getContentsByType($type='product'){
+		$entries = array();
+		foreach($this->getContents() as $entry){
+			if($entry->getType() == $type){
+				array_push($entries, $entry);
+			}
+		}
+		return $entries;
+	}
 	
 	/**
 	 * Requires that the product has already been added.
@@ -123,6 +132,13 @@ class CcartComponent extends Object {
 	 */
 	public function checkProductInCart($id) {
 		return (isset($this->content[$id]));
+	}
+	
+	public function getCartHTML(){
+		$html = '';
+		foreach($this->getContents() as $entry){
+			
+		}
 	}
 	
 	private function updateSession() {
@@ -218,6 +234,7 @@ class CartEntry{
 		$vars = get_class_vars(get_class($this));
 		return $vars['type'];
 	}
+	
 }
 class ProductEntry extends CartEntry {
 	public static $type = 'product';

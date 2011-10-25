@@ -388,3 +388,231 @@ p.checkout-pop-count {
 	
 	z-index:0;
 }
+
+
+/* HEADER */
+#mainHeader{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+
+	z-index:1;
+	
+	width: 100%;
+	height:41px;
+	
+	background-image:url(/img/flyfoenix_header.png);
+	background-repeat:repeat-x;
+}
+
+#logoHeader{
+	position: relative;
+	top: 0px;
+	left:0px;
+	
+	height: 41px;
+	z-index: 2;
+}
+
+#caption{
+	display:none;
+}
+
+#logoFlyFoenix{
+	position: absolute;
+	margin-top: 2px;
+	margin-left: 10px;
+	z-index: 3;
+}
+
+#navigate{
+	position:absolute;
+	right:0px;
+	top:0px;
+	height:41px;
+	width:100%;
+	
+	margin:0px;
+	padding:0px;
+	
+}
+#navigate .nav-link{
+	float:right;
+	display:block;
+	
+	height:38px;
+	
+	margin-top:1px;
+	margin-right:1px;
+	
+	color:#000;	
+	
+	cursor:pointer;
+}
+#navigate .nav-link li{
+	height:38px;
+	
+	font-size:20px;
+	line-height:20px;
+	
+	display:block;	
+	
+	opacity:0.7;
+	filter:alpha(opacity=70);	
+}
+#navigate .nav-link li span{
+	padding:0px 20px 0px 20px;
+	display:inline-block;
+	height:36px;
+	line-height:36px;
+}
+#navigate .nav-link a{
+	color:#000;
+	display:block;
+}
+#navigate UL.nav-link{
+	position:relative;	
+}
+#navigate .nav-link UL{
+	display:none;
+	
+	min-width:150px;
+	position:absolute;
+	top:38px;
+	right:0px;
+	font-weight:bold;
+	
+	overflow:hidden;
+}
+#navigate .nav-link:hover UL{
+	display:block;	
+}
+#navigate .nav-link UL LI{
+	padding:5px 10px 5px 0px;
+	height:20px;
+	font-size:14px;
+	font-weight:bold;
+}
+#navigate .nav-link UL LI P{
+	padding:0px 0px 5px 20px;	
+	display:inline-block;
+}
+#navigate .nav-link UL LI:hover{
+	background-color:#AAA;
+}
+#navigate .nav-link UL{
+	min-width:150px;
+}
+#navigate .nav-link UL LI.seperate{
+	height:5px;
+	cursor:auto;	
+}
+#navigate LI.seperate hr{
+	height:2px;
+	margin:0px;
+	padding:0px;	
+}
+#navigate .nav-link .down-arrow{
+	padding:0px 5px 0px 0px;
+	margin:0px;
+	position:relative;
+	top:3px;
+}
+#navigate .n-offset-left LI{
+	margin-left:-30px;	
+}
+
+
+/* the links nav elements */
+#h-links, #h-links UL{
+	border-left:solid #EBF9FF 3px;
+}
+#navigate #h-links UL{
+	width:180px;	
+}
+#h-links LI, #h-links UL LI, #h-links UL LI:hover {
+	background-color:#EBF9FF;
+}
+#h-links UL LI{
+	border:solid #EBF9FF 3px;	
+}
+
+/* Cart nav element */
+#h-cart, #h-cart UL{
+	border-left:solid #BFD0D1 3px;
+}
+#h-cart LI, #h-cart UL LI, #h-cart UL LI:hover {
+	background-color:#BFD0D1;
+}
+#navigate #h-cart-img{
+	padding:0px 0px 0px 20px;
+	margin:0px;
+	position:relative;
+	top:3px;
+}
+
+
+/* Search nav element */
+#h-search, #h-search UL{
+	border-left:solid #A89D73 3px;
+}
+#navigate #h-search UL{
+	width:230px;
+}
+#h-search LI, #h-search UL LI, #h-search UL LI:hover {
+	background-color:#A89D73;
+}
+#h-search UL LI{
+	border:solid #A89D73 3px;	
+}
+#navigate #h-search-arrow{
+	padding:0px 5px 0px 0px;
+	margin:0px;
+	position:relative;
+	top:3px;
+}
+
+/* Sex nav element */
+#h-sex UL{
+	border-left:solid #A89D73 3px;
+}
+#navigate #h-sex UL{
+	min-width:130px;	
+}
+#h-sex LI, #h-sex UL LI, #h-sex UL LI:hover {
+	background-color:#A89D73;
+}
+#h-sex UL LI{
+	border:solid #A89D73 3px;	
+}
+#navigate #h-sex-arrow, #navigate #h-sex-icon{
+	padding:0px;
+	margin:0px;
+	position:relative;
+	top:3px;
+}
+
+/* Search Go nav element */
+#h-search-go, #h-search-go UL{
+	
+}
+#navigate #h-search-go UL{
+	min-width:120px;	
+}
+#h-search-go LI, #h-search-go UL LI, #h-search-go UL LI:hover {
+	background-color:#A89D73;
+}
+#h-search-go UL LI{
+	border:solid #A89D73 3px;	
+}
+
+#h-go-btn{
+	border:thin #FFF 2px;
+	background-color:#ccc;
+	padding:3px 5px;
+	margin:6px 10px;
+	font-size:14px;
+	font-weight:bold;
+	cursor:pointer;
+	color:#000;	
+}

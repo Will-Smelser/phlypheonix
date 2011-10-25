@@ -8,8 +8,18 @@
 		echo $this->Form->input('name');
 		echo $this->Form->input('ends',array('label'=>'Ends On (mm/dd/yyyy)'));
 		echo $this->Form->input('starts',array('label'=>'Starts On (mm/dd/yyyy)'));
-		echo $this->Form->input('Product');
+		//echo $this->Form->input('Product',array(''));
+		
 	?>
+		
+		<select name="data[Product][Product][]" multiple="multiple" id="ProductProduct" style="height: 200px" >
+	<?php 
+		foreach($products as $key=>$p){
+			$selected = (in_array($key,$saleItems)) ? ' selected="selected" ' : '';
+			echo "\n\t<option value='$key' $selected >$key - $p</option>";
+		}
+	?>
+		</select>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>

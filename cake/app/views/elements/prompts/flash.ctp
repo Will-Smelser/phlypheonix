@@ -38,7 +38,7 @@ $(document).ready(function(){
 	   show:'showFlash',
 	   hide:{
 	   	  when:{
-	   	  	  event:'unfocus'
+	   	  	  event:false
 	   	  }
 	   },
 	   api:{

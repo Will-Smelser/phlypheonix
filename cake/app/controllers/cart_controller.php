@@ -13,9 +13,9 @@ class CartController extends AppController {
 	}
 	
 	function addProduct($productId, $qty, $size, $color){
-		$this->layout = 'default';
+		
 		if(!$this->cleanInts($qty, $size, $color)) return;
-		$this->layout = 'default';
+		
 		//lookup the pdetail
 		$pdetail = $this->Pdetail->find('first',array(
 							'conditions'=>array(
@@ -35,6 +35,26 @@ class CartController extends AppController {
 		$this->Ccart->add($entry);
 		
 		return $entry->qty;
+	}
+	function addNewUserCoupon(){
+		//check if the user is a new user
+		
+		
+		//create the coupon entry
+		$entry = new CouponEntry(array('id'=>1),1);
+		
+		//check if its already in the cart
+		$result = $this->Ccart->checkProductInCart($entry->getUniqueId());
+		
+		if(!$result){
+			$this->Ccart->add($entry);
+			echo '{"result":true}';
+		} else {
+			echo '{"result":false}';
+		}
+		
+		
+		
 	}
 	function addProductNoAjax(){
 		$size = intval($_POST['size']);

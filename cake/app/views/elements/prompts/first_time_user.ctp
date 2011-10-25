@@ -6,7 +6,7 @@ $(document).ready(function(){
 		   text: 'Loading...',
 		   prerender: true,
 		   title:{
-	   		   text:'Using FlyFoenix',
+	   		   text:false,
 	   		   button:'close'
 	   		   
 	   	   }
@@ -127,7 +127,8 @@ $(document).ready(function(){
 	//window.myQtip = rotate;
 	
 	//create the tips
-	var $sequence = [$('#mfg-logo'),$('#buynowtag'),$('#selector'),$('#sharethis'),$('#inventory'),$('#rightarrow'),$('#comment-wrapper')];
+	//var $sequence = [$('#mfg-logo'),$('#buynowtag'),$('#selector'),$('#sharethis'),$('#inventory'),$('#rightarrow'),$('#comment-wrapper')];
+	var $sequence = [$('#buynowtag'),$('#sharethis'),$('#rightarrow')];
 	for(var x in $sequence){
 		var id = $sequence[x].attr('id');
 
@@ -204,6 +205,7 @@ $(document).ready(function(){
 	rotate.cnt = $sequence.length;
 	rotate.init();
 	
-	$('#mfg-logo').trigger('qtipShow');
+	//$('#mfg-logo').trigger('qtipShow');
+	$('#buynowtag').trigger('qtipShow');
 	
 });

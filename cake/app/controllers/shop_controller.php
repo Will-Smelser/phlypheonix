@@ -459,8 +459,8 @@ class ShopController extends AppController {
 			
 			$register = "
 			
-			<div class='big title' style='color:#333'>Pernsonalized Shopping</div>
-			<p>FlyFoenix can remember your preferences for when your return.
+			<div class='big title' style='color:#333'>Save More &amp; Shop Faster</div>
+			<p>Get a <b>$5 Coupon</b> today and save your preferences for when your return.
 			</p>
 			
 			<form id='register-pop' method='post' action='/users/register'>
@@ -477,7 +477,7 @@ class ShopController extends AppController {
           		
           		<div style='float:right'>
 				<span style='font-size:12px'>&nbsp;</span><br />
-				<input type='submit' class='big green btn' value='Save' />
+				<input type='button' id='save-pref' class='big green btn' value='Save' />
 				</div>
           		
 				<input id='reg-sale' type='hidden' value='$sale' name='data[Sale][Sale][id]' />
@@ -489,8 +489,11 @@ class ShopController extends AppController {
 				<input id='email' type='text' style='width:150px;background-color:#FFF' class='input' name='data[User][email]' value='$email' />
 				</div>
 				
+				
+				
 			</form>
-			
+			<div style='clear:both'></div>
+			<div style='padding-top:10px'><a style='float:right' href='#' onclick='$(\"body\").qtip(\"hide\")'>Skip Registration</a></div>
 			";
 			
 			if(!$this->Session->check('Anonymous.school')){

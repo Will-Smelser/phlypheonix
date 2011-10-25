@@ -52,8 +52,13 @@ class SalesController extends AppController {
 			$this->data['Sale']['ends'] = date('m/d/Y',$this->data['Sale']['ends']);
 			$this->data['Sale']['starts'] = date('m/d/Y',$this->data['Sale']['starts']);
 		}
+		$saleItems = array();
+		foreach($this->data['Product'] as $entry){
+			$saleItems[$entry['id']] = $entry['id'];
+		}
+		
 		$products = $this->Sale->Product->find('list');
-		$this->set(compact('products'));
+		$this->set(compact('products','saleItems'));
 	}
 
 	function delete($id = null) {

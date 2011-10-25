@@ -133,5 +133,26 @@ $(document).ready(function(){
 		stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7'});
 	});
 });
+
+//js to handle the navigation
+//bind the school select events
+$('#h-search ul li').each(function(){
+	var $el = $(this);
+	//$el.find('input').hide();
+	$el.click(function(){
+		var html = $el.find('p').html();
+		$('#h-search li:first span:first').html(html);
+	});
+});
+
+//bind the sex events
+$('#h-sex ul li').each(function(){
+	var $el = $(this);
+	//$el.find('input').hide();
+	$el.click(function(){
+		var src = $(this).find('img').attr('src');
+		$('#h-sex-icon img').attr('src',src);
+	});
+});
 </script>
 </html>

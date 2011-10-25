@@ -15,6 +15,8 @@ class ManagerController extends AppController {
 		
 	}
 	
+	
+	
 	function productAdd(){
 		$mfgs = $this->Manufacturer->find('list');
 		$actors = $this->Actor->find('list');

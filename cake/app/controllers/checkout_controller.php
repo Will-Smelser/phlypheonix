@@ -14,7 +14,7 @@ class CheckoutController extends AppController {
 		$schools = $this->School->getSchoolsWithSale();
 		$this->set('schools',$schools);
 		
-		$this->Auth->allow('index');
+		$this->Auth->allow('index','addcoupon');
 		
 		//make sure this is NOT the local version
 		if(!preg_match('/((ph)|(f))ly((ph)|(f))[eo]{2}nix.local/i',$_SERVER['SERVER_NAME']) &&
@@ -41,14 +41,22 @@ class CheckoutController extends AppController {
 		
 		//potentially we need to switch user
 		if($errName == 'logout'){
+			//logout
 			$this->Auth->logout();
-			$this->redirect('/checkout/index/logged_out');
-		}
-		
-		//loggedout
-		if($errName== 'logged_out'  && $this->Auth->user() != false){
-			//var_dump($this->Auth->logout());
 			
+			//remove all coupons from cart
+			$ctype = CouponEntry::$type;
+			$coupons = $this->Ccart->getContentsByType($ctype);
+			if(count($coupons) > 0){
+				foreach($coupons as $c){
+					$this->Ccart->removeAll($c->id);
+				}
+				$this->redirect('/checkout/index/logged_out|coupon_removed');
+				return;
+			}
+			
+			$this->redirect('/checkout/index/logged_out');
+			return;
 		}
 		
 		//first lest just fix the post data
@@ -69,7 +77,13 @@ class CheckoutController extends AppController {
 			$this->data = $post;
 			
 			$errors = $this->checkInventoryLevels();
-			if(!empty($errName)) array_push($errors,new MyError($errName));
+			
+			if(!empty($errName)){
+				$eNames = explode('|',$errName);
+				foreach($eNames as $e){
+					array_push($errors,new MyError($e));
+				}
+			}
 			
 		//coming from index with posted data
 		} else {
@@ -301,7 +315,7 @@ class CheckoutController extends AppController {
 		$tax = $this->receipt->sumOfTaxableEntries();
 		$this->receipt->addEntry('tax', 99, 0, 0, 1, 'Tax', $tax, 'tax total');
 		
-		//check inventory
+		//check inventory...if count of errors > 0
 		if(count($this->checkInventoryLevels()) > 0){
 			$this->redirect('/checkout/index');
 		}
@@ -481,8 +495,10 @@ class CheckoutController extends AppController {
 	}
 	
 	function addcoupon(){
+		$loc = '/checkout/index';
+		
 		if(!isset($_POST['coupon'])){
-			$this->redirect('finalize/bad_coupon');
+			$this->redirect($loc.'/bad_coupon');
 		}
 		$coupon = $this->Coupon->parseCouponCode($_POST['coupon']);
 		
@@ -491,12 +507,12 @@ class CheckoutController extends AppController {
 		
 		//coupon requires this user be associated with it
 		if(!empty($info['Coupon']['user_id']) && $info['Coupon']['user_id'] != $this->myuser['User']['id']){
-			$this->redirect('finalize/coupon_permissions');
+			$this->redirect($loc.'/coupon_permissions');
 		} elseif(!$info['Coupon']['open']){
-			$this->redirect('finalize/coupon_used');
+			$this->redirect($loc.'/coupon_used');
 		
 		} elseif($info['Coupon']['expires'] !=0 && $info['Coupon']['expires'] < time()){
-			$this->redirect('finalize/coupon_expired');
+			$this->redirect($loc.'/coupon_expired');
 		}
 		
 		$entry = new CouponEntry(array('id'=>$coupon),1);
@@ -504,10 +520,9 @@ class CheckoutController extends AppController {
 		//good coupon, add it to the cart
 		if(!$this->Ccart->checkProductInCart($entry->id)){
 			$this->Ccart->add($entry);
-			
-			$this->redirect('finalize/good_coupon');
+			$this->redirect($loc.'/good_coupon');
 		} else {
-			$this->redirect('finalize/coupon_exists');
+			$this->redirect($loc.'/coupon_exists');
 		}
 	}
 	
@@ -957,6 +972,13 @@ class errorTypes {
 					'msg'=>'User sucessfully logged out.',
 					'id'=>$name,
 					'context'=>'good',
+					'name'=>ucwords($temp)
+				);
+			case 'coupon_removed':
+				return array(
+					'msg'=>'Cannot transfer coupons between users.',
+					'id'=>$name,
+					'context'=>'receipt',
 					'name'=>ucwords($temp)
 				);
 			case 'login':

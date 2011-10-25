@@ -514,6 +514,10 @@ class UsersController extends AppController {
 			
 			//there was an error
 			if($error !== true){
+				//if there was an error, lets delete the coupon
+				$entry = new CouponEntry(array('id'=>1),1);
+				$this->Ccart->remove($entry);
+				
 				$this->Session->delete('Anonymous.firstpage');
 				$this->Session->setFlash('<img src="/img/icons/error.png" /> '.$error->getMsg());
 				$this->redirect($this->referer($defaultReturnUrl));

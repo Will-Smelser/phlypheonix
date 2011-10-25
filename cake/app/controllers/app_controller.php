@@ -2,7 +2,7 @@
 class AppController extends Controller {
 	var $components = array('Ccart','Session','Acl', 'Auth','Cookie','RememberMe','Cprompt');
 	
-	//var $uses = array('Tracking');
+	var $uses = array('Tracking');
 	
 	var $myuser; //logged in users data
 	
@@ -144,7 +144,7 @@ class AppController extends Controller {
     	
     	//store data
     	$userid = ($loggedin) ? $this->myuser['User']['id'] : null;
-    	//$this->Tracking->addEntry(&$this->Session, &$this->params, &$this->Ccart, $userid);
+    	$this->Tracking->addEntry(&$this->Session, &$this->params, &$this->Ccart, $userid);
     	
         //$this->secureUserSession();
 	}

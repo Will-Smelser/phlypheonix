@@ -12,6 +12,7 @@
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('reset.css');
+		echo $this->Html->css('default.css');
 		echo $this->Html->css('productpresentation.css');
 
 		echo $scripts_for_layout;
@@ -320,7 +321,7 @@ $(document).ready(function(){
 	
 		//logged in function
 		function fbloggedin(){
-			window.location.href = '<?php echo $protocal; ?>://flyfoenix.com/users/landing';
+			window.addCoupon(function(){window.location.href = '<?php echo $protocal; ?>://flyfoenix.com/users/landing';});
 		}
 	
 		//logout function
@@ -342,6 +343,10 @@ $(document).ready(function(){
 //scripts for flash prompt
 ?>
 $(document).ready(function(){
+	//dont allow flash close
+	$('body').qtip('api').elements.title.hide();
+	
+	
 	//bind the move function
 	$('#reg-cont').click(function(){
 		$('#reg-inner-wrapper').animate({'left':'-410px'});
@@ -352,7 +357,27 @@ $(document).ready(function(){
 		$('#reg-sex').val(sex);
 
 	});
+
+	$('#save-pref').click(function(){
+		window.addCoupon(function(){$('#register-pop').submit();});
+	});
 });
+
+function addCoupon(callback){
+	var wait = 2000;
+	$.getJSON('/cart/addNewUserCoupon',function(data){
+		if(data.result){
+			var $cart = $('#cart');
+			$cart.qtip('api').updateContent('Added Coupon to cart...',false);
+			$cart.trigger('showCart');
+			
+			setTimeout(function(){$cart.qtip('hide');},wait); //hide the qtip after 1 second
+		}
+		setTimeout(callback,wait+1000);
+	});
+	
+}
+
 <?php
 }
 ?>
