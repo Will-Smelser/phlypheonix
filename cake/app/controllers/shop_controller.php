@@ -17,7 +17,7 @@ class ShopController extends AppController {
 	var $uses = array('User','Product', 'Pdetail', 'Sale', 'Saleuser', 'School','Accessory');
 	//var $components = array('AuthorizeNet');
 	//var $components = array('Cfacebook');
-	var $helpers = array('Hfacebook','Sizer');
+	var $helpers = array('Hfacebook','Sizer','Time');
 
 	function beforeFilter() {
 	    parent::beforeFilter();
@@ -240,6 +240,30 @@ class ShopController extends AppController {
 		$this->set(compact('school','sex','sale','product','imageIndex','shareImage'));
 	}
 
+	function viewer($product=null, $sale=null){
+		$this->layout = 'viewer';
+		
+		$product = $this->Product->find('first',
+			array('conditions'=>array('Product.id'=>$product)));
+		
+		$psex = $product['Product']['sex'];
+		$saleData = $this->Sale->findById($sale);
+		
+		//find share image, also, removes some data from Pimage that isnt required
+		$shareImage = null;
+		foreach($product['Pimage'] as $key=>$entry){
+			if(preg_match('/front/i',$entry['name'])){
+				$shareImage = $entry['image'];
+				//$shareImage = 'http://www.flyfoenix.com/img/referral.jpg';
+			}
+			//we dont need the product data again
+			unset($product['Pimage'][$key]['Product']);
+		}
+		
+		$this->set(compact('product','saleData','images','shareImage'));
+		
+	}
+	
 	function view($product=null){
 		//$this->layout = 'default';
 		$this->layout = 'dynamic';
@@ -330,6 +354,9 @@ class ShopController extends AppController {
 	//imageIndex is the product image to show
 	function main ($school=null, $sex=null, $sale = null, $product = null, $expired=false) {
 		
+		$this->layout = 'dynamic_with_school';
+		$this->set('classWidth','width-xlarge');
+		
 		//can be submitted from no javascript find school form or landing form
 		if(isset($_POST['school-id'])){
 			$school = $_POST['school-id'];
@@ -340,96 +367,31 @@ class ShopController extends AppController {
 			$sex = $_POST['sex'];
 			$this->Session->write('Anonymous.sex',$sex);
 		}
-		
-		//$this->layout = 'default';
-		$imageIndex = 0;
 
 		//fix data if needed
 		$this->fixVars($product, $school, $sex, $sale, $expired);
-
-		$products = $this->getProductsDetails($sale);
-
-		//get left and right products
-		$productRight= array();
-		$this->getPagination($products,$product,$productRight, $index);
-
-		$this->Saleuser->addUserSaleEndDate($this->myuser, $sale['Sale']['id']);
-
-		$this->addSaleEnds($this->myuser, $sale);
-
-		//check the found sale has not expired for the user
-		//$sale['Sale']['UserSaleEnds']  is added to $sale in addSaleEnds call
-		if($sale['Sale']['UserSaleEnds'] < time() && !Configure::read('config.testing')) {
-			$this->redirect(array('action'=>'expiredsale/'.$sale['Sale']['id'].'/'.$this->myuser['User']['id'].'/'.$school['id'].'/'.$sex));
-		}
-
+		$school['School'] = $school;
+		
 		$mfgs = $this->Product->Manufacturer->find('list',array('fields'=>array('id','image')));
-		$products = array_merge(array($product['Product']), $productRight);
 
 		//lets remove the first time here stuff
+		//@todo This probably isnt needed anymore....remove
 		$this->User->Prompt->removeFirstTimePrompt($this->myuser['User']['id']);
 		
 		//determine the color for the current school
 		$sql = 'SELECT school_id, color_id FROM `schools_colors` WHERE school_id = ' . $school['id'] . ' ORDER BY `id` ASC';
 		$schoolColors = $this->Product->query($sql);
 
-		//build navigation links for no-javascript
-		$currentLink = "/shop/main/{$school['id']}/$sex/{$sale['Sale']['id']}/{$products[0]['id']}"; 
-		if(!$this->Session->check('shop.nav.sale') 
-			|| $this->Session->read('shop.nav.sale') != $sale['Sale']['id']){
-			$temp = array();
-			foreach($products as $p){
-				$link = "/shop/main/{$school['id']}/$sex/{$sale['Sale']['id']}/{$p['id']}";
-				array_push($temp, $link);
-			}
-			$this->Session->write('shop.nav.links',$temp);
-			$this->Session->write('shop.nav.sale',$sale['Sale']['id']);
-		} 
-		$found = false;
-		$prev = $next = array();
-		foreach($this->Session->read('shop.nav.links') as $link){
-			if($link == $currentLink){
-				$found = true;
-			}else if(!$found){
-				array_push($prev, $link);
-			} else {
-				array_push($next, $link);
-			}
-		}
-		$nextLink = (isset($next[0])) ? $next[0] : "/accessories/index/{$school['id']}/$sex";
-		$prevLink = (isset($prev[0])) ? $prev[0] : '#';
-		$this->Session->write('shop.nav.next',$nextLink);
-		$this->Session->write('shop.nav.prev',$prevLink);
-		$this->Session->write('shop.nav.curr',$currentLink);
-		$this->set(compact('nextLink','prevLink','currentLink'));
-
-		foreach($products as $k=>$p) {
-			$products[$k]['mfgimage'] = $mfgs[$products[$k]['manufacturer_id']];
-			foreach($p as $key=>$entry){
-				if(!in_array($key,array('id','pricetag'))){
-					unset($products[$k][$key]);
-				}
-			}
-		}
 
 		//$schools = $this->School->find('all',array('recursive'=>0));
 		$schools = $this->School->getSchoolsWithSale();
-		$fbcommentId = "{$school['id']}-{$sex}-{$sale['Sale']['id']}-{$product['Product']['id']}";
-
-		$shareImage = null;
-		foreach($product['Pimage'] as $entry){
-			if(preg_match('/front/i',$entry['name'])){
-				$shareImage = $entry['image'];
-				//$shareImage = 'http://www.flyfoenix.com/img/referral.jpg';
-				break;
-			}
-		}
 		
-		$this->set(compact('school','schools','sex','sale','product','products','productRight','imageIndex','fbcommentId','schoolColors','shareImage'));
-
-		//accessories
-		$adata = (!empty($schoolColors)) ? $this->getAccessories($sex,$schoolColors[0]['schools_colors']['color_id']) : array();
-
+	
+		$this->set(compact('school','schools','sex','sale','product','schoolColors'));
+		
+		$this->setMainFlash();
+	}
+	private function setMainFlash(){
 		//add any flash messages
 		$flash = (strlen($this->Session->read('Message.flash.message')) > 0) ? $this->Session->read('Message.flash.message') : '';
 		
@@ -622,11 +584,12 @@ class ShopController extends AppController {
 	private function addSaleEnds(&$myuser, &$sale) {
 
 		foreach($myuser['Saleuser'] as $entry) {
-
-			if($entry['sale_id'] == $sale['Sale']['id']){
-				$time = Configure::read('config.sales.length') + $entry['created'];
-				$sale['Sale']['UserSaleEnds'] = $time;
-				return;
+			foreach($sale as $s){
+				if($entry['sale_id'] == $s['Sale']['id']){
+					$time = Configure::read('config.sales.length') + $entry['created'];
+					$s['Sale']['UserSaleEnds'] = $time;
+					return;
+				}
 			}
 		}
 	}
@@ -636,7 +599,9 @@ class ShopController extends AppController {
 		foreach($sale['Product'] as $p){
 			array_push($ids, $p['id']);
 		}
-		$result = $this->Product->find('all',array('conditions'=>array('Product.id IN ('.implode(',',$ids).')')));
+		
+		$result = $this->Product->find('all',array('recursive'=>0,'conditions'=>array('Product.id IN ('.implode(',',$ids).')')));
+		
 		if(!$result) {
 			$this->redirect(array('action'=>'noproduct'));
 		}
@@ -727,94 +692,84 @@ class ShopController extends AppController {
 
 	/**
 	 * Forwards users to correct url based on their input, or just gets the valid
-	 * sale data.
+	 * sale data.  Should return an array of all valid sales going on.
 	 * 
 	 * @param integer $saleId The sale id to lookup
 	 * @param character $sex valid reference to sex
 	 * @param object $school An array representing the school model
 	 */
 	private function getSale($saleId, &$sex, &$school) {
+		$saleId = $saleId * 1; //prevent injection	
 
-		//we dont have a sale id to lookup on
-		if(empty($saleId)) {
-			//first check if user has any sales already available to them
-			$ids = array();
-			if(count($this->myuser['Saleuser']) > 0){
-
-				foreach($this->myuser['Saleuser'] as $suser) {
-					array_push($ids, $suser['id']);
-				}
-
-				//lookup the sale ids
-				$usales = $this->Sale->find('all',array(
-					'conditions'=>array(
-						'Sale.id IN ('.implode(',',$ids).')',
-						'Sale.ends >= '.time(),
-						'Sale.starts <= '.time(),
-						'Sale.active = 1',
-					)
-				));
-
-				//try and match sex		
-				foreach($usales as $s) {
-					if($s['Product'][0]['sex'] == $sex && $s['Product'][0]['school_id'] == $school['id']) {
-						//redirect to fully qualified url
-						$this->redirect(array('action'=>"main/{$school['id']}/{$s['Product'][0]['sex']}/{$s['Sale']['id']}"));
-						return;
-					} 
-				}
-
-			}
-
-			//could not match on users current sales
-			$order = ($sex == 'M') ? 'DESC' : 'ASC'; //sort by sex
-
-			//sql to find valid sales for the given school
-			$sql = 'SELECT * FROM `sales` AS `Sale` LEFT JOIN `sales_products` ON `Sale`.`id` = `sales_products`.`sale_id` '.
-				'LEFT JOIN `products` AS `Product` ON `sales_products`.`product_id` = `Product`.`id` '.
-				'WHERE `Product`.`school_id` = ' . $school['id'] . ' AND `Sale`.`starts` <= ' . time() . ' ' .
-					'AND `Sale`.`ends` >= ' . time() . ' AND `Sale`.`active` = 1 ' .
-				'ORDER BY `Product`.`sex` '.$order . ' LIMIT 1';
-				//'AND `Product`.`sex` = "'.$sex.'" LIMIT 1';
-
-
-			$saleData = $this->Sale->query($sql);
+		//sql to find valid sales for the given school and sex
+		$sql = 
+			'SELECT * FROM `sales` AS `Sale` ' . 
+			'LEFT JOIN `sales_products` ON `Sale`.`id` = `sales_products`.`sale_id` '.
+			'LEFT JOIN `products` AS `Product` ON `sales_products`.`product_id` = `Product`.`id` '.
+			'LEFT JOIN `pimages` AS `Pimage` ON `Pimage`.`product_id` = `sales_products`.product_id ' .
+			'LEFT JOIN `manufacturers` AS `Manufacturer` ON `Manufacturer`.id = `Product`.manufacturer_id ' .
+		
+			'WHERE `Product`.`school_id` = ' . $school['id'] . ' AND `Sale`.`starts` <= ' . time() . ' ' .
+			//cant filter by image here
+			//'AND (`Pimage`.name LIKE "%front%" OR `Pimage`.name LIKE "%main%") ' .
+			'AND LOWER(`Product`.sex) = "'.strtolower($sex).'" ' .
+			'AND `Sale`.`ends` >= ' . time() . ' AND `Sale`.`active` = 1 ';
 			
-			//prevent recursion
-			if(!empty($saleData)){
-				if(strtolower($saleData[0]['Product']['sex']) != strtolower($sex)){
-					$temp = (strtolower($sex) == 'm') ? 'men.' : 'women.';
-					$this->Session->setFlash('<img src="/img/icons/error.png" />&nbsp;Could not locate a sale for '.$temp);
-				}
-				$this->redirect("/shop/main/{$school['id']}/{$saleData[0]['Product']['sex']}/{$saleData[0]['Sale']['id']}");
-			}
-
-		//lookup the requested sale
-		} else {
-			
-			$saleData = $this->Sale->find('first',array(
-				'conditions'=>array(
-					'Sale.id = '.$saleId,
-					'Sale.ends >= '.time(),
-					'Sale.starts <= '.time(),
-					'Sale.active = 1',
-				)
-			));
-			
-			
-			if(!empty($saleData)){
-				//filter out other sex
-				$saleData = $this->filterSaleBySex($saleData,$sex);
-				
-				//verify the sex requested matched
-				if($saleData['Product'][0]['sex'] == $sex){
-					return $saleData;
-				//sex did not match...redirect to fully qualified url
-				} else {
-					$this->redirect(array('action'=>"main/{$school['id']}/{$saleData['Product'][0]['sex']}/{$saleId}"));
-				}
-			}
+		if(!empty($saleId) && $saleId != 0){
+			$sql .= "AND `Sale`.id = $saleId ";
 		}
+	
+		$sql .= 'ORDER BY `Sale`.`ends` ASC';// . ' LIMIT 1';
+		
+		$saleData = $this->Sale->query($sql);
+		
+		//prevent recursion
+		if(!empty($saleData)){
+			if(strtolower($saleData[0]['Product']['sex']) != strtolower($sex)){
+				$temp = (strtolower($sex) == 'm') ? 'men.' : 'women.';
+				$this->Session->setFlash('<img src="/img/icons/error.png" />&nbsp;Could not locate a sale for '.$temp);
+				$this->redirect("/shop/main/{$school['id']}/{$saleData[0]['Product']['sex']}");
+			}
+			
+			/*
+			 * Couldnt find a good way to make a single pass on these loops.
+			 * Goal:
+			 *    1) Get only the front image if it exists, choose any variation if it doesnt
+			 */
+			
+			//filter out the non correct sex
+			//filter out non-front images
+			//filter duplicates
+			$orig = $saleData; //make copy
+			$ids = array();
+			if(!empty($sex)){
+				foreach($saleData as $key=>$s){
+					if(
+						!preg_match('/((front)|(main))/i',$s['Pimage']['image'])
+						|| in_array($s['Product']['id'],$ids)
+					){
+						unset($saleData[$key]);
+					} else if(!in_array($s['Product']['id'],$ids)){
+						array_push($ids, $s['Product']['id']);
+					}
+				}
+			}
+			
+			//go through the deleted items...possible that there was no front image,
+			//so just add in one from the deleted ones
+			foreach($orig as $key=>$s){
+				if(!in_array($s['Product']['id'],$ids)){
+					$saleData[$key] = $orig[$key];
+					array_push($ids, $s['Product']['id']);
+				}
+			}
+			
+			//make sure this is sorted by key, this will make sure sales are in order also
+			ksort($saleData);
+			
+			return $saleData;
+		}
+
 
 		//no luck just send to error page
 		$this->redirect(array('action'=>'nosale'));
@@ -823,26 +778,25 @@ class ShopController extends AppController {
 
 	//get the product
 	private function getProduct($product, &$sale, &$sex, &$school){
+		
 		//no product given
 		if(empty($product)) {
-			if(count($sale['Product']) > 0) {
-				return $sale['Product'][0];
-			}
+			return null;
 		//product number requested
 		} else {
 			//look for this product
-			foreach($sale['Product'] as $p) {
-				if($p['id'] == $product) {
-					return $p;
+			foreach($sale as $s) {
+				foreach($s['Product'] as $p){
+					if($p['id'] == $product) {
+						return $p;
+					}
 				}
 			}
-			//forward to first product
-			$this->redirect(array('action'=>"main/{$school['id']}/{$sex}/{$sale['Sale']['id']}/{$sale['Product'][0]['id']}"));
-			return;
+			
 		}
-		//no product found
-		$this->redirect(array('action'=>'noproduct'));
-		return;
+		
+		$this->Session->setFlash('<img src="/img/icons/error.png" />&nbsp;Failed to locate the requested product.');
+		return null;
 	}
 	
 	private function filterSaleBySex($saleData, $sex){

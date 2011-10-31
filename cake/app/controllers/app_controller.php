@@ -116,6 +116,7 @@ class AppController extends Controller {
 		//not logged in, use anonymous user
 		} else {
 			$user = $this->User->findByEmail('anonymous@flyfoenix.com');
+			$user['Saleuser'] = array();
 			
 			//add session info
 			if($this->Session->check('Anonymous.sex')){

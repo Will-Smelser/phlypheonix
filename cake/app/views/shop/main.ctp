@@ -1,83 +1,136 @@
-
-<div id="comment-wrap" style="display:none;position:absolute;">
-<a href="#" id="comment-wrapper"><img id="comments" src="/img/header/comments.png" alt="comments" /></a>
-</div>
-
-<div id="fb-like-wrap" style="display:none;position:absolute;left:285px;top:25px;z-index:10;">
-<?php echo $this->Hfacebook->likeButtonHTML5('https://www.facebook.com/pages/FlyFoenixcom/228147000574828'); ?>
-</div>
-
-<script type="text/javascript">
-<!--
-$('#comment-wrap').show();
-$('#fb-like-wrap').show();
-//-->
-</script>
-
- 
-  <!-- NAVIGATION ARROWS -->
-  <?php if($prevLink != '#'){ ?>
-  <noscript><a href="<?php echo $prevLink; ?>"><div id="leftarrow2" ></div></a></noscript>
-  <?php } ?>
-  <div id="leftLink" style="display:none;">
-  	<a href="#" style=""><div id="leftarrow" class="hidden"></div></a>
-  </div>
-  
-  <noscript><a href="<?php echo $nextLink; ?>"><div id="rightarrow2" ></div></a></noscript>
-  
-  <?php $class = (count($productRight) > 0) ? '' : 'hidden'; ?>
-  <div id="rightLink" style="display:none;">
-  	<a href="#"><div id="rightarrow" class="<?php echo $class; ?>"></div></a>
-  </div>
-  
-  <script type="text/javascript">$('#leftLink').show();$('#rightLink').show();</script>
-  
-  <!-- SLIDER WRAPPER -->
-  <div id="sliderwrapper"><!-- Begin Slider Wrapper -->
-  <div id="sliderpane">
-  <div class="slider" style="left:0px;"><!-- Begin Slider -->
-    
-    <div class="viewer">
-  	<?php echo $this->element('product/features'); ?>
-    
-    <?php echo $this->element('product/main_photo',array('index'=>$imageIndex,'product'=>$product)); ?>
-    
-    <?php echo $this->element('product/thumbs',array('index'=>$imageIndex)); ?>
-    
-    </div><!-- End Viewer Container -->
-  
-  <div id="content">
-    <div id="earn5">
-      <img src="/img/productpresentation/flyfoenix_product_presentation_earn5.png" width="214" height="33" alt="earn5" />
-    </div>
-    
-    <noscript>
-    	<span>Copy this Link</span><br/>
-    	<input style="width:251px" type="text" value="http://www.flyfoenix.com/users/referer/<?php echo $myuser['User']['id']; ?>/<?php echo $product['Product']['id']?>" />
-    </noscript>
-    <div style="display:none" id="sharethis-wrap">
-    <?php echo $this->element('sharthis'); ?>
-    </div>
-    <script type="text/javascript">$('#sharethis-wrap').show();</script>
-    
-    <img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="261" height="2" style="margin:3px 0px;">
-    
-    <?php echo $this->element('product/details',array('product'=>$product,'index'=>$imageIndex,'currentLink'=>$currentLink))?>
-    
-  </div>
-</div> <!-- End Slider -->
-
-<?php
-  	$i = 1;
-  	foreach($productRight as $p){ 
-  		//calulate the position
-  		$x = 935 * $i;
-  		$i++;
-  		$url = "/shop/product/{$p['school_id']}/{$p['sex']}/{$sale['Sale']['id']}/{$p['id']}";
-  	?>
-  	<div id="<?php echo $url ?>" class="slider product-loading" style="left:<?php echo $x; ?>px">
-  	
-  	</div>
-  	<?php } ?>
-</div>
-</div>
+<!-- HEADER FOR PRODUCT MFG and SELECTOR -->
+	<div id="bodyHeader" style="top:45px" class="<?php echo $classWidth; ?>"><!-- Begin bodyHeader -->
+	<table width="100%">
+		<tr>
+			<td class="left"></td>
+			<td class="bg-main">
+			
+			<div style="position:absolute;top:15px;left:50px;right:50px;text-align:center;">
+	 	  		<img src="/img/header/accessories.png" alt="Accessories" />
+	 	  	</div>
+	   		
+ 			
+  			<?php
+  				//if($loggedin){
+	 				echo "<!-- HEADER FOR PRODUCT MFG and SELECTOR -->\n";
+	  				//echo $this->element('selector_noschool',array());
+	  				$gsex = (strtolower($sex) == 'f') ? 'M' : 'F';
+	  				$sexlong = ($gsex=='M') ? 'female' : 'male';
+	  				$glink = '/shop/main/'.$school['id'].'/'.$gsex;
+	  				
+	  				echo $this->element('selector',
+	  					array('glink'=>$glink,'gender'=>$sexlong,'myuser'=>$myuser,
+	  						'school'=>$school,'schoolName'=>$school['long'],
+	  						'schoolLogo'=>$school['logo_small']));
+  				//}
+			?>
+			
+			</td>
+			<td class="right"></td>
+		</tr>
+	</table>
+	</div><!-- End bodyHeader -->
+	
+	
+	
+	<!-- MAIN PRODUCT VIEWER -->
+	<div id="bodyContainerDark" style="top:35px"  class="<?php echo $classWidth; ?>">
+	<table id="tableContainer"  width="100%">
+		<tr>
+			<td class="top left"></td>
+			<td class="top edge"></td>
+			<td class="top right"></td>
+		</tr>
+		<tr>
+			<td class="left edge"></td>
+			<td class="bg-main" style="padding-left:10px;padding-right:10px">
+				<?php
+				$style2= '';
+				$style3 = ' sale1';
+				$columns = 3;
+				$counter = 0;
+				$saleNum = 1;
+				$prev = current($sale);
+				
+				foreach($sale as $key=>$s){
+					$counter++; 
+					
+					//image url
+					$image = '/users/getimage?width=280&image='.urlencode($s['Pimage']['image']);
+					
+					//some style for layout
+					$style = ($counter%$columns == 0 || $counter == count($sale)) ? ' pad-right' : '';
+					if($counter == ($columns+1)) $style2 = ' pad-top';
+					if($prev['Sale']['id'] != $s['Sale']['id']){
+						$saleNum++;
+						$style3 = ' sale'.$saleNum;
+					}
+					
+					//calculate time remaining in the sale
+					if($prev['Sale']['id'] != $s['Sale']['id'] || $counter == 1){
+						$stime = time() + Configure::read('config.sales.length');
+						
+						if($loggedin){
+							foreach($myuser['Saleuser'] as $su){
+								if($su['id'] == $s['Sale']['id'] &&
+									$su['created'] != 0
+								){
+									$stime = $su['created'] + Configure::read('config.sales.length');
+									break;
+								}
+							}
+						}
+						
+						//debug($this->Time);
+						$mytime = $time->relativeTime($stime);
+						//debug($tdata);exit;
+						//$time = "{$tdata['days']} day(s) {$tdata['hours']} hours {$tdata['minutes']} mins.";
+						
+						if($counter != 1) echo "<div style='clear:both;'></div></div><div style='height:10px;'></div>";
+						echo "<div class='$style3'>
+							<div class='big title sale info'>{$s['Sale']['name']}</div>
+							<div class='big title sale expire'><span class='text'>Expires in </span>{$mytime}</div>
+							<div style='clear:both'></div>
+							";
+					}
+					
+					//previous
+					$prev = $sale[$key];
+				?>
+				
+				<div class="preview-wrapper <?php echo $style.$style2.$style3; ?>">
+					<a class="preview-link" href="/shop/viewer/<?php echo $s['Product']['id'].'/'.$s['Sale']['id']; ?>">
+					<div class="image-wrapper"><img src="<?php echo $image; ?>" /></div>
+					<div class="info">
+						<div class="price-wrapper" >
+							<div class="member">$<?php echo $s['Product']['price_member']?></div>
+							<div class="retail" >retail $<span style=""><?php echo $s['Product']['price_retail']?></span></div>
+						</div>
+						<div class="product-about">
+							<div class="mfg">
+								<?php echo $s['Manufacturer']['name']; ?>
+							</div>
+							<div class="name">
+								<?php echo $s['Product']['name']; ?>
+							</div>
+						</div>
+					</div>
+					</a>
+				</div>
+				
+				<?php } ?>
+				<!-- Have to closeout the sale wrapper -->
+				<div style='clear:both;'></div></div>
+			</td>
+			<td class="right edge"></td>
+		</tr>
+		<tr>
+			<td class="bottom left"></td>
+			<td class="bottom edge"></td>
+			<td class="bottom right"></td>
+		</tr>
+	</table>
+	
+	</div>
+	
+	

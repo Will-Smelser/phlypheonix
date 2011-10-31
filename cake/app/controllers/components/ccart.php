@@ -250,7 +250,7 @@ class ProductEntry extends CartEntry {
 	
 	var $modelName = 'Product';
 	var $modelKey = 'id';
-	var $priceRoute = 'Product.price_retail';
+	var $priceRoute = 'Product.price_member';
 	var $descRoute = 'Product.name';
 	var $uniqueRoutes = array(
 		//'color'=>'Color.name',
@@ -275,7 +275,7 @@ class AccessoryEntry extends cartEntry {
 	
 	var $modelName = 'Accessory';
 	var $modelKey = 'id';
-	var $priceRoute = 'Accessory.price_retail';
+	var $priceRoute = 'Accessory.price_member';
 	
 	public static function makeUniqueId($uniques){
 		$unique = array();

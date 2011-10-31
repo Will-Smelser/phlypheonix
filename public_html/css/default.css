@@ -70,6 +70,67 @@ input.one{
 	border-radius: 5px;
 }
 
+/* CUSTOM SELECT MENUS */
+.select{
+	position:absolute;
+	background-color:#000;
+	padding:3px;
+	cursor:pointer;
+	font-size:14px;
+	font-weight:bold;
+	z-index:2;
+}
+.select .select-name{
+	height:30px;
+}
+.select .select-name span{
+	color:#FFF;
+	padding:4px;
+	font-weight:bold;
+	display:inline-block;
+}
+.select .select-name img{
+	position:relative;
+	top:2px;
+	padding-left:10px;
+}
+.select input{
+	display:inline-block;
+	width:25px;
+	padding:0px;
+	margin:0px;
+}
+.select .just-name{
+	position:relative;
+	top:-3px;	
+}
+.select .input-name{
+	padding-left:20px;	
+}
+.option-list{
+	position:relative;
+	z-index:10000;
+	display:none;
+	overflow:hidden;
+	cursor:pointer;
+}
+.option-list li{
+	margin-left:-40px;
+}
+.select:hover .option-list{
+	display:block;
+}
+.select .select-option{
+	position:relative;
+	padding:7px;
+	cursor:pointer;
+}
+.select .select-option:hover{
+	background-color:#FBB040;
+}
+.select .select-option:active{
+	background-color:#FBB040;
+}
 /* BUTTONS */
 .btn{
 	font-weight:bold;
@@ -302,7 +363,7 @@ p.checkout-pop-count {
 
 #logoschool{
 	float: right;
-    margin-top: 5px;
+    margin: 5px;
     position: relative;
 }
 
@@ -435,7 +496,10 @@ p.checkout-pop-count {
 	margin:0px;
 	padding:0px;
 	
+	z-index:100;
+	
 }
+
 #navigate .nav-link{
 	float:right;
 	display:block;
@@ -457,8 +521,8 @@ p.checkout-pop-count {
 	
 	display:block;	
 	
-	opacity:0.7;
-	filter:alpha(opacity=70);	
+	opacity:0.8;
+	filter:alpha(opacity=80);	
 }
 #navigate .nav-link li span{
 	padding:0px 20px 0px 20px;
@@ -483,6 +547,8 @@ p.checkout-pop-count {
 	font-weight:bold;
 	
 	overflow:hidden;
+	
+	z-index:100;
 }
 #navigate .nav-link:hover UL{
 	display:block;	
@@ -525,16 +591,16 @@ p.checkout-pop-count {
 
 /* the links nav elements */
 #h-links, #h-links UL{
-	border-left:solid #EBF9FF 3px;
+	border-left:solid #FFF 3px;
 }
 #navigate #h-links UL{
-	width:180px;	
+	/*width:180px;*/	
 }
 #h-links LI, #h-links UL LI, #h-links UL LI:hover {
-	background-color:#EBF9FF;
+	background-color:#FFF;
 }
 #h-links UL LI{
-	border:solid #EBF9FF 3px;	
+	border:solid #FFF 3px;	
 }
 
 /* Cart nav element */

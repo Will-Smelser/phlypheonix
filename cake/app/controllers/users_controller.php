@@ -326,9 +326,6 @@ class UsersController extends AppController {
 		$file = WWW_ROOT . ltrim(urldecode($encodedFile),'/');
 		
 		$fileInfo = pathinfo($file);
-		
-		//This will set our output to 45% of the original size 
-		 $size = 0.21; 
 		 
 		 // This sets it to a .jpg, but you can change this to png or gif 
 		 header('Content-type: image/jpeg'); 
@@ -355,8 +352,17 @@ class UsersController extends AppController {
 		 
 		 // Setting the resize parameters
 		 list($width, $height) = getimagesize($file); 
-		 $modwidth = $width * $size; 
-		 $modheight = $height * $size; 
+		 $modwidth = $width;
+		 $modheight = $height;
+		 
+		 if(isset($_GET['width'])){
+		 	$factor = $width / $_GET['width'];
+		 	$modwidth = $_GET['width'];
+		 	$modheight = $height / $factor;
+		 }else {
+			 $modwidth = $width * $size; 
+			 $modheight = $height * $size;
+		 } 
 		 
 		 // Creating the Canvas 
 		 $tn= imagecreatetruecolor($modwidth, $modheight); 

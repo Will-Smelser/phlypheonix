@@ -14,7 +14,8 @@
 	      wrapperHeight: 401,
 	      zoomZindex   : 1000,
 	      imageZindex  : 999,
-	      id : null
+	      id : null,
+	      unique : null
 	    };
 
 	    //cycle the thumbs
@@ -26,7 +27,7 @@
 	      }
 
 	      //what is the index value
-	      this.id = key;
+	      this.id = key+settings.unique;
 	      
 	      //lets add the images to the target (hidden)
 	      var $el = $(this);

@@ -4,10 +4,11 @@ $(".feature-thumb").
 		'zoom':false,
 		'hideOnExit':true,
 		'onEnterHook':function(id){
-			
+			//$('.attribute-detail').css({'z-index':this.zoomZindex+1,'width':this.wrapperWidth-20+'px'}).html($($temp[id]).html()).slideDown();
 		},
 		'onExitHook':function(id){
 			//obj.$sliders[temp].find('.attribute-detail').slideUp();
+			//$('.attribute-detail').slideUp();
 		}
 	});
 
