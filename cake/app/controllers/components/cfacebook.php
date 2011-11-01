@@ -80,7 +80,7 @@ class CfacebookComponent extends Object  {
 		 * @return unknown_type
 		 */
 		function initialize(&$controller){
-			
+
 			if(!in_array($controller->params['action'],array('login','landing','main') )) {
 				return;
 			}
@@ -325,11 +325,18 @@ class CfacebookComponent extends Object  {
 		$facebook_record[$fields['user_facebook_id']] = $fbId;
 		$facebook_record[$fields['data']] = serialize($meData);
 		
+		//check if we need to initialize the facebook model
+		//if(!ClassRegistry::isKeySet($model)){
+			App::import('model',$model);
+			eval('$mfacebook = new '.$model.'();');
+			$this->controller->{$model} =& $mfacebook;
+		//}
+		
 		//lets check if the data already exists based on user_id
 		$data = $this->controller->{$model}->findByUserId($userId);
 
 		if($data){
-			$facebook_record[$fields['id']] = $data[strtolower($model)][$fields['id']];
+			$facebook_record[$fields['id']] = $data[$model][$fields['id']];
 		}
 		
 		return $this->controller->{$model}->save($facebook_record, array( 'validate' => false));

@@ -260,6 +260,8 @@ class ShopController extends AppController {
 			unset($product['Pimage'][$key]['Product']);
 		}
 		
+		$pageElements = array('prompts/sizechart');
+		
 		$this->set(compact('product','saleData','images','shareImage'));
 		
 	}
@@ -354,8 +356,10 @@ class ShopController extends AppController {
 	//imageIndex is the product image to show
 	function main ($school=null, $sex=null, $sale = null, $product = null, $expired=false) {
 		
-		$this->layout = 'dynamic_with_school';
+		$this->layout = 'shopmain';
 		$this->set('classWidth','width-xlarge');
+		
+		$this->loadCfacebook();
 		
 		//can be submitted from no javascript find school form or landing form
 		if(isset($_POST['school-id'])){
@@ -389,9 +393,16 @@ class ShopController extends AppController {
 	
 		$this->set(compact('school','schools','sex','sale','product','schoolColors'));
 		
-		$this->setMainFlash();
+		$this->setMainFlash($schools,$school,$sale,$sex);
+		
+		
 	}
-	private function setMainFlash(){
+	private function loadCfacebook(){
+		App::import('Component','Cfacebook');
+		$Cfacebook = new CfacebookComponent();
+		$this->Cfacebook = $Cfacebook->initialize(&$this);
+	}
+	private function setMainFlash(&$schools,&$school,&$sale,&$sex){
 		//add any flash messages
 		$flash = (strlen($this->Session->read('Message.flash.message')) > 0) ? $this->Session->read('Message.flash.message') : '';
 		
@@ -401,10 +412,6 @@ class ShopController extends AppController {
 		//if the user is not logged in, then prompt them with the login
 		$showFirstTime = false;
 		if(!$this->Auth->user() && !$this->Session->check('Anonymous.firstpage')){
-			App::import('Component','Cfacebook');
-			$Cfacebook = new CfacebookComponent();
-			$this->Cfacebook = $Cfacebook->initialize(&$this);
-			
 			
 			$showFirstTime = true;
 			$this->Session->write('Anonymous.firstpage',true);
@@ -698,8 +705,9 @@ class ShopController extends AppController {
 	 * @param character $sex valid reference to sex
 	 * @param object $school An array representing the school model
 	 */
-	private function getSale($saleId, &$sex, &$school) {
+	private function getSale($saleId, $sex, &$school) {
 		$saleId = $saleId * 1; //prevent injection	
+		$sex = strtolower($sex);
 
 		//sql to find valid sales for the given school and sex
 		$sql = 
@@ -712,14 +720,17 @@ class ShopController extends AppController {
 			'WHERE `Product`.`school_id` = ' . $school['id'] . ' AND `Sale`.`starts` <= ' . time() . ' ' .
 			//cant filter by image here
 			//'AND (`Pimage`.name LIKE "%front%" OR `Pimage`.name LIKE "%main%") ' .
-			'AND LOWER(`Product`.sex) = "'.strtolower($sex).'" ' .
+			//'AND LOWER(`Product`.sex) = "'.strtolower($sex).'" ' .
 			'AND `Sale`.`ends` >= ' . time() . ' AND `Sale`.`active` = 1 ';
 			
 		if(!empty($saleId) && $saleId != 0){
 			$sql .= "AND `Sale`.id = $saleId ";
 		}
 	
-		$sql .= 'ORDER BY `Sale`.`ends` ASC';// . ' LIMIT 1';
+		//order by sex
+		$order = ($sex == 'm') ? 'DESC' : 'ASC';
+		
+		$sql .= "ORDER BY `Product`.sex $order, `Sale`.`ends` ASC";
 		
 		$saleData = $this->Sale->query($sql);
 		
@@ -744,13 +755,19 @@ class ShopController extends AppController {
 			$ids = array();
 			if(!empty($sex)){
 				foreach($saleData as $key=>$s){
-					if(
-						!preg_match('/((front)|(main))/i',$s['Pimage']['image'])
-						|| in_array($s['Product']['id'],$ids)
-					){
+					if(strtolower($s['Product']['sex']) == $sex){
+						if(
+							!preg_match('/((front)|(main))/i',$s['Pimage']['image'])
+							|| in_array($s['Product']['id'],$ids)
+						){
+							unset($saleData[$key]);
+						} else if(!in_array($s['Product']['id'],$ids)){
+							array_push($ids, $s['Product']['id']);
+						}
+					} else {
+						//just remove incorrect sex
 						unset($saleData[$key]);
-					} else if(!in_array($s['Product']['id'],$ids)){
-						array_push($ids, $s['Product']['id']);
+						unset($orig[$key]);
 					}
 				}
 			}
@@ -769,7 +786,6 @@ class ShopController extends AppController {
 			
 			return $saleData;
 		}
-
 
 		//no luck just send to error page
 		$this->redirect(array('action'=>'nosale'));

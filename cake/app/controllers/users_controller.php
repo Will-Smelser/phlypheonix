@@ -360,10 +360,12 @@ class UsersController extends AppController {
 		 	$modwidth = $_GET['width'];
 		 	$modheight = $height / $factor;
 		 }else {
+		 	 //This will set our output to 45% of the original size 
+		 	 $size = 0.21;
 			 $modwidth = $width * $size; 
 			 $modheight = $height * $size;
 		 } 
-		 
+
 		 // Creating the Canvas 
 		 $tn= imagecreatetruecolor($modwidth, $modheight); 
 		 $source = imagecreatefromjpeg($file); 

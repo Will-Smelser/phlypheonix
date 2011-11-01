@@ -69,7 +69,10 @@ input.one{
 	padding: 5px;
 	border-radius: 5px;
 }
-
+p{
+	padding:5px 0px;
+	font-size:12px;	
+}
 /* CUSTOM SELECT MENUS */
 .select{
 	position:absolute;
@@ -533,6 +536,7 @@ p.checkout-pop-count {
 #navigate .nav-link a{
 	color:#000;
 	display:block;
+	padding:0px 0px 5px 20px;
 }
 #navigate UL.nav-link{
 	position:relative;	
@@ -560,8 +564,8 @@ p.checkout-pop-count {
 	font-weight:bold;
 }
 #navigate .nav-link UL LI P{
-	padding:0px 0px 5px 20px;	
-	display:inline-block;
+		
+	
 }
 #navigate .nav-link UL LI:hover{
 	background-color:#AAA;

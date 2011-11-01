@@ -83,6 +83,18 @@
 	?>
 </div>
 
+<div id="viewer-blackout">&nbsp;</div>
+<div id="viewer-pop">
+	<div id="loader-overlay" class="big title">Loading...<br/><img src="/img/ajax/loading.gif"/></div>
+	<iframe id="product-frame" width="100%" height="100%" 
+		src=""
+			frameborder="0" marginheight="0" marginwidth="0" style="">
+		Browser does not support this.  Please upgrade your browser.
+	</iframe>
+</div>
+
+<div id="fb-root"></div>
+<div id="black-out"></div>
 </body>
 
 <?php
@@ -134,25 +146,5 @@ $(document).ready(function(){
 	});
 });
 
-//js to handle the navigation
-//bind the school select events
-$('#h-search ul li').each(function(){
-	var $el = $(this);
-	//$el.find('input').hide();
-	$el.click(function(){
-		var html = $el.find('p').html();
-		$('#h-search li:first span:first').html(html);
-	});
-});
-
-//bind the sex events
-$('#h-sex ul li').each(function(){
-	var $el = $(this);
-	//$el.find('input').hide();
-	$el.click(function(){
-		var src = $(this).find('img').attr('src');
-		$('#h-sex-icon img').attr('src',src);
-	});
-});
 </script>
 </html>

@@ -110,7 +110,10 @@ class CartController extends AppController {
 		$colors = $this->Color->find('list');
 		$content = $this->Ccart->content;
 		
-		$this->set(compact('sizes','colors','content'));
+		$entry = current($content);
+		$school = $entry->info['Product']['school_id'];
+		
+		$this->set(compact('sizes','colors','content','school'));
 		
 		$this->render('index');
 	}

@@ -52,7 +52,8 @@ class School extends AppModel {
 			WHERE 
 				sales.starts <= UNIX_TIMESTAMP() AND 
 				sales.ends >= UNIX_TIMESTAMP() AND 
-				sales.active = 1 
+				sales.active = 1 AND 
+				School.id <> ''
 			GROUP BY `School`.id ORDER BY `School`.".$this->order;
 		return $this->query($sql);
 	}

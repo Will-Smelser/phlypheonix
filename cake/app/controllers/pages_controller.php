@@ -71,7 +71,6 @@ class PagesController extends AppController {
 		$title = $this->getHeading();
 		$this->set(compact('title','classWidth'));
 		
-		
 		$this->set('schools',$this->School->getSchoolsWithSale());
 		
 		$path = func_get_args();

@@ -6,7 +6,7 @@
 			<td class="bg-main">
 			
 			<div style="position:absolute;top:15px;left:50px;right:50px;text-align:center;">
-	 	  		<img src="/img/header/accessories.png" alt="Accessories" />
+	 	  		<img src="/img/header/onsalenow.png" alt="Accessories" />
 	 	  	</div>
 	   		
  			
@@ -44,6 +44,7 @@
 		<tr>
 			<td class="left edge"></td>
 			<td class="bg-main" style="padding-left:10px;padding-right:10px">
+				
 				<?php
 				$style2= '';
 				$style3 = ' sale1';
@@ -81,14 +82,20 @@
 							}
 						}
 						
-						//debug($this->Time);
-						$mytime = $time->relativeTime($stime);
-						//debug($tdata);exit;
-						//$time = "{$tdata['days']} day(s) {$tdata['hours']} hours {$tdata['minutes']} mins.";
+					    $mytime = $time->relativeTime($stime);
 						
 						if($counter != 1) echo "<div style='clear:both;'></div></div><div style='height:10px;'></div>";
+						//title
 						echo "<div class='$style3'>
 							<div class='big title sale info'>{$s['Sale']['name']}</div>
+							<div style='float:left;display:none;padding:10px 0px 0px 0px;max-width:135px' id='fb-like-wrap'>\n";
+						
+						//facebook like
+						echo $this->Hfacebook->likeButtonHTML5('http://'.$_SERVER['HTTP_HOST'].'/'.$this->params['url']['url']);
+						
+						//the expire time
+						echo "
+							</div>
 							<div class='big title sale expire'><span class='text'>Expires in </span>{$mytime}</div>
 							<div style='clear:both'></div>
 							";
@@ -97,6 +104,8 @@
 					//previous
 					$prev = $sale[$key];
 				?>
+				<!-- Show the facebook like -->
+				<script language="javascript" >$('#fb-like-wrap').show().css('float','left');</script>
 				
 				<div class="preview-wrapper <?php echo $style.$style2.$style3; ?>">
 					<a class="preview-link" href="/shop/viewer/<?php echo $s['Product']['id'].'/'.$s['Sale']['id']; ?>">

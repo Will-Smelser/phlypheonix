@@ -14,25 +14,25 @@
 	    	<ul>
 	    		<?php if($loggedin){ ?>
 	    		
-	    		<li style='height:45px;cursor:auto;'><p><i style='font-size:10px;'>Logged in as</i><br/><?php echo $myuser['User']['email']; ?></p></li>
+	    		<li style='height:45px;cursor:auto;padding-left:20px'><i style='font-size:10px;'>Logged in as</i><br/><?php echo $myuser['User']['email']; ?></li>
 	    		
 	    		<li class="seperate"><hr/></li>
 	    		
-	    		<li><p><a href="/users/logout">Logout</a></p></li>
-	    		<li><p><a href="/users/accountinfo">Account Info</a></p></li>
+	    		<li><a href="/users/logout">Logout</a></li>
+	    		<li><a href="/users/accountinfo">Account Info</a></li>
 	    		
 	    		<?php } else { ?>
 	    		
-	    		<li><p><a href="/users/landing">Login</a></p></li>
+	    		<li><a href="/users/landing">Login</a></li>
 	    		
 	    		
 	    		<?php } ?>
 	    		<li class="seperate"><hr/></li>
-	    		<li><p><a href="/pages/about">About Us</a></p></li>
-	    		<li><p><a href="/pages/privacy">Privacy</a></p></li>
-	    		<li><p><a href="/pages/return">Return Policy</a></p></li>
-	    		<li><p><a href="/pages/shipping">Shipping Policy</a></p></li>
-	    		<li><p><a href="/pages/about">Terms &amp; Conditions</a></p></li>
+	    		<li><a href="/pages/about">About Us</a></li>
+	    		<li><a href="/pages/privacy">Privacy</a></li>
+	    		<li><a href="/pages/return">Return Policy</a></li>
+	    		<li><a href="/pages/shipping">Shipping Policy</a></li>
+	    		<li><a href="/pages/about">Terms &amp; Conditions</a></li>
 	    	</ul>
 	    </ul>
     </div>

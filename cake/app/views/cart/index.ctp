@@ -20,7 +20,7 @@ function shortName($name){
 		<th class='cart-three'>Unit Price</th>
 
 <?php 
-//debug($content);
+
 $total = 0.00;
 foreach($content as $cartEntry){
 	echo "\n\t<tr><td>";
@@ -62,6 +62,8 @@ echo "\n<tr><td colspan='4' class='cart-total' align='right' class='cart-total'>
 ?>
 </table>
 </form>
-<a href="/checkout/index" style="float:left;display:block;"><input type="button" value="Checkout" class="checkout one" /></a>
-<input id="cart-update" type="button" value="Update" class="checkout one" onclick="window.cart.update()" />
+<form style="float:right;" action="/accessories/index/<?php echo $school; ?>" method="get">
+	<input type="submit" value="Checkout" class="checkout one" />
+</form>
+<input style="float:left;" id="cart-update" type="button" value="Update" class="checkout one" onclick="window.cart.update()" />
 </div>

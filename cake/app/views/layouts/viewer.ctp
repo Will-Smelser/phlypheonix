@@ -5,6 +5,9 @@
 	
 	<title><?php echo $title_for_layout; ?></title>
 	<?php
+		//Facebook Share Information
+		echo $this->Hfacebook->shareMeta($shareImage);
+		
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('reset.css');
@@ -57,6 +60,12 @@
 <body>
 <?php echo $content_for_layout; ?>
 
+
+<!-- SIZE CHART -->
+<div style="display:none;overflow:auto;height:500px;" id="size-chart">
+<?php echo $this->element('sizechart'); ?>
+</div>
+
 </body>
 
 <script type="text/javascript" language="javascript">
@@ -80,6 +89,17 @@ $(window).load(function(){
 });
 
 <?php echo $this->element('prompts/bodypop'); ?>
+
+//size chart
+$('#size-chart-link').click(function(){
+	$('body').qtip('api').elements.content.css({'overflow':'auto','max-height':'500px'});
+
+	$('body').qtip('api').updateContent($('#size-chart').html(),true);
+	$('body').qtip('api').updateWidth(650);
+	
+	$('body').qtip('show');
+	return false;
+});
 
 </script>
 </html>

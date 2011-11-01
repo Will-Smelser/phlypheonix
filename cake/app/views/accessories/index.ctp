@@ -137,15 +137,19 @@ ob_end_clean();
 				<?php echo $this->element('layouts/lightbg_top'); ?>
 				
 				<?php echo $content; ?>
+				<div style="clear:both"></div>
+				<div style="padding-top:10px;">
+					<form style="float:left;" method="post" action="/shop/main/<?php echo $school['School']['id'].'/'.$sex; ?>">
+						<input class="big green btn" type="submit" value="Back to Sale" />
+					</form>
+					<form style="float:right;" method="post" action="/checkout/index">
+						<input class="big green btn" type="submit" value="Checkout" />
+					</form>
+				</div>
 				<?php echo $this->element('layouts/lightbg_bottom'); ?>
 				</div>
 				
-				<!-- NAVIGATION ARROWS -->
-				<a href="/shop/main/<?php echo $school['School']['id'].'/'.$sex; ?>"><div id="leftarrow"></div></a>
-				<a href="/checkout/index"><div id="rightarrow"></div></a>
-		
-				<div id="forcentering"> <!-- Begin Wrapper Used to Center dwrapper over light gray background -->
-				<div id="dwrapper"><!-- Begin Dynamicly Sized Wrapper -->
+				
 			</td>
 			<td class="right edge"></td>
 		</tr>

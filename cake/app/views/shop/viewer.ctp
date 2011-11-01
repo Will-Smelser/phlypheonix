@@ -117,7 +117,7 @@
 		</div>
 		
 		<div id="size-wrap">
-			<div class="title big">Choose Size</div>
+			<div class="title big">Choose Size&nbsp;&nbsp;<a id="size-chart-link" style="display:inline;color:#333;curosr:pointer" href="/pages/sizechart" target="_top">( size chart )</a></div>
 			<?php 
 				//perform custom sort
 				function cmp($a, $b){
@@ -201,14 +201,33 @@
 
 			<div style="clear:both"></div>
 		</div>
+		
 		<noscript>
 			<input style="margin-top:20px" class="big green btn" type="submit" value="Add to Cart" />
 		</noscript>
-		<div id="submit-btn" style="display:none;">
-			<input id="add-to-cart" style="margin-top:20px" class="big green btn" type="button" value="Add to Cart" />
+		
+		<div id="submit-btn" style="display:none;float:left;margin-top:20px;">
+			<input id="add-to-cart" class="big green btn" type="button" value="Add to Cart" />
 		</div>
+		
+		<div id="checkout-btn" style="float:right;margin-top:20px;">
+			<input class="big green btn" type="button" onclick="parent.document.location.href='/accessories/index/<?php echo $product['School']['id']; ?>';" value="Checkout" />
+		</div>
+		
+		<div style="clear:both"></div>
 		</form>
+		<noscript>
+		<form target="_top" style="float:right;margin-top:-40px" method="post" action="/accessories/index/<?php echo $product['School']['id']; ?>" >
+			<input type="submit" value="Checkout" class="big green btn" />
+		</form>
+		</noscript>
 	</div>
+	<div style="background-color:#aaa;color:#fff;padding:0px;" class="big title">
+		<div style="float:left;padding:5px">Simple Returns</div>
+		<div style="float:right;padding:5px">Flat Rate Shipping</div>
+		<div style="clear:both"></div>
+	</div>
+	
 	<div class="big title">Description</div>
 	<hr/>
 	<p><?php echo $product['Product']['desc']; ?></p>
@@ -244,6 +263,12 @@
 		<div style="clear:both;"></div>
 		<div id="image-info-loader"></div>
 		</div>
+	</div>
+	
+	<div class="mfg-info-wrap">
+			<div class="big title">Manufacturer</div>
+			<hr/>
+			<img src="<?php echo $product['Manufacturer']['image']; ?>" />
 	</div>
 	
 </div>
