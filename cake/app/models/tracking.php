@@ -16,7 +16,8 @@ class Tracking extends AppModel {
 		$ssid = session_id();
 		$refer = ($Session->check('Referer.id')) ? $Session->read('Referer.id') : null;
 		
-		$cart = serialize($Ccart);
+		//$cart = serialize($Ccart);
+		$cart = (is_object($Ccart)) ? $Ccart->serialize() : '';
 		
 		$data = array();
 		$data['Tracking'] = array(

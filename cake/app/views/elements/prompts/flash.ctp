@@ -45,7 +45,7 @@ $(document).ready(function(){
 	   	onHide : function(){
 	   		$('#black-out').hide();
 	   	},
-	   	onFocus : function(){
+	   	onShow : function(){
 	   		var z = $('body').qtip('api').elements.tooltip.css('z-index');
 	   		$('#black-out').show().css('z-index',z);
 	   	},
@@ -59,7 +59,7 @@ $(document).ready(function(){
 	   
 	};
 	
-	$('body').qtip(qtipSetting).trigger('showFlash');
+	$('body').qtip(qtipSetting);//.trigger('showFlash');
 	
 	//multiple popups can occurr, make sure this is on top
 	setTimeout(function(){$('body').qtip('api').focus();},500);

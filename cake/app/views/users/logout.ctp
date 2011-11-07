@@ -1,5 +1,5 @@
 <?php echo $this->element('layouts/lightbg_top'); ?>
-<div class="big title">Checkout Complete</div>
+<div class="big title">Logout Complete</div>
 <hr>
 <div id="content" >
 		<span class="eight">

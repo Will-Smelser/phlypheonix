@@ -35,6 +35,16 @@ select{
 input[type="checkbox"]{
 	background-color:transparent;	
 }
+p{
+	padding:5px 0px;
+	font-size:12px;	
+}
+ul.bullet li{
+	list-style-type: circle;	
+}
+p a, ul.bullet li a{
+	text-decoration:underline;	
+}
 a{
 	text-decoration:none;
 	font-family:arial;	
@@ -69,10 +79,7 @@ input.one{
 	padding: 5px;
 	border-radius: 5px;
 }
-p{
-	padding:5px 0px;
-	font-size:12px;	
-}
+
 /* CUSTOM SELECT MENUS */
 .select{
 	position:absolute;
@@ -483,12 +490,18 @@ p.checkout-pop-count {
 }
 
 #logoFlyFoenix{
-	position: absolute;
-	margin-top: 2px;
-	margin-left: 10px;
-	z-index: 3;
+	position:absolute;
+	cursor:pointer;
+	z-index:101;
 }
-
+#phone-number{
+	position:absolute;
+	left:300px;
+	color:#000;
+	font-size:30px;
+	line-height:25px;
+	padding-left:20px	
+}
 #navigate{
 	position:absolute;
 	right:0px;

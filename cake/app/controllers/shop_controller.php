@@ -390,13 +390,38 @@ class ShopController extends AppController {
 		//$schools = $this->School->find('all',array('recursive'=>0));
 		$schools = $this->School->getSchoolsWithSale();
 		
+		//set the sharethis image
+		$shareImage = 'http://www.flyfoenix.com/img/referral.jpg';
+		if(empty($product)){
+			reset($sale);
+			$temp = current($sale);
+			$shareImage = $temp['Pimage']['image'];
+		} else {
+			foreach($sale as $s){
+				if($s['Product']['id'] == $product){
+					$shareImage = $s['Pimage']['image'];
+					break;
+				}
+			}
+		}
 	
-		$this->set(compact('school','schools','sex','sale','product','schoolColors'));
+		$this->set(compact('school','schools','sex','sale','product','schoolColors','shareImage'));
 		
 		$this->setMainFlash($schools,$school,$sale,$sex);
 		
+		//show all boots
+		$sql = 'SELECT * FROM `products` AS Product LEFT JOIN `pimages` AS Pimage ON (Product.id = Pimage.product_id) LEFT JOIN `manufacturers` AS Manufacturer ON (Product.manufacturer_id = Manufacturer.id) WHERE Product.style LIKE "%boot%" AND Pimage.name LIKE "%front%"';
+		$boots = $this->Product->query($sql);
 		
+		$this->set(compact('boots'));
 	}
+	
+	public function recordEvent($msg){
+		$this->layout = 'ajax';
+		$this->render('ajax');
+		echo "recorded '$msg'";
+	}
+	
 	private function loadCfacebook(){
 		App::import('Component','Cfacebook');
 		$Cfacebook = new CfacebookComponent();
@@ -423,13 +448,14 @@ class ShopController extends AppController {
 				$postdata = $this->Session->read('registerData');
 				$email = (isset($postdata['User']['email'])) ? $postdata['User']['email'] : '';
 				$sex = (isset($postdata['User']['sex'])) ? $postdata['User']['sex'] : $sex;
-				$school['id'] = (isset($postdata['School']['School']['id'])) ? $postdata['School']['School']['id'] : $school['id']; 	
+				$school['id'] = (isset($postdata['School']['School']['id'])) ? 
+					$postdata['School']['School']['id'] : $school['id']; 	
 			}
 			
 			$register = "
 			
 			<div class='big title' style='color:#333'>Save More &amp; Shop Faster</div>
-			<p>Get a <b>$5 Coupon</b> today and save your preferences for when your return.
+			<p>Get a <b>$5 Coupon</b> today and save your preferences for when you return.
 			</p>
 			
 			<form id='register-pop' method='post' action='/users/register'>
@@ -462,7 +488,7 @@ class ShopController extends AppController {
 				
 			</form>
 			<div style='clear:both'></div>
-			<div style='padding-top:10px'><a style='float:right' href='#' onclick='$(\"body\").qtip(\"hide\")'>Skip Registration</a></div>
+			<div style='padding-top:10px'><a style='float:right;color:#333;' href='#' onclick='$(\"body\").qtip(\"hide\");recordEvent(\"Skip Registration\")'>Skip Registration</a></div>
 			";
 			
 			if(!$this->Session->check('Anonymous.school')){
@@ -506,6 +532,7 @@ class ShopController extends AppController {
 			}
 			
 		}
+		
 		$breaks = array("\r\n", "\n", "\r", "\t");
 		$flash = str_replace($breaks,'',$flash);
 		$flash = str_replace('\'','\\\'',$flash);
@@ -686,7 +713,7 @@ class ShopController extends AppController {
 	 */
 	private function getSex($sex){
 		//no sex given, but user does have sex
-		if(!empty($this->myuser['User']['sex']) && empty($sex)) {
+		if(empty($sex) && !empty($this->myuser['User']['sex'])) {
 			return $this->myuser['User']['sex'];
 		//valid sex
 		} else if(strtoupper($sex) == 'M' || strtoupper($sex == 'F')) {
@@ -717,11 +744,14 @@ class ShopController extends AppController {
 			'LEFT JOIN `pimages` AS `Pimage` ON `Pimage`.`product_id` = `sales_products`.product_id ' .
 			'LEFT JOIN `manufacturers` AS `Manufacturer` ON `Manufacturer`.id = `Product`.manufacturer_id ' .
 		
-			'WHERE `Product`.`school_id` = ' . $school['id'] . ' AND `Sale`.`starts` <= ' . time() . ' ' .
+			'WHERE `Product`.`school_id` = ' . $school['id'] . ' AND `Sale`.`active` = 1 ';
 			//cant filter by image here
 			//'AND (`Pimage`.name LIKE "%front%" OR `Pimage`.name LIKE "%main%") ' .
-			//'AND LOWER(`Product`.sex) = "'.strtolower($sex).'" ' .
-			'AND `Sale`.`ends` >= ' . time() . ' AND `Sale`.`active` = 1 ';
+			//'AND LOWER(`Product`.sex) = "'.strtolower($sex).'" ';
+			
+		if(Configure::read('config.sales.on')){
+			$sql .=  ' AND `Sale`.`starts` <= ' . time() . 'AND `Sale`.`ends` >= ' . time() ;
+		}
 			
 		if(!empty($saleId) && $saleId != 0){
 			$sql .= "AND `Sale`.id = $saleId ";
@@ -740,6 +770,7 @@ class ShopController extends AppController {
 				$temp = (strtolower($sex) == 'm') ? 'men.' : 'women.';
 				$this->Session->setFlash('<img src="/img/icons/error.png" />&nbsp;Could not locate a sale for '.$temp);
 				$this->redirect("/shop/main/{$school['id']}/{$saleData[0]['Product']['sex']}");
+				return;
 			}
 			
 			/*
@@ -800,15 +831,12 @@ class ShopController extends AppController {
 			return null;
 		//product number requested
 		} else {
-			//look for this product
-			foreach($sale as $s) {
-				foreach($s['Product'] as $p){
-					if($p['id'] == $product) {
-						return $p;
-					}
+			//look through the sale looking for a product
+			foreach($sale as $s){
+				if($s['Product']['id'] == $product){
+					return $product;
 				}
 			}
-			
 		}
 		
 		$this->Session->setFlash('<img src="/img/icons/error.png" />&nbsp;Failed to locate the requested product.');

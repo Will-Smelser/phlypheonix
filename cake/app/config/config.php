@@ -7,6 +7,7 @@ $config['config']['testing'] = false;
 //false = do not allow purchase when no inventory
 $config['config']['inventory']['allowpresale'] = false;
 
+$config['config']['sales']['on'] = false; //whether or not the time frame is implamented for sales
 $config['config']['sales']['length'] = 72; //hours
 
 /* image directories */

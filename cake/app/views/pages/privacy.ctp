@@ -1,6 +1,6 @@
 <?php echo $this->element('layouts/lightbg_top'); ?>
-<div class="title">Privacy Policy</div>
-<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="100%" height="2" /><br/>
+<div class="big title">Privacy Policy</div>
+<hr/>
 <br/>
 <div class="title">What information do we collect?</div> 
 <p>

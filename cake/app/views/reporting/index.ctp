@@ -60,10 +60,11 @@ if(count($parts) > 1 && $filterType == 'date'){
 	<?php 
 	
 	foreach($result as $entry){
-		$uid = (isset($entry['trackings_base_data2']['user_id'])) ? $entry['trackings_base_data2']['user_id'] : null;
-		$fbid = (isset($entry['trackings_base_data2']['facebook_id'])) ? $entry['trackings_base_data2']['facebook_id'] : ' - ';
-		$ssid = $entry['trackings_base_data2']['session'];
-		$email = (isset($entry['trackings_base_data2']['email'])) ? $entry['trackings_base_data2']['email'] : ' - ';
+		
+		$uid = (isset($entry['trackings_base_data']['user_id'])) ? $entry['trackings_base_data2']['user_id'] : null;
+		$fbid = (isset($entry['trackings_base_data']['facebook_id'])) ? $entry['trackings_base_data2']['facebook_id'] : ' - ';
+		$ssid = $entry['trackings_base_data']['session'];
+		$email = (isset($entry['trackings_base_data']['email'])) ? $entry['trackings_base_data2']['email'] : ' - ';
 		
 		$user = (!empty($uid)) ? 
 			"<a href=\"/reporting/timeline/$uid/{$ssid}\">$uid</a>" : ' - ';
@@ -77,10 +78,10 @@ if(count($parts) > 1 && $filterType == 'date'){
 			<td>{$email}</td>
 			<td>{$entry['trackings_base_data2']['name']}</td>
 			<td>{$ssid}</td>
-			<td>{$entry['trackings_base_data2']['first_time']}</td>
-			<td>{$entry['trackings_base_data2']['last_time']}</td>
-			<td>{$entry['trackings_base_data2']['total_time']}</td>
-			<td>{$entry['trackings_base_data2']['count']}</td>
+			<td>{$entry['trackings_base_data']['first_time']}</td>
+			<td>{$entry['trackings_base_data']['last_time']}</td>
+			<td>{$entry['trackings_base_data']['total_time']}</td>
+			<td>{$entry['trackings_base_data']['count']}</td>
 		</tr>
 		";
 	}

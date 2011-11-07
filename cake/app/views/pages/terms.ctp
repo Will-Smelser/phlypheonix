@@ -1,7 +1,6 @@
 <?php echo $this->element('layouts/lightbg_top'); ?>
-<div class="title">Terms of Use</div>
-<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="100%" height="2" /><br/>
-<br/>
+<div class="big title">Terms of Use</div>
+<hr/>
 <p>
 Your use of the FlyFoenix.com website (the "Site") is subject to these Terms of Use. Use of the Site, registering as a member on the Site ("Member"), or executing a transaction on the Site all constitute acceptance of these terms and conditions. FlyFoenix.com may change, move, delete or add to the site frequently. We may amend these Terms and Conditions at any time by posting a revised version on our website at [http://www.flyfoenix.com/terms]. If there are changes that may be important to our users we will notify you using the contact information you provide, or when you next execute a transaction on the Site.
 </p>

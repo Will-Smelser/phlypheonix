@@ -2,9 +2,16 @@
 .sale-wrapper{
 	margin-top:10px;	
 }
-.sale.info{
-	display:inline;
+.sale.easyreturns{
+	display:block;
 	float:left;
+	position:relative;
+	top:5px;
+	color:#FFF;
+}
+.sale.info{
+	float:left;
+	display:block;
 	padding:10px;
 }
 .sale.expire .text{
@@ -69,14 +76,14 @@
 .product-about .name{
 	font-size:12px;
 }
-.sale1, .sale4{
-	background-color:#555;	
+.sale1, .sale4, .sale7{
+	background-color:#333;	
 }
-.sale2, .sale5{
-	background-color:#888;
+.sale2, .sale5, .sale8{
+	background-color:#666;
 }
-.sale3, .sale6{
-	/*background-color:#BBB;*/
+.sale3, .sale6, .sale9{
+	background-color:#333;
 }
 
 
@@ -134,4 +141,7 @@
 	-webkit-box-shadow: 0 0 5px 5px#888;
 	box-shadow: 0 0 5px 5px #888;
 
+}
+.return-short{
+	font-size:14px;	
 }

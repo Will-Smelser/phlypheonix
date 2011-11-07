@@ -69,7 +69,7 @@ class UsersController extends AppController {
 				$sale = 0;
 				foreach($p['Sale'] as $s){
 					
-					if($s['ends'] > time() && $s['starts'] < time() && $s['active'] == 1){
+					if(Configure::read('config.sales.on') && $s['ends'] > time() && $s['starts'] < time() && $s['active'] == 1){
 						$sale = $s['id'];
 						break;
 					}
@@ -175,7 +175,7 @@ class UsersController extends AppController {
 		
 		$this->set(compact('sex','schools'));
 		
-		$this->addCarouselImages();
+		//$this->addCarouselImages();
 		
 		//if there was a login error from register or login
 		if(!empty($err)) {
@@ -327,7 +327,9 @@ class UsersController extends AppController {
 		
 		$fileInfo = pathinfo($file);
 		 
-		 // This sets it to a .jpg, but you can change this to png or gif 
+		 //headers for cache and content type		 
+		 $future = 2592000 + time(); //30 days from noew
+		 header('Expires: '.gmdate('D, d M Y H:i:s', $future).' GMT');
 		 header('Content-type: image/jpeg'); 
 		 
 		 //if the files does not exist or cannot be read

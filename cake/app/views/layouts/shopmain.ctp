@@ -52,6 +52,7 @@
 </script>
 	
 </head>
+
 <body>
 
 <div id="wrapper" > 
@@ -93,8 +94,14 @@
 	</iframe>
 </div>
 
+<div id="return-policy" style="display:none;overflow:auto;height:500px;">
+	<?php echo $this->element('returnshort'); ?>
+</div>
+
 <div id="fb-root"></div>
 <div id="black-out"></div>
+
+
 </body>
 
 <?php
@@ -107,6 +114,7 @@ if(isset($jsFilesBottom)){
 ?>
 
 <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
+<script type="text/javascript" src="/js/viewer-popup.js"></script>
 
 
 <script type="text/javascript">
@@ -138,6 +146,111 @@ if(isset($pageElements)){
 }
 ?>
 
+/* STUFF FROM ORIGIONAL SHOP LAYOUT */
+
+//first time user prompt
+<?php if($showFirstTime) echo $this->element('prompts/first_time_user'); ?>
+
+<!-- FACEBOOK //-->
+$.getScript("<?php echo $protocal; ?>://connect.facebook.net/en_US/all.js",function(){
+	<?php 
+	
+	echo $this->Hfacebook->initLogin(
+			$FACEBOOK_APP_ID,
+			$FACEBOOK_APP_SESSION,
+			false,
+			array('auth.login'=>'fbloggedin')
+	); 
+	
+	?>
+    
+	
+	$('#fb-reg').click(function(){
+		window.formClick=true;
+		<?php echo $this->Hfacebook->loginJs('fbloggedin',null,'email,user_birthday,user_education_history'); ?>
+	})
+
+	//logged in function
+	function fbloggedin(){
+		window.addCoupon(function(){window.location.href = '<?php echo $protocal; ?>://flyfoenix.com/users/landing';});
+	}
+
+	//logout function
+	var fblogout = function(){
+		FB.logout(function(response) {
+			document.location.href = '/users/logout';	
+		});
+	}
+	
+});
+
+
+//prompt for flash message
+<?php echo $this->element('prompts/flash'); ?>
+<?php if(strlen($flash) > 0) echo '$(document).ready(function(){$("body").trigger("showFlash");});'; ?>
+
+<?php if($showFirstTime){
+//scripts for flash prompt
+?>
+$(document).ready(function(){
+	//dont allow flash close
+	$('body').qtip('api').elements.title.hide();
+	
+	
+	//bind the move function
+	$('#reg-cont').click(function(){
+		$('#reg-inner-wrapper').animate({'left':'-410px'});
+
+		var sex = $('#reg-wrapper input:radio:checked').val();
+		var school = $('#reg-wrapper select').val();
+		$('#reg-school').val(school);
+		$('#reg-sex').val(sex);
+
+	});
+
+	$('#save-pref').click(function(){
+		window.addCoupon(function(){$('#register-pop').submit();});
+	});
+
+	//show the qtip
+	$('body').trigger('showFlash');
+});
+
+function addCoupon(callback){
+	var wait = 2000;
+	$.getJSON('/cart/addNewUserCoupon',function(data){
+		if(data.result){
+			var $cart = $('#cart');
+			$cart.qtip('api').updateContent('Added Coupon to cart...',false);
+			$cart.trigger('showCart');
+			
+			setTimeout(function(){$cart.qtip('hide');},wait); //hide the qtip after 1 second
+		}
+		setTimeout(callback,wait+1000);
+	});
+	
+}
+
+function recordEvent(event){
+	$.get('/shop/recordEvent/'+escape(event));
+}
+
+<?php
+}
+?>
+
+//easy return link
+$('.return-link').click(function(){
+	$('body').qtip('api').elements.title.show();
+	
+	$('body').qtip('api').updateContent($('#return-policy').html(),true);
+	$('body').qtip('api').updateWidth(650);
+	
+	$('body').qtip('show');
+	return false;
+	
+});
+
 //share this
 var switchTo5x=true;
 $(document).ready(function(){
@@ -145,6 +258,5 @@ $(document).ready(function(){
 		stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7'});
 	});
 });
-
 </script>
 </html>

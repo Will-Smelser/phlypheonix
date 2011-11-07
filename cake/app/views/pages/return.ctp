@@ -1,15 +1,12 @@
 <?php echo $this->element('layouts/lightbg_top'); ?>
-<div class="title">Return Policy</div>
-<img src="/img/productpresentation/flyfoenix_product_presentation_grayline.png" width="100%" height="2" /><br/>
+<div class="big title">Return Policy</div>
+<hr/>
 
-<p>
-<ul>
-<li style="display:block;padding:5px 0px">- All returns must be approved and shipped with a Return Authorization number and packing slip that will be emailed upon the approval of a return.</li>
-<li style="display:block;padding:5px 0px">- A Request for a Return Authorization number can be made using the Contact Us form.</li>
-<li style="display:block;padding:5px 0px">- Simply print the packing slip and ship the package to the address on the slip.</li>
-<li style="display:block;padding:5px 0px">- Items approved for return will be credited to your FlyFoenix.com account for store credit.</li>
-</ul>
-</p>
+
+<?php echo $this->element('return'); ?>
+
+
+<br/>
 <p>
 FlyFoenix.com <b>must receive returned merchandise within 30 days</b> of the date it was shipped to you.  Shipping information will be included with your initial order.
 </p>

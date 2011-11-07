@@ -144,9 +144,22 @@ class AppController extends Controller {
     	}
     	
     	//store data
-    	$userid = ($loggedin) ? $this->myuser['User']['id'] : null;
-    	$this->Tracking->addEntry(&$this->Session, &$this->params, &$this->Ccart, $userid);
-    	
+    	$skip = array(    		
+   			//controller=>array(actions)
+    		'cart'=>array('*'),
+   			'users'=>array('getimage')
+    	);
+
+       	$userid = ($loggedin) ? $this->myuser['User']['id'] : null;
+    	if( $this->myuser['User']['group_id'] != 1 && (!array_key_exists($this->params['controller'],$skip) || 
+    		!in_array($this->params['action'],$skip[$this->params['controller']])
+    		)){
+	    	if(count($this->Ccart->content) > 0 ){
+	    		$this->Tracking->addEntry(&$this->Session, &$this->params, &$this->Ccart, $userid);
+	    	} else {
+	    		$this->Tracking->addEntry(&$this->Session, &$this->params, null, $userid);
+	    	}
+    	}
         //$this->secureUserSession();
 	}
 	

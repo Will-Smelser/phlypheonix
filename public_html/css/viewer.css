@@ -49,6 +49,9 @@ body{
 	display:block;
 }
 .thumb-wrapper, .feature-wrapper{
+	background-image:url('/img/ajax/loading.gif');
+	background-position:center center;
+	background-repeat:no-repeat;
 	
 	width:77px;
 	height:90px;
@@ -132,7 +135,7 @@ body{
 	-moz-border-radius:0px
 }
 .big.title{
-	padding-top:20px;	
+	padding-top:10px;	
 }
 .white.title{
 	color:#fff;	
@@ -178,7 +181,7 @@ body{
 	font-size:14px;
 	font-weight:bold;
 	text-align:right;
-	padding:5px 10px 0px 0px;	
+	padding:5px 5px 0px 0px;	
 }
 
 .size-table{
@@ -194,4 +197,10 @@ body{
 	color:#fff;
 	background-color:#333;
 	text-align:right;
+}
+.return-short{
+	font-size:16px;
+}
+.return-short a {
+		
 }

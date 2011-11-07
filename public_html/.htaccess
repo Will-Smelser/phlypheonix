@@ -11,3 +11,25 @@ RewriteCond %{HTTP_HOST} ^flyfeonix\.com$ [OR]
 RewriteCond %{HTTP_HOST} ^flyfoenix\.com$ [OR]
 RewriteCond %{HTTP_HOST} ^www\.flyfeonix\.com$
 RewriteRule ^(.*)$ "http\:\/\/www\.flyfoenix\.com\/$1" [R=301,L]
+
+<FilesMatch "\.(ico|pdf|flv|jpe?g|png|gif|js|css|swf)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 30 days"
+</FilesMatch>
+
+#need this since some images are created on the fly
+ExpiresByType image/jpeg "access plus 30 days"
+
+#remove entity tags
+FileETag none
+
+# compress text, html, javascript, css, xml:
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript

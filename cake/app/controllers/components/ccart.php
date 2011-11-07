@@ -6,6 +6,7 @@ class CcartComponent extends Object {
 	var $controller;
 	var $session;
 	
+	var $namespace = null;
 	var $content = array();
 	
 	function initialize(&$controller){
@@ -13,11 +14,9 @@ class CcartComponent extends Object {
 		$this->namespace = Configure::read('cart.namespace');
 		
 		//load the cake session component
-		if(!empty($this->controller->Session)) {
+		if(ClassRegistry::isKeySet('Session')) {
 			$this->session =& $this->controller->Session;
-			
 		} else {
-			
 			App::import('Component', 'Session');
 			$this->session =& new SessionComponent();
 		}
@@ -29,7 +28,6 @@ class CcartComponent extends Object {
 		} else {
 			$this->content =& $this->session->read($this->namespace);
 		}
-		
 	}
 	
 	function add($cartEntry) {
@@ -123,6 +121,55 @@ class CcartComponent extends Object {
 	
 	function getProductTotal($id, $route=null) {
 		return $this->getProduct($id)->getTotal($route);
+	}
+	
+	function serialize(){
+		$serialized = array();
+		foreach($this->getContents() as $entry){
+			$type = $entry->getType();
+			$id = $entry->id;
+			$uniques = $entry->uniques;
+			$qty = intval($entry->qty);
+			$unitPrice = $entry->getUnitPrice();
+			array_push($serialized,
+				array('type'=>$type,'id'=>$id,'qty'=>$qty,
+					'unitPrice'=>$unitPrice,'uniques'=>$uniques)
+			);
+		}
+		return json_encode($serialized);
+	}
+	
+	static function unserialize($serialized, &$cart){
+		
+		$data = json_decode($serialized,true);
+		
+		foreach($data as $row){
+			$entry = null;
+			switch($row['type']){
+				default:
+				case 'product':
+					$color = (isset($row['uniques']['color'])) ? 
+						$row['uniques']['color'] : null;
+					$size = (isset($row['uniques']['size'])) ? 
+						$row['uniques']['size'] : null;
+					$pdetail = (isset($row['uniques']['pdetail'])) ?
+						$row['uniques']['pdetail'] : null;
+					$entry = new ProductEntry(array('id'=>$row['uniques']['id'],
+						'color'=>$color,'size'=>$size,
+						'pdetail'=>$pdetail),$row['qty']);
+					break;
+				case 'coupon':
+					$entry = new CouponEntry(array('id'=>$row['uniques']['id']),
+						$row['qty']);
+					break;
+				case 'accessory':
+					 throw new Exception('Accessory type is not implamented.');
+					break;
+			}
+			$cart->add($entry);
+		}
+		
+		return $cart;
 	}
 	
 	/**

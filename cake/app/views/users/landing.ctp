@@ -163,25 +163,33 @@ $(document).ready(function(){
 	//carousel
 	$('#carousel').show();
 	
-	var pimages = <?php echo json_encode($pimages);?>;
+	var pimages = <?php echo json_encode(scandir(WWW_ROOT . 'img' . DS . 'carousel'));?>;
 	var ppos = 0;
 
 	var $obj = $('#carousel-inner');
 	
 	function addImages(){
 		
-		for(var i=0; i<10; i++){
+		for(var i=0; i<20; i++){
 			if(ppos > pimages.length) return;
-			$obj.mioCarousel('push','/users/getimage?image='+pimages[ppos]);
-			ppos++;
+
+			if(pimages[i][0] != '.'){
+				//$obj.mioCarousel('push','/users/getimage?image='+pimages[ppos]);
+				$obj.mioCarousel('push','/img/carousel/'+pimages[ppos]);
+				ppos++;
+			}
 		}
 	}
 
 	$obj.mioCarousel({nearEnd:addImages});
 	
 	for(var x in pimages){
-		$obj.mioCarousel('push','/users/getimage?image='+pimages[x]);
-		ppos++;
+		if( typeof pimages[x] != undefined && pimages[x][0] != '.'){
+			//$obj.mioCarousel('push','/users/getimage?image='+pimages[ppos]);
+			$obj.mioCarousel('push','/img/carousel/'+pimages[x]);
+			ppos++;
+		}
+
 		if(ppos >=10) break;
 	}
 

@@ -1,0 +1,14 @@
+.size-table{
+	width:100%;
+	border:solid #666 2px;
+	background-color:#000;
+}
+.size-table TD{
+	padding:5px;	
+}
+.size-title{
+	font-weight:bold;
+	color:#111;
+	background-color:#CCC;
+	text-align:right;
+}

@@ -20,24 +20,26 @@
 	//get the discount
 	$discount = floor((1-$product['Product']['price_member'] / $product['Product']['price_retail']) * 100);
 ?>
-<div id="viewer-pop-header" onclick="window.parent.mioPopup.close()" style="cursor:pointer">X</div>
+
 <div id="content">
-	<div class="big title wrap-title" id="productname">
+	<div class="big title wrap-title" id="productname" style="padding-top:0px;">
 		<?php echo $product['Product']['name']; ?> 
 	</div>
 	
-	<div id="sharing" class="wrap-title big title">
-	<noscript>
-    	<span>Copy this Link</span><br/>
-    	<input style="width:251px" type="text" value="http://www.flyfoenix.com/users/referer/<?php echo $myuser['User']['id']; ?>/<?php echo $product['Product']['id']?>" />
-    </noscript>
-    <div style="display:none;float:right;" id="sharethis-wrap">
-    	<?php echo $this->element('sharthis'); ?>
-    </div>
-    <script type="text/javascript">$('#sharethis-wrap').show();</script>
-	
+	<div id="sharing" class="wrap-title big title" style="padding:0px;">
+		<noscript>
+	    	<span>Copy this Link</span><br/>
+	    	<input style="width:251px" type="text" value="http://www.flyfoenix.com/users/referer/<?php echo $myuser['User']['id']; ?>/<?php echo $product['Product']['id']?>" />
+	    </noscript>
+	    <div style="display:none;float:right;" id="sharethis-wrap">
+	    	<?php echo $this->element('sharthis'); ?>
+	    </div>
+	    <script type="text/javascript">$('#sharethis-wrap').show();</script>
 	</div>
 	
+	<p style="float:right;font-size:15px;margin-right:10px" class="title">Share and earn $5</p>
+	
+	<div id="viewer-pop-header" onclick="window.parent.mioPopup.close()" style="cursor:pointer">X</div>
 	<div style="clear:both;"></div>
 <div id="left-wrapper">
 	
@@ -55,10 +57,14 @@
 	    	foreach($product['Pattribute'] as $p){ 
 	    		$tcounter++;
 	    		$style = ($tcounter%$columns != 0) ? ' pad-right' : '';
+	    		
+	    		//just the image name
+	    		$imgThumb = '/users/getimage/?width=77&image='.urlencode($p['image']);
+	    		$imgDef  = '/users/getimage/?width=351&image='.urlencode($p['image']);
 	    	?> 
 	        <div class="feature-wrapper<?php echo $style; ?>">
-	        	<a class="feature-thumb" href="<?php echo $p['image']; 	?>" rel="<?php echo $p['image']; 	?>">
-	        	<img src="<?php echo $p['image']; ?>" title="" width="77" height="88" />
+	        	<a class="feature-thumb" href="<?php echo $p['image']; 	?>" rel="<?php echo $imgDef; 	?>">
+	        	<img src="<?php echo $imgThumb; ?>" title="" width="77" height="88" />
 	        	</a>
 	        	<div class="attribute-info" style="display:none;"><?php echo $p['description'];?></div>
 	        </div>
@@ -72,10 +78,14 @@
 	    			if(preg_match('/front/i',$p['name'])){
 	    				$tcounter++;
 	    				$style = ($tcounter%$columns != 0) ? ' pad-right' : '';
+	    				
+	    				//just the image name
+			    		$imgThumb = '/users/getimage/?width=77&image='.urlencode($p['image']);
+			    		$imgDef  = '/users/getimage/?width=351&image='.urlencode($p['image']);
 	    	?>
 	        	<div class="thumb-wrapper<?php echo $style; ?>">
-	        	<a target="_blank" class="gallery-thumb" href="<?php echo $p['image']; 	?>" rel="<?php echo $p['image']; 	?>" target="_blank">
-	        		<img  src="<?php echo $p['image']; 	?>" width="77" height="88" />
+	        	<a target="_blank" class="gallery-thumb" href="<?php echo $p['image']; 	?>" rel="<?php echo $imgDef; 	?>" target="_blank">
+	        		<img  src="<?php echo $imgThumb; ?>" width="77" height="88" />
 	        	</a>
 	        	</div>
 	        		<?php 
@@ -103,7 +113,8 @@
 
 <div id="right-wrapper">
 	
-	<div id="main-info-wrap">
+	<div style="position:relative;" id="main-info-wrap">
+		<img src="<?php echo $product['Manufacturer']['image']; ?>" style="position:absolute;top:5px;right:5px;" />
 		<form action="/cart/addProductNoAjax" method="post" target="_top" >
 		<input type="hidden" name="returnUrl" value="/shop/main/<?php echo $product['School']['id'].'/'.$product['Product']['sex'];?>" />
 		<input id="product-id" type="hidden" name="product" value="<?php echo $product['Product']['id']; ?>" />
@@ -221,10 +232,16 @@
 			<input type="submit" value="Checkout" class="big green btn" />
 		</form>
 		</noscript>
+
 	</div>
-	<div style="background-color:#aaa;color:#fff;padding:0px;" class="big title">
-		<div style="float:left;padding:5px">Simple Returns</div>
-		<div style="float:right;padding:5px">Flat Rate Shipping</div>
+	<div style="background-color:#aaa;color:#fff;padding:0px;margin-top:5px;" class="big title">
+		<div style="float:left;padding-top:7px">
+			<a href="/pages/shipping" id="return-link">
+				<img src="/img/header/easyreturns.png" />
+				<span style="font-size:30px;;position:relative;top:-10px;">Easy Returns</span>
+			</a>
+		</div>
+		<div style="float:right;padding:5px;text-align:center;">Flat Rate Shipping<br/><span style="color:#000">$4.95</span></div>
 		<div style="clear:both"></div>
 	</div>
 	
@@ -263,12 +280,6 @@
 		<div style="clear:both;"></div>
 		<div id="image-info-loader"></div>
 		</div>
-	</div>
-	
-	<div class="mfg-info-wrap">
-			<div class="big title">Manufacturer</div>
-			<hr/>
-			<img src="<?php echo $product['Manufacturer']['image']; ?>" />
 	</div>
 	
 </div>

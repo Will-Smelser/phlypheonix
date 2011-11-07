@@ -1,6 +1,8 @@
-	<a href="/shop/main">
-	<img id="logoFlyFoenix" src="/img/logos/logo_flyfoenix.png" alt="FlyFoenix.com - Best NCAA gear!" />
+	<a id="logoFlyFoenix" href="/shop/main" style="cursor:pointer">
+	<img src="/img/logos/logo_flyfoenix.png" alt="FlyFoenix.com - Best NCAA gear!" />
 	</a>
+    
+    <p id="phone-number">(614) 859-0481</p>
     
     <div id="navigate">
 	    <ul class="nav-link" id="h-links">

@@ -2,7 +2,7 @@
 class ReportingController extends AppController{
 	
 	var $uses = array('tracking');
-	var $components = array('Ccart');
+	var $components = array('Ccart','Session');
 	
 	public function beforeFilter(){
 		parent::beforeFilter();
@@ -90,10 +90,13 @@ class ReportingController extends AppController{
 		$this->loadModel('School');
 		$schools = $this->School->find('list',array('fields'=>array('id','long')));
 		
+		//make reference to the cart component
+		$cart =& $this->Ccart;
+		
 		//fix the cart and alter data
 		foreach($data as $key=>$entry){
 			//create cart html
-			$cart = unserialize($entry['trackings']['cart']);
+			CcartComponent::unserialize($entry['trackings']['cart'], $cart);
 			
 			$html = '<table><tr><th>Product Id</th><th>Qty</th><th>Unit Price</th>';
 			foreach($cart->getContents() as $e){
@@ -103,6 +106,9 @@ class ReportingController extends AppController{
 			
 			$html .= '</table>';
 			$data[$key]['trackings']['cart'] = $html;
+			
+			//clear the cart contents
+			$cart->emptyCart();
 			
 			//determine the school
 			if(preg_match('/shop\/main/',$entry['trackings']['url'])){
@@ -116,5 +122,7 @@ class ReportingController extends AppController{
 
 		$this->set(compact('data'));
 	}
+	
+	
 }
 ?>

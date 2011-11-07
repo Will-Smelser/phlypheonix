@@ -40,6 +40,13 @@
 	<!-- JQuery //-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
 	
+	<script language="javascript">
+		//tell parent window we have loaded enough
+	    try{//trap error if this page is loaded by itself and not from parent window
+	  	  window.parent.mioPopup.loadComplete();
+	    } catch(e){};
+  	</script>
+	
 	<script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -66,9 +73,14 @@
 <?php echo $this->element('sizechart'); ?>
 </div>
 
+<div id="return-policy" style="display:none;overflow:auto;height:500px;">
+	<?php echo $this->element('returnshort'); ?>
+</div>
+
 </body>
 
 <script type="text/javascript" language="javascript">
+
 var imageData = <?php echo json_encode($product['Pimage']); ?>;
 var attrData = <?php echo json_encode($product['Pattribute']); ?>;
 </script>
@@ -81,7 +93,7 @@ var attrData = <?php echo json_encode($product['Pattribute']); ?>;
 //share this
 var switchTo5x=true;
 $(window).load(function(){
-	$.getScript('<?php echo $protocal; ?>://w.sharethis.com/button/buttons.js',function(){
+	$.getScript('<?php echo $protocal; ?>://w<?php if($protocal == 'https') echo 's'; ?>.sharethis.com/button/buttons.js',function(){
 		
 		stLight.options({publisher:'4db8f048-2ddb-45c3-87c8-40b6077626c7'});
 		
@@ -101,5 +113,13 @@ $('#size-chart-link').click(function(){
 	return false;
 });
 
+//shipping
+$('#return-link').click(function(){
+	$('body').qtip('api').updateContent($('#return-policy').html(),true);
+	$('body').qtip('api').updateWidth(650);
+	
+	$('body').qtip('show');
+	return false;
+});
 </script>
 </html>

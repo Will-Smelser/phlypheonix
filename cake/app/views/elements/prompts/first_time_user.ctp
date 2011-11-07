@@ -128,7 +128,7 @@ $(document).ready(function(){
 	
 	//create the tips
 	//var $sequence = [$('#mfg-logo'),$('#buynowtag'),$('#selector'),$('#sharethis'),$('#inventory'),$('#rightarrow'),$('#comment-wrapper')];
-	var $sequence = [$('#buynowtag'),$('#sharethis'),$('#rightarrow')];
+	var $sequence = [$('#selector'),$('#sharing')];
 	for(var x in $sequence){
 		var id = $sequence[x].attr('id');
 
@@ -161,6 +161,7 @@ $(document).ready(function(){
 			qtipSetting.position.adjust.y = -15;
 			break;
 		case 'sharethis':
+		case 'sharing':
 			qtipSetting.content.text = '<div class="title">Share &amp; Earn</div><p>Share a sale and get a $5 credit anytime a referral makes a purchase.</p>';
 			qtipSetting.position.corner.target = 'leftMiddle';
 			qtipSetting.position.corner.tooltip = 'rightTop';
